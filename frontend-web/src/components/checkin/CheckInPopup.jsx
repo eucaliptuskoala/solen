@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import MoodPicker from "../practice/MoodPicker";
+import ToggleSwitch from "../ui/ToggleSwitch";
 
 function CheckInPopup({ isOpen, habitId, habitName, habits, onSave, onClose }) {
   const [mood, setMood] = useState(null);
@@ -7,6 +8,7 @@ function CheckInPopup({ isOpen, habitId, habitName, habits, onSave, onClose }) {
   const [selectedHabitId, setSelectedHabitId] = useState(null);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [isPublic, setIsPublic] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -15,6 +17,7 @@ function CheckInPopup({ isOpen, habitId, habitName, habits, onSave, onClose }) {
       setSelectedHabitId(null);
       setSaving(false);
       setSuccess(false);
+      setIsPublic(false);
     };
   }, [isOpen]);
 
@@ -26,7 +29,7 @@ function CheckInPopup({ isOpen, habitId, habitName, habits, onSave, onClose }) {
     e.preventDefault();
     if (!mood || !effectiveHabitId) return;
     setSaving(true);
-    await onSave({ habitId: effectiveHabitId, mood, content, public: false });
+    await onSave({ habitId: effectiveHabitId, mood, content, public: isPublic });
     setSuccess(true);
     setTimeout(() => {
       onClose();
@@ -100,6 +103,15 @@ function CheckInPopup({ isOpen, habitId, habitName, habits, onSave, onClose }) {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="What's on your mind?"
+            />
+          </div>
+
+          <div className="mb-[var(--space-lg)]">
+            <ToggleSwitch
+              id="popupIsPublic"
+              checked={isPublic}
+              onChange={setIsPublic}
+              label="Share on Inspire"
             />
           </div>
 

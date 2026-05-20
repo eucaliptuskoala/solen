@@ -151,8 +151,8 @@ body {
   pointer-events: auto;
 }
 .nav-dropdown-menu a.active {
-  color: var(--color-solen-accent);
-  background: var(--color-solen-accent-subtle);
+  color: oklch(62% 0.19 80);
+  background: oklch(92% 0.08 80 / 0.3);
 }
 .nav-dropdown-menu a.active svg {
   opacity: 1;

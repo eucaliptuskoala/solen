@@ -7,6 +7,7 @@ import PracticeCardList from "../components/practice/PracticeCardList";
 import CreatePracticeModal from "../components/practice/CreatePracticeModal";
 import DeleteConfirmationDialog from "../components/practice/DeleteConfirmationDialog";
 import CheckInPopup from "../components/checkin/CheckInPopup";
+import ToggleSwitch from "../components/ui/ToggleSwitch";
 
 const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -29,6 +30,7 @@ function DashboardPage() {
   const [reflection, setReflection] = useState("");
   const [checkedInHidden, setCheckedInHidden] = useState(false);
   const [selectedHabitId, setSelectedHabitId] = useState(null);
+  const [isPublic, setIsPublic] = useState(false);
   const [toast, setToast] = useState(null);
 
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -103,7 +105,7 @@ function DashboardPage() {
 
   const handleSaveCheckIn = () => {
     if (!mood || !selectedHabitId) return;
-    const checkin = { mood, content: reflection, habitId: selectedHabitId, public: false };
+    const checkin = { mood, content: reflection, habitId: selectedHabitId, public: isPublic };
     CheckInAPI.create(checkin)
       .then(() => {
         setMood(null);
@@ -169,6 +171,15 @@ function DashboardPage() {
             value={reflection}
             onChange={(e) => setReflection(e.target.value)}
           />
+
+          <div className="mb-[var(--space-md)]">
+            <ToggleSwitch
+              id="inlineIsPublic"
+              checked={isPublic}
+              onChange={setIsPublic}
+              label="Share on Inspire"
+            />
+          </div>
 
           <div className="flex items-center gap-4 mt-4">
             <button className="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200 cursor-pointer font-body disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none" onClick={handleSaveCheckIn} disabled={!mood || !selectedHabitId}>

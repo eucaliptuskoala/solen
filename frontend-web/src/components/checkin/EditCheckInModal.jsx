@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import MoodPicker from "../practice/MoodPicker";
+import ToggleSwitch from "../ui/ToggleSwitch";
 
 function EditCheckInModal({ isOpen, entry, onSave, onClose }) {
   const [content, setContent] = useState("");
@@ -44,17 +45,13 @@ function EditCheckInModal({ isOpen, entry, onSave, onClose }) {
             />
           </div>
 
-          <div className="mb-[var(--space-lg)] flex items-center gap-[var(--space-sm)]">
-            <input
-              type="checkbox"
+          <div className="mb-[var(--space-lg)]">
+            <ToggleSwitch
               id="editPublic"
               checked={isPublic}
-              onChange={(e) => setIsPublic(e.target.checked)}
-              style={{ width: "18px", height: "18px", accentColor: "var(--color-solen-accent)" }}
+              onChange={setIsPublic}
+              label="Make this check-in public on Inspire"
             />
-            <label htmlFor="editPublic" className="font-body text-[0.9rem] text-solen-fg" style={{ margin: 0 }}>
-              Make this check-in public on Inspire
-            </label>
           </div>
 
           <div className="flex gap-[var(--space-sm)] justify-end">
