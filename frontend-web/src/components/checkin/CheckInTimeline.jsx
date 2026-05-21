@@ -1,20 +1,6 @@
 import { useState, useMemo } from "react";
 import CheckInTimelineEntry from "./CheckInTimelineEntry";
-
-function isThisWeek(dateStr) {
-  const d = new Date(dateStr + "T00:00:00");
-  const now = new Date();
-  const startOfWeek = new Date(now);
-  startOfWeek.setDate(now.getDate() - now.getDay());
-  startOfWeek.setHours(0, 0, 0, 0);
-  return d >= startOfWeek;
-}
-
-function isThisMonth(dateStr) {
-  const d = new Date(dateStr + "T00:00:00");
-  const now = new Date();
-  return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-}
+import { isThisWeek, isThisMonth } from "../../utils/dates";
 
 const filters = [
   { key: "all", label: "All" },

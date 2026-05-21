@@ -132,7 +132,7 @@ function NavBar() {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-3 px-[18px] py-3 text-solen-fg text-sm transition-colors duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent${location.pathname === item.path ? " active bg-yellow-100 text-yellow-600" : ""}`}
+                className={`flex items-center gap-3 px-[18px] py-3 text-solen-fg text-sm transition-colors duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent${location.pathname === item.path ? " active bg-solen-accent-subtle text-solen-accent" : ""}`}
                 onClick={() => setIsOpen(false)}
               >
                 {item.icon}

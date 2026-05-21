@@ -4,6 +4,7 @@ import HabitAPI from "../apis/HabitAPI";
 import CheckInTimeline from "../components/checkin/CheckInTimeline";
 import EditCheckInModal from "../components/checkin/EditCheckInModal";
 import CheckInPopup from "../components/checkin/CheckInPopup";
+import useToast from "../hooks/useToast";
 
 function CheckInsPage() {
   const [entries, setEntries] = useState([]);
@@ -11,12 +12,7 @@ function CheckInsPage() {
   const [editEntry, setEditEntry] = useState(null);
   const [showEdit, setShowEdit] = useState(false);
   const [showNew, setShowNew] = useState(false);
-  const [toast, setToast] = useState(null);
-
-  const showToast = (msg) => {
-    setToast(msg);
-    setTimeout(() => setToast(null), 2500);
-  };
+  const { toast, showToast } = useToast();
 
   const fetchEntries = useCallback(() => {
     CheckInAPI.getAll()
@@ -79,7 +75,7 @@ function CheckInsPage() {
         isOpen={showNew}
         habitId={null}
         habitName={null}
-        habits={practices}
+        availablePractices={practices}
         onSave={handleNewCheckIn}
         onClose={() => setShowNew(false)}
       />

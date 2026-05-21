@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import MoodPicker from "../practice/MoodPicker";
 import ToggleSwitch from "../ui/ToggleSwitch";
+import Button from "../ui/Button";
+import Textarea from "../ui/Textarea";
+import Modal from "../ui/Modal";
 
-function CheckInPopup({ isOpen, habitId, habitName, habits, onSave, onClose }) {
+function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, onClose }) {
   const [mood, setMood] = useState(null);
   const [content, setContent] = useState("");
-  const [selectedHabitId, setSelectedHabitId] = useState(null);
+  const [pickedHabitId, setPickedHabitId] = useState(null);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
@@ -14,7 +17,7 @@ function CheckInPopup({ isOpen, habitId, habitName, habits, onSave, onClose }) {
     return () => {
       setMood(null);
       setContent("");
-      setSelectedHabitId(null);
+      setPickedHabitId(null);
       setSaving(false);
       setSuccess(false);
       setIsPublic(false);
@@ -23,7 +26,7 @@ function CheckInPopup({ isOpen, habitId, habitName, habits, onSave, onClose }) {
 
   if (!isOpen) return null;
 
-  const effectiveHabitId = habitId || selectedHabitId;
+  const effectiveHabitId = habitId || pickedHabitId;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +40,7 @@ function CheckInPopup({ isOpen, habitId, habitName, habits, onSave, onClose }) {
       setSaving(false);
       setMood(null);
       setContent("");
-      setSelectedHabitId(null);
+      setPickedHabitId(null);
     }, 600);
   };
 
@@ -59,71 +62,68 @@ function CheckInPopup({ isOpen, habitId, habitName, habits, onSave, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-200" onClick={onClose}>
-      <div className="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-xl)] max-w-[500px] w-[90%] shadow-[0_16px_48px_rgb(0_0_0_/_0.08)]" onClick={(e) => e.stopPropagation()}>
-        <h3 className="font-display text-[1.15rem] font-[400] mb-[var(--space-sm)]">{habitName ? `Check in: ${habitName}` : "New check-in"}</h3>
-        <p className="font-body text-[length:var(--fs-body)] leading-relaxed text-solen-muted mb-[var(--space-lg)]">How are you feeling?</p>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <h3 className="font-display text-[1.15rem] font-[400] mb-[var(--space-sm)]">{habitName ? `Check in: ${habitName}` : "New check-in"}</h3>
+      <p className="font-body text-[length:var(--fs-body)] leading-relaxed text-solen-muted mb-[var(--space-lg)]">How are you feeling?</p>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-[var(--space-lg)]">
-            <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Mood</label>
-            <MoodPicker value={mood} onChange={setMood} />
-          </div>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-[var(--space-lg)]">
+          <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Mood</label>
+          <MoodPicker value={mood} onChange={setMood} />
+        </div>
 
-          {!habitId && habits && (
-          <div className="mb-[var(--space-lg)]">
-              <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Practice</label>
-              {habits.filter(h => !h.checkedInToday).length === 0 ? (
-                <p className="font-body text-sm leading-relaxed text-solen-muted">
-                  No practices to check in today.
-                </p>
-              ) : (
-                <div className="flex flex-wrap gap-[var(--space-sm)]">
-                  {habits.filter(h => !h.checkedInToday).map(h => (
+        {!habitId && availablePractices && (
+        <div className="mb-[var(--space-lg)]">
+            <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Practice</label>
+              {availablePractices.filter(h => !h.checkedInToday).length === 0 ? (
+              <p className="font-body text-sm leading-relaxed text-solen-muted">
+                No practices to check in today.
+              </p>
+            ) : (
+              <div className="flex flex-wrap gap-[var(--space-sm)]">
+                  {availablePractices.filter(h => !h.checkedInToday).map(h => (
                     <button
                       key={h.id}
                       type="button"
-                      className={`flex items-center gap-2 px-3.5 py-2 border border-solen-border rounded-[8px] bg-solen-surface cursor-pointer transition-all duration-200 font-body text-sm text-solen-fg hover:border-solen-accent-dim hover:bg-solen-accent-subtle${selectedHabitId === h.id ? " border-solen-accent bg-solen-accent-subtle" : ""}`}
-                      onClick={() => setSelectedHabitId(h.id)}
-                    >
-                      <span className="font-medium">{h.name}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          <div className="mb-[var(--space-lg)]">
-            <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]" htmlFor="popupContent">Reflection (optional)</label>
-            <textarea
-              id="popupContent"
-              className="w-full px-4 py-3 border border-solen-border rounded-[8px] bg-solen-surface text-[1rem] text-solen-fg outline-none transition-[border-color] duration-200 focus:border-solen-accent focus:shadow-[0_0_0_3px_oklch(68%_0.16_75_/_0.1)] placeholder:text-solen-muted/60 resize-y min-h-[100px] font-body"
-              rows={4}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="What's on your mind?"
-            />
+                      className={`flex items-center gap-2 px-3.5 py-2 border border-solen-border rounded-[8px] bg-solen-surface cursor-pointer transition-all duration-200 font-body text-sm text-solen-fg hover:border-solen-accent-dim hover:bg-solen-accent-subtle${pickedHabitId === h.id ? " border-solen-accent bg-solen-accent-subtle" : ""}`}
+                      onClick={() => setPickedHabitId(h.id)}
+                  >
+                    <span className="font-medium">{h.name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
+        )}
 
-          <div className="mb-[var(--space-lg)]">
-            <ToggleSwitch
-              id="popupIsPublic"
-              checked={isPublic}
-              onChange={setIsPublic}
-              label="Share on Inspire"
-            />
-          </div>
+        <div className="mb-[var(--space-lg)]">
+          <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]" htmlFor="popupContent">Reflection (optional)</label>
+          <Textarea
+            id="popupContent"
+            rows={4}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="What's on your mind?"
+          />
+        </div>
 
-          <div className="flex gap-[var(--space-sm)] justify-end">
-            <button type="button" className="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-solen-fg no-underline hover:bg-solen-surface-soft transition-all duration-200 cursor-pointer font-body bg-transparent border-none" onClick={onClose}>Cancel</button>
-            <button type="submit" className="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200 cursor-pointer font-body disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-solen-accent disabled:hover:border-solen-accent disabled:hover:shadow-none" disabled={!mood || !effectiveHabitId || saving}>
-              {saving ? "Saving..." : "Save check-in"}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="mb-[var(--space-lg)]">
+          <ToggleSwitch
+            id="popupIsPublic"
+            checked={isPublic}
+            onChange={setIsPublic}
+            label="Share on Inspire"
+          />
+        </div>
+
+        <div className="flex gap-[var(--space-sm)] justify-end">
+          <Button variant="secondary" onClick={onClose}>Cancel</Button>
+          <Button variant="primary" type="submit" disabled={!mood || !effectiveHabitId || saving}>
+            {saving ? "Saving..." : "Save check-in"}
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 }
 

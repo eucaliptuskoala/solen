@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback } from "react";
 import CheckInAPI from "../apis/CheckInAPI";
 import UserActivityCalendar from "../components/habitprogress/UserActivityCalendar";
-import HabitProgressBarChart from "../components/habitprogress/HabitProgressLineChart";
-
-const today = () => new Date().toISOString().slice(0, 10);
-const daysAgo = (n) => new Date(Date.now() - n * 864e5).toISOString().slice(0, 10);
+import HabitProgressBarChart from "../components/habitprogress/HabitProgressBarChart";
+import Button from "../components/ui/Button";
+import { today, daysAgo, formatShort } from "../utils/dates";
+import { groupCheckInsByHabit, buildActivityData } from "../utils/checkins";
 
 const presets = [
   { key: "7d", number: "7", unit: "days", days: 7 },
@@ -22,14 +22,7 @@ const rangeLabels = {
   all: "All time",
 };
 
-const formatShort = (isoStr) => {
-  if (!isoStr) return "";
-  const d = new Date(isoStr + "T00:00:00");
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-};
-
 function ProgressPage() {
-  const [checkIns, setCheckIns] = useState([]);
   const [progressPerHabit, setProgressPerHabit] = useState({});
   const [contribution, setContribution] = useState([]);
   const [startDate, setStartDate] = useState(daysAgo(30));
@@ -41,31 +34,10 @@ function ProgressPage() {
   const [error, setError] = useState("");
 
   const fetchWithRange = useCallback((start, end) => {
-    const from = start || undefined;
-    const to = end || undefined;
-
-    CheckInAPI.getAll(from, to)
+    CheckInAPI.getAll(start || undefined, end || undefined)
       .then((data) => {
-        setCheckIns(data);
-
-        const perHabits = {};
-        data.forEach((ci) => {
-          const name = ci.habit?.name || "Unknown";
-          if (!perHabits[name]) perHabits[name] = [];
-          perHabits[name].push({ date: ci.date, streakValue: ci.streakValue });
-        });
-        Object.values(perHabits).forEach((hp) =>
-          hp.sort((a, b) => new Date(a.date) - new Date(b.date))
-        );
-        setProgressPerHabit(perHabits);
-
-        const activity = {};
-        data.forEach((ci) => {
-          activity[ci.date] = (activity[ci.date] || 0) + 1;
-        });
-        setContribution(
-          Object.entries(activity).map(([day, value]) => ({ day, value }))
-        );
+        setProgressPerHabit(groupCheckInsByHabit(data));
+        setContribution(buildActivityData(data));
       })
       .catch(() => setError("Failed to load progress"));
   }, []);
@@ -97,7 +69,7 @@ function ProgressPage() {
   };
 
   const dayCount =
-    startDate && endDate
+    activePreset !== "all" && startDate && endDate
       ? Math.round(
           (new Date(endDate + "T23:59:59") - new Date(startDate + "T00:00:00")) /
             (1000 * 60 * 60 * 24)
@@ -195,13 +167,15 @@ function ProgressPage() {
         <div className="flex items-center justify-between mb-[var(--space-md)]">
           <div className="flex items-center gap-3">
             <span className="font-mono text-[0.75rem] text-solen-muted">
-              {formatShort(startDate) || "—"}
+              {activePreset === "all"
+                ? "Since first"
+                : formatShort(startDate) || "—"}
             </span>
             <span className="font-mono text-[0.6rem] text-solen-muted opacity-50">
               →
             </span>
             <span className="font-mono text-[0.75rem] text-solen-muted">
-              {formatShort(endDate) || "—"}
+              {activePreset === "all" ? "today" : formatShort(endDate) || "—"}
             </span>
           </div>
           <span className="font-mono text-[0.6rem] tracking-[0.05em] uppercase text-solen-muted opacity-60">
@@ -255,12 +229,9 @@ function ProgressPage() {
                   className="px-4 py-2.5 border border-solen-border rounded-[8px] bg-solen-bg text-[0.9rem] text-solen-fg outline-none transition-[border-color,box-shadow] duration-200 focus:border-solen-accent focus:shadow-[0_0_0_3px_oklch(68%_0.16_75_/_0.1)] font-body"
                 />
               </label>
-              <button
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-[8px] text-[0.9rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200 cursor-pointer font-body"
-                onClick={applyCustomRange}
-              >
+              <Button variant="primary" size="sm" onClick={applyCustomRange}>
                 Apply
-              </button>
+              </Button>
             </div>
           )}
         </div>
@@ -290,6 +261,7 @@ function ProgressPage() {
         </h2>
         <div className="flex flex-col gap-[var(--space-md)]">
           {Object.entries(progressPerHabit).map(([name, habitProgress]) => {
+            const isAll = activePreset === "all";
             const totalDays = dayCount + 1;
             const pct =
               totalDays > 0
@@ -305,7 +277,7 @@ function ProgressPage() {
                     {name}
                   </h3>
                   <span className="font-mono text-[0.8rem] text-solen-muted">
-                    {pct}% this period
+                    {habitProgress.length} check-in{habitProgress.length !== 1 ? "s" : ""}{!isAll && pct > 0 ? ` (${pct}%)` : ""}
                   </span>
                 </div>
                 <HabitProgressBarChart data={habitProgress} />

@@ -12,7 +12,7 @@ const CheckInAPI = {
   },
   create: (request) => api.post(CHECKIN_BASE_URL + "/checkin", request).then(res => res.data),
   update: (id, request) => api.put(`${CHECKIN_BASE_URL}/${id}`, request).then(res => res.data),
-  delete: (id) => api.delete(`${CHECKIN_BASE_URL}/${id}`).then(res => res),
+  delete: (id) => api.delete(`${CHECKIN_BASE_URL}/${id}`).then(res => res.data),
   getFyp: () => api.get(CHECKIN_BASE_URL + "/fyp").then(res => res.data),
 };
 

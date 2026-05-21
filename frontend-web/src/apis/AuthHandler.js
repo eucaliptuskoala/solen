@@ -26,10 +26,7 @@ const AuthHandler = {
         return jwtDecode(token).name;
     },
 
-    tokenExists: ()=>{
-        const token = localStorage.getItem("jwt");
-        return token ? true : false;
-    }
+    tokenExists: () => !!localStorage.getItem("jwt"),
 }
 
 export default AuthHandler;

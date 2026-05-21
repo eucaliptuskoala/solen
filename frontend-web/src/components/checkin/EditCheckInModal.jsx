@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import MoodPicker from "../practice/MoodPicker";
 import ToggleSwitch from "../ui/ToggleSwitch";
+import Button from "../ui/Button";
+import Textarea from "../ui/Textarea";
+import Modal from "../ui/Modal";
 
 function EditCheckInModal({ isOpen, entry, onSave, onClose }) {
   const [content, setContent] = useState("");
@@ -8,14 +11,13 @@ function EditCheckInModal({ isOpen, entry, onSave, onClose }) {
   const [isPublic, setIsPublic] = useState(false);
 
   useEffect(() => {
-    if (entry) {
+    if (entry && isOpen) {
       setContent(entry.content || "");
       setMood(entry.mood || null);
-      setIsPublic(entry.public !== undefined ? entry.public : entry.isPublic || false);
+      setIsPublic(entry.isPublic || false);
     }
-  }, [entry]);
-
-  if (!isOpen || !entry) return null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,44 +25,41 @@ function EditCheckInModal({ isOpen, entry, onSave, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-200" onClick={onClose}>
-      <div className="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-xl)] max-w-[500px] w-[90%] shadow-[0_16px_48px_rgb(0_0_0_/_0.08)]" onClick={(e) => e.stopPropagation()}>
-        <h3 className="font-display text-[1.15rem] font-[400] mb-[var(--space-sm)]">Edit check-in</h3>
-        <p className="font-body text-[length:var(--fs-body)] leading-relaxed text-solen-muted mb-[var(--space-lg)]">Update your mood or reflection.</p>
+    <Modal isOpen={isOpen && !!entry} onClose={onClose}>
+      <h3 className="font-display text-[1.15rem] font-[400] mb-[var(--space-sm)]">Edit check-in</h3>
+      <p className="font-body text-[length:var(--fs-body)] leading-relaxed text-solen-muted mb-[var(--space-lg)]">Update your mood or reflection.</p>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-[var(--space-lg)]">
-            <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Mood</label>
-            <MoodPicker value={mood} onChange={setMood} />
-          </div>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-[var(--space-lg)]">
+          <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Mood</label>
+          <MoodPicker value={mood} onChange={setMood} />
+        </div>
 
-          <div className="mb-[var(--space-lg)]">
-            <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]" htmlFor="editContent">Reflection</label>
-            <textarea
-              id="editContent"
-              className="w-full px-4 py-3 border border-solen-border rounded-[8px] bg-solen-surface text-[1rem] text-solen-fg outline-none transition-[border-color] duration-200 focus:border-solen-accent focus:shadow-[0_0_0_3px_oklch(68%_0.16_75_/_0.1)] placeholder:text-solen-muted/60 resize-y min-h-[100px] font-body"
-              rows={4}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-          </div>
+        <div className="mb-[var(--space-lg)]">
+          <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]" htmlFor="editContent">Reflection</label>
+          <Textarea
+            id="editContent"
+            rows={4}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </div>
 
-          <div className="mb-[var(--space-lg)]">
-            <ToggleSwitch
-              id="editPublic"
-              checked={isPublic}
-              onChange={setIsPublic}
-              label="Make this check-in public on Inspire"
-            />
-          </div>
+        <div className="mb-[var(--space-lg)]">
+          <ToggleSwitch
+            id="editPublic"
+            checked={isPublic}
+            onChange={setIsPublic}
+            label="Make this check-in public on Inspire"
+          />
+        </div>
 
-          <div className="flex gap-[var(--space-sm)] justify-end">
-            <button type="button" className="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-solen-fg no-underline hover:bg-solen-surface-soft transition-all duration-200 cursor-pointer font-body bg-transparent border-none" onClick={onClose}>Cancel</button>
-            <button type="submit" className="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200 cursor-pointer font-body disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-solen-accent disabled:hover:border-solen-accent disabled:hover:shadow-none">Save</button>
-          </div>
-        </form>
-      </div>
-    </div>
+        <div className="flex gap-[var(--space-sm)] justify-end">
+          <Button variant="secondary" onClick={onClose}>Cancel</Button>
+          <Button variant="primary" type="submit">Save</Button>
+        </div>
+      </form>
+    </Modal>
   );
 }
 
