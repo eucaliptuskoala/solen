@@ -7,6 +7,7 @@ import CreatePracticeModal from "../components/practice/CreatePracticeModal";
 import DeleteConfirmationDialog from "../components/practice/DeleteConfirmationDialog";
 import CheckInPopup from "../components/checkin/CheckInPopup";
 import DailyCheckInForm from "../components/checkin/DailyCheckInForm";
+import PageHeader from "../components/ui/PageHeader";
 import { formatDate } from "../utils/dates";
 import useToast from "../hooks/useToast";
 
@@ -46,9 +47,13 @@ function DashboardPage() {
   };
 
   const saveCheckIn = async (data) => {
-    await CheckInAPI.create(data);
-    showToast("Check-in saved!");
-    fetchPractices();
+    try {
+      await CheckInAPI.create(data);
+      showToast("Check-in saved!");
+      fetchPractices();
+    } catch {
+      showToast("Failed to save check-in.");
+    }
   };
 
   const handlePopupSave = async (data) => {
@@ -91,12 +96,7 @@ function DashboardPage() {
 
   return (
     <main className="max-w-[1280px] mx-auto px-[var(--gutter)] py-[var(--space-xl)]">
-      <div className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_both]">
-        <span className="font-mono text-xs tracking-[0.05em] uppercase text-solen-muted block mb-[var(--space-sm)]">
-          {todayStr}
-        </span>
-        <h1 className="font-display text-[length:var(--fs-heading)] leading-[1.15] tracking-[-0.015em] font-normal">{getGreeting()}.</h1>
-      </div>
+      <PageHeader eyebrow={todayStr} title={`${getGreeting()}.`} />
 
       <DailyCheckInForm practices={practices} onSave={handleDailyCheckInSave} />
 

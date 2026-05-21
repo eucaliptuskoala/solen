@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import CheckInAPI from "../apis/CheckInAPI";
 import InspireCard from "../components/inspire/InspireCard";
 import InspireCardNavigator from "../components/inspire/InspireCardNavigator";
+import PageHeader from "../components/ui/PageHeader";
 
 function InspirePage() {
   const [entries, setEntries] = useState([]);
@@ -18,12 +19,7 @@ function InspirePage() {
   return (
     <main className="max-w-[1280px] mx-auto px-[var(--gutter)] py-[var(--space-xl)]">
       <div className="flex items-center justify-between mb-16 flex-wrap gap-4 animate-[fade-in_0.5s_ease_both]">
-        <div>
-          <span className="block font-mono text-[0.75rem] tracking-[0.05em] uppercase text-solen-muted mb-[var(--space-sm)]">
-            Community
-          </span>
-          <h1 className="font-display text-[length:var(--fs-heading)] leading-[1.15] tracking-[-0.015em] font-[400]">Inspire</h1>
-        </div>
+        <PageHeader eyebrow="Community" title="Inspire" className="mb-0" />
         <div className="flex border border-solen-border rounded-[8px] overflow-hidden">
           <button
             className={`px-4 py-2 border-none font-body text-[0.8rem] cursor-pointer transition-all duration-150 [&:not(:last-child)]:border-r [&:not(:last-child)]:border-solen-border ${view === "feed" ? "bg-solen-accent text-[var(--color-solen-surface)]" : "bg-solen-surface text-solen-muted hover:text-solen-fg"}`}

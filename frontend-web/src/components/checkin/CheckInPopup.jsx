@@ -4,6 +4,8 @@ import ToggleSwitch from "../ui/ToggleSwitch";
 import Button from "../ui/Button";
 import Textarea from "../ui/Textarea";
 import Modal from "../ui/Modal";
+import Label from "../ui/Label";
+import PracticeSelectButton from "../ui/PracticeSelectButton";
 
 function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, onClose }) {
   const [mood, setMood] = useState(null);
@@ -68,28 +70,21 @@ function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, 
 
       <form onSubmit={handleSubmit}>
         <div className="mb-[var(--space-lg)]">
-          <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Mood</label>
+          <Label>Mood</Label>
           <MoodPicker value={mood} onChange={setMood} />
         </div>
 
         {!habitId && availablePractices && (
         <div className="mb-[var(--space-lg)]">
-            <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Practice</label>
+            <Label>Practice</Label>
               {availablePractices.filter(h => !h.checkedInToday).length === 0 ? (
               <p className="font-body text-sm leading-relaxed text-solen-muted">
                 No practices to check in today.
               </p>
             ) : (
               <div className="flex flex-wrap gap-[var(--space-sm)]">
-                  {availablePractices.filter(h => !h.checkedInToday).map(h => (
-                    <button
-                      key={h.id}
-                      type="button"
-                      className={`flex items-center gap-2 px-3.5 py-2 border border-solen-border rounded-[8px] bg-solen-surface cursor-pointer transition-all duration-200 font-body text-sm text-solen-fg hover:border-solen-accent-dim hover:bg-solen-accent-subtle${pickedHabitId === h.id ? " border-solen-accent bg-solen-accent-subtle" : ""}`}
-                      onClick={() => setPickedHabitId(h.id)}
-                  >
-                    <span className="font-medium">{h.name}</span>
-                  </button>
+                {availablePractices.filter(h => !h.checkedInToday).map(h => (
+                  <PracticeSelectButton key={h.id} practice={h} selected={pickedHabitId === h.id} onClick={() => setPickedHabitId(h.id)} />
                 ))}
               </div>
             )}
@@ -97,7 +92,7 @@ function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, 
         )}
 
         <div className="mb-[var(--space-lg)]">
-          <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]" htmlFor="popupContent">Reflection (optional)</label>
+          <Label htmlFor="popupContent">Reflection (optional)</Label>
           <Textarea
             id="popupContent"
             rows={4}

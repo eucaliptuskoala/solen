@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import MoodIcon from "../MoodIcon";
+import Badge from "../ui/Badge";
 
 function InspireCardNavigator({ entries }) {
   const [index, setIndex] = useState(0);
@@ -35,8 +36,8 @@ function InspireCardNavigator({ entries }) {
             <div>
               <div className="font-body text-[0.85rem] font-medium">{userName}</div>
               <div className="flex items-center gap-[2px] mt-[2px]">
-                {categoryName && <span className="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">{categoryName}</span>}
-                {practiceName && <span className="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">{practiceName}</span>}
+                {categoryName && <Badge>{categoryName}</Badge>}
+                {practiceName && <Badge>{practiceName}</Badge>}
               </div>
             </div>
           </div>

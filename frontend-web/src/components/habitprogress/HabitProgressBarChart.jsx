@@ -23,7 +23,7 @@ function HabitProgressBarChart({ data }) {
             contentStyle={{
               background: "var(--color-solen-surface)",
               border: "1px solid var(--color-solen-border)",
-              borderRadius: "var(--radius)",
+              borderRadius: "var(--radius-solen)",
               fontSize: "0.8rem",
             }}
           />

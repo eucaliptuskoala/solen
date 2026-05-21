@@ -5,6 +5,7 @@ import AuthHandler from "../apis/AuthHandler";
 import AuthSun from "../components/AuthSun";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
+import Label from "../components/ui/Label";
 
 function SignInPage() {
   const [email, setEmail] = useState("");
@@ -42,11 +43,11 @@ function SignInPage() {
         )}
 
         <div className="mb-[var(--space-lg)] animate-[slide-up_0.4s_ease_both]" style={{ animationDelay: "0.1s" }}>
-          <label htmlFor="email" className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Email</label>
+          <Label htmlFor="email">Email</Label>
           <Input type="email" id="email" placeholder="you@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className="mb-[var(--space-lg)] animate-[slide-up_0.4s_ease_both]" style={{ animationDelay: "0.2s" }}>
-          <label htmlFor="password" className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Password</label>
+          <Label htmlFor="password">Password</Label>
           <Input type="password" id="password" placeholder="Your password" required value={password} onChange={(e) => setPassword(e.target.value)} />
           <a href="#" className="block text-right text-[0.85rem] mt-[var(--space-sm)] text-solen-muted no-underline hover:underline" onClick={(e) => { e.preventDefault(); alert("Password reset not implemented yet."); }}>Forgot password?</a>
         </div>

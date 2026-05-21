@@ -8,6 +8,7 @@ import CategoryTreeBrowser from "../components/landing/CategoryTreeBrowser";
 import AuthSun from "../components/AuthSun";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
+import Label from "../components/ui/Label";
 
 function SignUpPage() {
   const [step, setStep] = useState(1);
@@ -33,7 +34,13 @@ function SignUpPage() {
       setStep(2);
     } catch (err) {
       const msg = err?.response?.data;
-      setError(typeof msg === "string" ? msg : JSON.stringify(msg) || "Something went wrong. Please try again.");
+      if (msg && typeof msg === "string" && msg.toLowerCase().includes("email already exists")) {
+        setError("An account with this email already exists. Please sign in.");
+      } else if (!err?.response) {
+        setError("Account created but couldn't sign in automatically. Please sign in manually.");
+      } else {
+        setError(typeof msg === "string" ? msg : JSON.stringify(msg) || "Something went wrong. Please try again.");
+      }
     }
   };
 
@@ -66,15 +73,15 @@ function SignUpPage() {
           )}
 
           <div className="mb-[var(--space-lg)] animate-[slide-up_0.4s_ease_both]" style={{ animationDelay: "0.1s" }}>
-            <label htmlFor="name" className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Name</label>
+            <Label htmlFor="name">Name</Label>
             <Input type="text" id="name" placeholder="Your name" required value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="mb-[var(--space-lg)] animate-[slide-up_0.4s_ease_both]" style={{ animationDelay: "0.2s" }}>
-            <label htmlFor="email" className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Email</label>
+            <Label htmlFor="email">Email</Label>
             <Input type="email" id="email" placeholder="you@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="mb-[var(--space-lg)] animate-[slide-up_0.4s_ease_both]" style={{ animationDelay: "0.3s" }}>
-            <label htmlFor="password" className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Password</label>
+            <Label htmlFor="password">Password</Label>
             <Input type="password" id="password" placeholder="Choose a password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <Button variant="primary" type="submit" className="w-full justify-center">Continue</Button>

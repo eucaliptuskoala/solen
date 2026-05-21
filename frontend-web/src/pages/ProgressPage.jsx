@@ -5,6 +5,9 @@ import HabitProgressBarChart from "../components/habitprogress/HabitProgressBarC
 import Button from "../components/ui/Button";
 import { today, daysAgo, formatShort } from "../utils/dates";
 import { groupCheckInsByHabit, buildActivityData } from "../utils/checkins";
+import PageHeader from "../components/ui/PageHeader";
+import Card from "../components/ui/Card";
+import Input from "../components/ui/Input";
 
 const presets = [
   { key: "7d", number: "7", unit: "days", days: 7 },
@@ -92,17 +95,10 @@ function ProgressPage() {
 
   return (
     <main className="max-w-[1280px] mx-auto px-[var(--gutter)] py-[var(--space-xl)]">
-      <div className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_both]">
-        <span className="font-mono text-[0.75rem] tracking-[0.05em] uppercase text-solen-muted block mb-[var(--space-sm)]">
-          Your growth
-        </span>
-        <h1 className="font-display text-[length:var(--fs-heading)] leading-[1.15] tracking-[-0.015em] font-[400]">
-          Progress
-        </h1>
-      </div>
+      <PageHeader eyebrow="Your growth" title="Progress" />
 
       {/* Date range selector */}
-      <div className="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg)] mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.1s_both]">
+      <Card className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.1s_both]">
         <div className="flex items-start gap-4 mb-[var(--space-lg)]">
           <div className="w-9 h-9 rounded-[8px] border border-solen-border flex items-center justify-center flex-shrink-0 mt-0.5">
             <svg
@@ -211,23 +207,13 @@ function ProgressPage() {
                 <span className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-solen-muted">
                   From
                 </span>
-                <input
-                  type="date"
-                  value={customStart}
-                  onChange={(e) => setCustomStart(e.target.value)}
-                  className="px-4 py-2.5 border border-solen-border rounded-[8px] bg-solen-bg text-[0.9rem] text-solen-fg outline-none transition-[border-color,box-shadow] duration-200 focus:border-solen-accent focus:shadow-[0_0_0_3px_oklch(68%_0.16_75_/_0.1)] font-body"
-                />
+                <Input type="date" value={customStart} onChange={(e) => setCustomStart(e.target.value)} />
               </label>
               <label className="flex flex-col gap-1.5">
                 <span className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-solen-muted">
                   To
                 </span>
-                <input
-                  type="date"
-                  value={customEnd}
-                  onChange={(e) => setCustomEnd(e.target.value)}
-                  className="px-4 py-2.5 border border-solen-border rounded-[8px] bg-solen-bg text-[0.9rem] text-solen-fg outline-none transition-[border-color,box-shadow] duration-200 focus:border-solen-accent focus:shadow-[0_0_0_3px_oklch(68%_0.16_75_/_0.1)] font-body"
-                />
+                <Input type="date" value={customEnd} onChange={(e) => setCustomEnd(e.target.value)} />
               </label>
               <Button variant="primary" size="sm" onClick={applyCustomRange}>
                 Apply
@@ -235,7 +221,7 @@ function ProgressPage() {
             </div>
           )}
         </div>
-      </div>
+      </Card>
 
       {/* Activity calendar */}
       <div className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.2s_both]">
@@ -245,13 +231,13 @@ function ProgressPage() {
             {heatmapLabel}
           </span>
         </div>
-        <div className="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg)]">
+        <Card>
           <UserActivityCalendar
             data={contribution}
             startDate={startDate}
             endDate={endDate}
           />
-        </div>
+        </Card>
       </div>
 
       {/* Per-practice trends */}
@@ -267,11 +253,8 @@ function ProgressPage() {
               totalDays > 0
                 ? Math.round((habitProgress.length / totalDays) * 100)
                 : 0;
-            return (
-              <div
-                key={name}
-                className="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg)]"
-              >
+              return (
+                <Card key={name}>
                 <div className="flex items-center justify-between mb-[var(--space-lg)]">
                   <h3 className="font-display text-[1rem] font-[400]">
                     {name}
@@ -281,11 +264,11 @@ function ProgressPage() {
                   </span>
                 </div>
                 <HabitProgressBarChart data={habitProgress} />
-              </div>
-            );
-          })}
+                </Card>
+              );
+            })}
+          </div>
         </div>
-      </div>
     </main>
   );
 }

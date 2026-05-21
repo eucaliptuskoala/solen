@@ -3,6 +3,8 @@ import MoodPicker from "../practice/MoodPicker";
 import ToggleSwitch from "../ui/ToggleSwitch";
 import Button from "../ui/Button";
 import Textarea from "../ui/Textarea";
+import PracticeSelectButton from "../ui/PracticeSelectButton";
+import Card from "../ui/Card";
 
 function DailyCheckInForm({ practices, onSave }) {
   const [hidden, setHidden] = useState(false);
@@ -22,7 +24,7 @@ function DailyCheckInForm({ practices, onSave }) {
   if (hidden) return null;
 
   return (
-    <div className="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg)] mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.1s_both]">
+    <Card className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.1s_both]">
       <h2 className="font-display text-[1.3rem] font-[400] mb-[var(--space-lg)]">How are you feeling today?</h2>
 
       <div className="mb-4">
@@ -38,14 +40,7 @@ function DailyCheckInForm({ practices, onSave }) {
         ) : (
           <div className="flex flex-wrap gap-2">
             {practices.map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                className={`flex items-center gap-2 px-3.5 py-2 border border-solen-border rounded-[8px] bg-solen-surface cursor-pointer transition-all duration-200 font-body text-sm text-solen-fg hover:border-solen-accent-dim hover:bg-solen-accent-subtle${selectedHabitId === p.id ? " border-solen-accent bg-solen-accent-subtle" : ""}${p.checkedInToday ? " opacity-40 cursor-not-allowed pointer-events-none" : ""}`}
-                onClick={() => !p.checkedInToday && setSelectedHabitId(p.id)}
-                disabled={p.checkedInToday}
-              >
-                <span className="font-medium">{p.name}</span>
+              <PracticeSelectButton key={p.id} practice={p} selected={selectedHabitId === p.id} disabled={p.checkedInToday} onClick={() => !p.checkedInToday && setSelectedHabitId(p.id)}>
                 <span className="inline-flex items-center gap-1 font-mono text-xs text-solen-accent">
                   <svg viewBox="0 0 16 16" width="12" height="12">
                     <circle cx="8" cy="8" r="6" fill="oklch(68% 0.16 75 / 0.2)" />
@@ -53,7 +48,7 @@ function DailyCheckInForm({ practices, onSave }) {
                   </svg>
                   {p.streak}d
                 </span>
-              </button>
+              </PracticeSelectButton>
             ))}
           </div>
         )}
@@ -84,7 +79,7 @@ function DailyCheckInForm({ practices, onSave }) {
           Skip for now
         </Button>
       </div>
-    </div>
+    </Card>
   );
 }
 

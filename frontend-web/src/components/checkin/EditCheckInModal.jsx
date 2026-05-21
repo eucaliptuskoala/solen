@@ -4,6 +4,7 @@ import ToggleSwitch from "../ui/ToggleSwitch";
 import Button from "../ui/Button";
 import Textarea from "../ui/Textarea";
 import Modal from "../ui/Modal";
+import Label from "../ui/Label";
 
 function EditCheckInModal({ isOpen, entry, onSave, onClose }) {
   const [content, setContent] = useState("");
@@ -31,12 +32,12 @@ function EditCheckInModal({ isOpen, entry, onSave, onClose }) {
 
       <form onSubmit={handleSubmit}>
         <div className="mb-[var(--space-lg)]">
-          <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]">Mood</label>
+          <Label>Mood</Label>
           <MoodPicker value={mood} onChange={setMood} />
         </div>
 
         <div className="mb-[var(--space-lg)]">
-          <label className="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm)]" htmlFor="editContent">Reflection</label>
+          <Label htmlFor="editContent">Reflection</Label>
           <Textarea
             id="editContent"
             rows={4}

@@ -1,3 +1,5 @@
+import Badge from "../ui/Badge";
+
 function PracticeCard({ practice, onDone, onDelete }) {
   const disabled = practice.checkedInToday;
 
@@ -7,7 +9,7 @@ function PracticeCard({ practice, onDone, onDelete }) {
         <div>
           <div className="font-display text-[1.1rem] leading-tight">{practice.name}</div>
           <div className="flex items-center gap-2 flex-wrap mt-2">
-            {practice.categoryName && <span className="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">{practice.categoryName}</span>}
+            {practice.categoryName && <Badge>{practice.categoryName}</Badge>}
             <span className="inline-flex items-center gap-1 font-mono text-[0.75rem] text-solen-accent">
               <svg viewBox="0 0 16 16" width="14" height="14">
                 <circle cx="8" cy="8" r="6" fill="oklch(68% 0.16 75 / 0.2)" />

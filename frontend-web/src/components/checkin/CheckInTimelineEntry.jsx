@@ -1,6 +1,7 @@
 import MoodIcon from "../MoodIcon";
 import Button from "../ui/Button";
 import { formatDate, formatTime } from "../../utils/dates";
+import Badge from "../ui/Badge";
 
 function CheckInTimelineEntry({ entry, onEdit, onDelete }) {
   const isPublic = entry.isPublic;
@@ -12,7 +13,7 @@ function CheckInTimelineEntry({ entry, onEdit, onDelete }) {
         <div className="flex items-center justify-between gap-[var(--space-sm)] mb-[var(--space-sm)] flex-wrap">
           <div className="flex items-center gap-[var(--space-sm)] flex-wrap">
             <span className="w-6 h-6 shrink-0"><MoodIcon mood={entry.mood} size={24} /></span>
-            {entry.habit?.categoryName && <span className="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">{entry.habit.categoryName}</span>}
+            {entry.habit?.categoryName && <Badge>{entry.habit.categoryName}</Badge>}
             {entry.habit?.name && (
               <span className="font-display text-[0.9rem]">
                 {entry.habit.name}

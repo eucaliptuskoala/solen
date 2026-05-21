@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
 import CheckInTimelineEntry from "./CheckInTimelineEntry";
 import { isThisWeek, isThisMonth } from "../../utils/dates";
+import Button from "../ui/Button";
+import PageHeader from "../ui/PageHeader";
 
 const filters = [
   { key: "all", label: "All" },
@@ -22,12 +24,7 @@ function CheckInTimeline({ entries, onEdit, onDelete, onCreate }) {
   return (
     <>
       <div className="flex items-center justify-between mb-[var(--space-xl)] flex-wrap gap-[var(--space-md)] animate-[fade-in_0.5s_ease_both]">
-        <div>
-          <span className="font-mono text-xs tracking-[0.05em] uppercase text-solen-muted block mb-[var(--space-sm)]">
-            Your journal
-          </span>
-          <h1 className="font-display text-[length:var(--fs-heading)] leading-[1.15] tracking-[-0.015em] font-normal">Check-Ins</h1>
-        </div>
+        <PageHeader eyebrow="Your journal" title="Check-Ins" className="mb-0" />
         <div className="flex gap-[var(--space-sm)] flex-wrap">
           {filters.map((f) => (
             <button
@@ -39,9 +36,7 @@ function CheckInTimeline({ entries, onEdit, onDelete, onCreate }) {
             </button>
           ))}
         </div>
-        <button className="inline-flex items-center gap-[var(--space-sm)] px-[var(--space-md)] py-[var(--space-sm)] rounded-[8px] border font-medium text-solen-muted border-none hover:bg-solen-surface-soft hover:text-solen-fg transition-all duration-200 text-sm" onClick={onCreate}>
-          + New check-in
-        </button>
+        <Button variant="secondary" onClick={onCreate}>+ New check-in</Button>
       </div>
 
       {sorted.length === 0 ? (
