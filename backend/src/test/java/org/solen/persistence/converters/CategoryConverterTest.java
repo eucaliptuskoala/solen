@@ -1,6 +1,6 @@
 package org.solen.persistence.converters;
 
-import org.solen.domain.habits.Category;
+import org.solen.domain.practices.Category;
 import org.solen.persistence.entities.CategoryEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

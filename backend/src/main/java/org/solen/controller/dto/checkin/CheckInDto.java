@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.solen.controller.dto.habit.HabitDto;
+import org.solen.controller.dto.practice.PracticeDto;
 import org.solen.domain.checkin.Mood;
 
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CheckInDto {
     private Long id;
-    private HabitDto habit;
+    private PracticeDto practice;
     private LocalDate date;
     private int streakValue;
     private String content;

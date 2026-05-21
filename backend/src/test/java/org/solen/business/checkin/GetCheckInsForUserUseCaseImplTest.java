@@ -3,7 +3,7 @@ package org.solen.business.checkin;
 import org.solen.business.repos.ICheckInRepository;
 import org.solen.domain.checkin.CheckIn;
 import org.solen.domain.checkin.Mood;
-import org.solen.domain.habits.Habit;
+import org.solen.domain.practices.Practice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +34,7 @@ class GetCheckInsForUserUseCaseImplTest {
 
     @BeforeEach
     void setUp() {
-        Habit habit = Habit.builder()
+        Practice practice = Practice.builder()
                 .id(1L)
                 .name("Test")
                 .streak(1)
@@ -44,7 +44,7 @@ class GetCheckInsForUserUseCaseImplTest {
 
         checkIn = CheckIn.builder()
                 .id(1L)
-                .habit(habit)
+                .practice(practice)
                 .date(LocalDate.now())
                 .streakValue(1)
                 .content("Test content")
@@ -70,18 +70,18 @@ class GetCheckInsForUserUseCaseImplTest {
 
     @Test
     void getCheckInsForUser_withoutDateRange() {
-        when(checkInRepository.findByHabitCreatorId(1L)).thenReturn(List.of(checkIn));
+        when(checkInRepository.findByPracticeCreatorId(1L)).thenReturn(List.of(checkIn));
         when(timelineBuilder.buildTimeline(any())).thenReturn(List.of(checkIn));
 
         List<CheckIn> result = getCheckInsUseCase.getCheckInsForUser(1L, null, null);
 
         assertEquals(1, result.size());
-        verify(checkInRepository, times(1)).findByHabitCreatorId(1L);
+        verify(checkInRepository, times(1)).findByPracticeCreatorId(1L);
     }
 
     @Test
     void getCheckInsForUser_empty() {
-        when(checkInRepository.findByHabitCreatorId(1L)).thenReturn(List.of());
+        when(checkInRepository.findByPracticeCreatorId(1L)).thenReturn(List.of());
         when(timelineBuilder.buildTimeline(any())).thenReturn(List.of());
 
         List<CheckIn> result = getCheckInsUseCase.getCheckInsForUser(1L, null, null);
@@ -106,20 +106,20 @@ class GetCheckInsForUserUseCaseImplTest {
     void getCheckInsForUser_withToOnly() {
         LocalDate to = LocalDate.of(2026, 5, 21);
         CheckIn before = CheckIn.builder()
-                .id(1L).habit(checkIn.getHabit()).date(LocalDate.of(2026, 5, 20))
+                .id(1L).practice(checkIn.getPractice()).date(LocalDate.of(2026, 5, 20))
                 .streakValue(1).content("before").mood(Mood.OKAY)
                 .build();
         CheckIn after = CheckIn.builder()
-                .id(2L).habit(checkIn.getHabit()).date(LocalDate.of(2026, 5, 25))
+                .id(2L).practice(checkIn.getPractice()).date(LocalDate.of(2026, 5, 25))
                 .streakValue(1).content("after").mood(Mood.OKAY)
                 .build();
-        when(checkInRepository.findByHabitCreatorId(1L)).thenReturn(List.of(before, after));
+        when(checkInRepository.findByPracticeCreatorId(1L)).thenReturn(List.of(before, after));
         when(timelineBuilder.buildTimeline(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         List<CheckIn> result = getCheckInsUseCase.getCheckInsForUser(1L, null, to);
 
         assertEquals(1, result.size());
         assertEquals("before", result.get(0).getContent());
-        verify(checkInRepository).findByHabitCreatorId(1L);
+        verify(checkInRepository).findByPracticeCreatorId(1L);
     }
 }

@@ -1,4 +1,4 @@
-CREATE TABLE habits (
+CREATE TABLE practices (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
     description VARCHAR(255) NOT NULL,

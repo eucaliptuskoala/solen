@@ -13,7 +13,7 @@ import org.solen.domain.checkin.Mood;
 @NoArgsConstructor
 public class CreateCheckInRequest {
     @NotNull
-    private Long habitId;
+    private Long practiceId;
     private String content;
     private boolean isPublic;
     private Mood mood;

@@ -1,10 +1,10 @@
 package org.solen.controller.mappers;
 
 import org.solen.controller.dto.checkin.CheckInDto;
-import org.solen.controller.dto.habit.HabitDto;
+import org.solen.controller.dto.practice.PracticeDto;
 import org.solen.domain.checkin.CheckIn;
 import org.solen.domain.checkin.Mood;
-import org.solen.domain.habits.Habit;
+import org.solen.domain.practices.Practice;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 class CheckInMapperTest {
 
     @Mock
-    private HabitMapper habitMapper;
+    private PracticeMapper practiceMapper;
 
     @InjectMocks
     private CheckInMapper mapper;
@@ -33,13 +33,13 @@ class CheckInMapperTest {
 
     @Test
     void convertToDto_mapsAllFields() {
-        Habit habit = Habit.builder().id(1L).build();
-        HabitDto habitDto = HabitDto.builder().id(1L).build();
-        when(habitMapper.convertToDto(habit)).thenReturn(habitDto);
+        Practice practice = Practice.builder().id(1L).build();
+        PracticeDto practiceDto = PracticeDto.builder().id(1L).build();
+        when(practiceMapper.convertToDto(practice)).thenReturn(practiceDto);
 
         CheckIn checkIn = CheckIn.builder()
                 .id(1L)
-                .habit(habit)
+                .practice(practice)
                 .date(LocalDate.of(2026, 5, 21))
                 .streakValue(3)
                 .content("Good day")
@@ -57,7 +57,7 @@ class CheckInMapperTest {
         assertTrue(dto.isPublic());
         assertEquals(Mood.GOOD, dto.getMood());
         assertNotNull(dto.getCreatedAt());
-        assertEquals(1L, dto.getHabit().getId());
-        verify(habitMapper).convertToDto(habit);
+        assertEquals(1L, dto.getPractice().getId());
+        verify(practiceMapper).convertToDto(practice);
     }
 }

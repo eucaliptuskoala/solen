@@ -1,13 +1,13 @@
 package org.solen.business.checkin;
 
 import lombok.AllArgsConstructor;
-import org.solen.business.exceptions.HabitNotFoundByIdException;
-import org.solen.business.habitcases.StreakValidator;
+import org.solen.business.exceptions.PracticeNotFoundByIdException;
+import org.solen.business.practicecases.StreakValidator;
 import org.solen.business.repos.ICheckInRepository;
-import org.solen.business.repos.IHabitRepository;
+import org.solen.business.repos.IPracticeRepository;
 import org.solen.domain.checkin.CheckIn;
 import org.solen.domain.checkin.Mood;
-import org.solen.domain.habits.Habit;
+import org.solen.domain.practices.Practice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,35 +19,35 @@ import java.time.LocalDateTime;
 public class CreateCheckInUseCaseImpl implements ICreateCheckInUseCase {
 
     private ICheckInRepository checkInRepository;
-    private IHabitRepository habitRepository;
+    private IPracticeRepository practiceRepository;
     private StreakValidator streakValidator;
 
     @Override
-    public CheckIn create(Long habitId) {
-        return createWithDetails(habitId, null, false, null);
+    public CheckIn create(Long practiceId) {
+        return createWithDetails(practiceId, null, false, null);
     }
 
     @Override
     @Transactional
-    public CheckIn createWithDetails(Long habitId, String content, boolean isPublic, Mood mood) {
-        Habit habit = habitRepository.findById(habitId);
-        if (habit == null) {
-            throw new HabitNotFoundByIdException(habitId);
+    public CheckIn createWithDetails(Long practiceId, String content, boolean isPublic, Mood mood) {
+        Practice practice = practiceRepository.findById(practiceId);
+        if (practice == null) {
+            throw new PracticeNotFoundByIdException(practiceId);
         }
 
-        streakValidator.validateStreak(habit);
+        streakValidator.validateStreak(practice);
 
         LocalDate today = LocalDate.now();
-        if (habit.getLastUpdatedStreak() == null || !habit.getLastUpdatedStreak().toLocalDate().equals(today)) {
-            habit.setStreak(habit.getStreak() + 1);
-            habit.setLastUpdatedStreak(LocalDateTime.now());
-            habitRepository.save(habit);
+        if (practice.getLastUpdatedStreak() == null || !practice.getLastUpdatedStreak().toLocalDate().equals(today)) {
+            practice.setStreak(practice.getStreak() + 1);
+            practice.setLastUpdatedStreak(LocalDateTime.now());
+            practiceRepository.save(practice);
         }
 
         return checkInRepository.save(CheckIn.builder()
-                .habit(habit)
+                .practice(practice)
                 .date(today)
-                .streakValue(habit.getStreak())
+                .streakValue(practice.getStreak())
                 .content(content)
                 .isPublic(isPublic)
                 .mood(mood)

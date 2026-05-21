@@ -9,13 +9,13 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class CheckInMapper {
 
-    private HabitMapper habitMapper;
+    private PracticeMapper practiceMapper;
 
     public CheckInDto convertToDto(CheckIn checkIn) {
         if (checkIn == null) { return null; }
         return CheckInDto.builder()
                 .id(checkIn.getId())
-                .habit(habitMapper.convertToDto(checkIn.getHabit()))
+                .practice(practiceMapper.convertToDto(checkIn.getPractice()))
                 .date(checkIn.getDate())
                 .streakValue(checkIn.getStreakValue())
                 .content(checkIn.getContent())

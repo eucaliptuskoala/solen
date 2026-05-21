@@ -8,5 +8,5 @@ import java.util.Set;
 
 public interface IGetCheckInsForUserUseCase {
     List<CheckIn> getCheckInsForUser(Long userId, LocalDate from, LocalDate to);
-    Set<Long> findHabitIdsCheckedInTodayByUserId(Long userId);
+    Set<Long> findPracticeIdsCheckedInTodayByUserId(Long userId);
 }

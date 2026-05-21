@@ -12,15 +12,15 @@ public interface CheckInJpaRepository extends JpaRepository<CheckInEntity, Long>
     @Query("""
         select ci
         from CheckInEntity ci
-        join ci.habit h
+        join ci.practice h
         where h.creator.id = :userId
     """)
-    List<CheckInEntity> findByHabitCreatorId(@Param("userId") Long userId);
+    List<CheckInEntity> findByPracticeCreatorId(@Param("userId") Long userId);
 
     @Query("""
         select ci
         from CheckInEntity ci
-        join ci.habit h
+        join ci.practice h
         where h.creator.id = :userId
           and ci.date between :from and :to
     """)
@@ -36,25 +36,25 @@ public interface CheckInJpaRepository extends JpaRepository<CheckInEntity, Long>
     @Query("""
         select ci
         from CheckInEntity ci
-        join ci.habit h
+        join ci.practice h
         join h.creator u
         where ci.id = :id
     """)
-    CheckInEntity findByIdWithHabitAndCreator(@Param("id") Long id);
+    CheckInEntity findByIdWithPracticeAndCreator(@Param("id") Long id);
 
     @Query("""
-        select ci.habit.id
+        select ci.practice.id
         from CheckInEntity ci
-        join ci.habit h
+        join ci.practice h
         where h.creator.id = :userId
           and ci.date = :date
     """)
-    List<Long> findHabitIdsCheckedInOnDate(@Param("userId") Long userId, @Param("date") LocalDate date);
+    List<Long> findPracticeIdsCheckedInOnDate(@Param("userId") Long userId, @Param("date") LocalDate date);
 
     @Query("""
         select case when count(ci) > 0 then true else false end
         from CheckInEntity ci
-        join ci.habit h
+        join ci.practice h
         join h.creator u
         where ci.id = :checkInId and u.email = :email
     """)

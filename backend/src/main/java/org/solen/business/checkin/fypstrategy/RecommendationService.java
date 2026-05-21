@@ -1,44 +1,44 @@
 package org.solen.business.checkin.fypstrategy;
 
-import org.solen.business.repos.IHabitRepository;
+import org.solen.business.repos.IPracticeRepository;
 import org.solen.domain.checkin.CheckIn;
-import org.solen.domain.habits.Habit;
+import org.solen.domain.practices.Practice;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 // Router for FYP recommendation strategies.
-//   user has habits → HabitBasedRecommendation (category-matched, personalised)
-//   user has no habits → DefaultRecommendationStrategy (all public, cold-start)
+//   user has practices → PracticeBasedRecommendation (category-matched, personalised)
+//   user has no practices → DefaultRecommendationStrategy (all public, cold-start)
 @Service
 public class RecommendationService {
 
-    @Qualifier("habitNameBased")
-    private final IRecommendationStrategy habitNameBased;
+    @Qualifier("practiceNameBased")
+    private final IRecommendationStrategy practiceNameBased;
 
     @Qualifier("default")
     private final IRecommendationStrategy defaultStrategy;
 
-    private final IHabitRepository habitRepository;
+    private final IPracticeRepository practiceRepository;
 
     public RecommendationService(
-            @Qualifier("habitNameBased") IRecommendationStrategy habitNameBased,
+            @Qualifier("practiceNameBased") IRecommendationStrategy practiceNameBased,
             @Qualifier("default") IRecommendationStrategy defaultStrategy,
-            IHabitRepository habitRepository
+            IPracticeRepository practiceRepository
     ) {
-        this.habitNameBased = habitNameBased;
+        this.practiceNameBased = practiceNameBased;
         this.defaultStrategy = defaultStrategy;
-        this.habitRepository = habitRepository;
+        this.practiceRepository = practiceRepository;
     }
 
     public List<CheckIn> findPublicCheckIns(Long userId) {
-        List<Habit> userHabits = habitRepository.findByCreatorId(userId);
+        List<Practice> userPractices = practiceRepository.findByCreatorId(userId);
 
-        if (userHabits.isEmpty()) {
+        if (userPractices.isEmpty()) {
             return defaultStrategy.findPublicCheckIns(userId);
         } else {
-            return habitNameBased.findPublicCheckIns(userId);
+            return practiceNameBased.findPublicCheckIns(userId);
         }
     }
 }

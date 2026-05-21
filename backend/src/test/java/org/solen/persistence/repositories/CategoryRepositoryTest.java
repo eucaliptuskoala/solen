@@ -1,6 +1,6 @@
 package org.solen.persistence.repositories;
 
-import org.solen.domain.habits.Category;
+import org.solen.domain.practices.Category;
 import org.solen.persistence.converters.CategoryConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

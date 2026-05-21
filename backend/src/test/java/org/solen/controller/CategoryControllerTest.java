@@ -10,7 +10,7 @@ import org.solen.controller.dto.category.CategoryResponse;
 import org.solen.controller.dto.category.CreateCategoryRequest;
 import org.solen.controller.dto.category.UpdateCategoryRequest;
 import org.solen.controller.mappers.CategoryMapper;
-import org.solen.domain.habits.Category;
+import org.solen.domain.practices.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

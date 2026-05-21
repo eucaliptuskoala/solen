@@ -1,7 +1,7 @@
 package org.solen.controller.mappers;
 
 import org.solen.controller.dto.category.CategoryResponse;
-import org.solen.domain.habits.Category;
+import org.solen.domain.practices.Category;
 import org.springframework.stereotype.Component;
 
 @Component

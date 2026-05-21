@@ -2,9 +2,9 @@ package org.solen.persistence.converters;
 
 import org.solen.domain.checkin.CheckIn;
 import org.solen.domain.checkin.Mood;
-import org.solen.domain.habits.Habit;
+import org.solen.domain.practices.Practice;
 import org.solen.persistence.entities.CheckInEntity;
-import org.solen.persistence.entities.HabitEntity;
+import org.solen.persistence.entities.PracticeEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,19 +21,19 @@ import static org.mockito.Mockito.*;
 class CheckInConverterTest {
 
     @Mock
-    private HabitConverter habitConverter;
+    private PracticeConverter practiceConverter;
 
     @InjectMocks
     private CheckInConverter converter;
 
     @Test
     void convertToEntity_mapsAllFields() {
-        Habit habit = Habit.builder().id(1L).build();
-        HabitEntity habitEntity = HabitEntity.builder().id(1L).build();
-        when(habitConverter.convertToEntity(habit)).thenReturn(habitEntity);
+        Practice practice = Practice.builder().id(1L).build();
+        PracticeEntity practiceEntity = PracticeEntity.builder().id(1L).build();
+        when(practiceConverter.convertToEntity(practice)).thenReturn(practiceEntity);
 
         CheckIn checkIn = CheckIn.builder()
-                .id(1L).habit(habit)
+                .id(1L).practice(practice)
                 .date(LocalDate.of(2026, 5, 21))
                 .streakValue(3).content("Good").isPublic(true)
                 .mood(Mood.GOOD).createdAt(LocalDateTime.of(2026, 5, 21, 10, 0))
@@ -46,18 +46,18 @@ class CheckInConverterTest {
         assertEquals(3, entity.getStreakValue());
         assertTrue(entity.isPublic());
         assertEquals(Mood.GOOD, entity.getMood());
-        assertNotNull(entity.getHabit());
-        verify(habitConverter).convertToEntity(habit);
+        assertNotNull(entity.getPractice());
+        verify(practiceConverter).convertToEntity(practice);
     }
 
     @Test
     void convertToDomain_mapsAllFields() {
-        HabitEntity habitEntity = HabitEntity.builder().id(1L).build();
-        Habit habit = Habit.builder().id(1L).build();
-        when(habitConverter.convertToDomain(habitEntity)).thenReturn(habit);
+        PracticeEntity practiceEntity = PracticeEntity.builder().id(1L).build();
+        Practice practice = Practice.builder().id(1L).build();
+        when(practiceConverter.convertToDomain(practiceEntity)).thenReturn(practice);
 
         CheckInEntity entity = CheckInEntity.builder()
-                .id(1L).habit(habitEntity)
+                .id(1L).practice(practiceEntity)
                 .date(LocalDate.of(2026, 5, 21))
                 .streakValue(3).content("Good").isPublic(true)
                 .mood(Mood.GOOD).createdAt(LocalDateTime.of(2026, 5, 21, 10, 0))
@@ -71,7 +71,7 @@ class CheckInConverterTest {
         assertEquals("Good", checkIn.getContent());
         assertTrue(checkIn.isPublic());
         assertEquals(Mood.GOOD, checkIn.getMood());
-        assertNotNull(checkIn.getHabit());
-        verify(habitConverter).convertToDomain(habitEntity);
+        assertNotNull(checkIn.getPractice());
+        verify(practiceConverter).convertToDomain(practiceEntity);
     }
 }

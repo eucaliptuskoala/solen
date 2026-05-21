@@ -1,4 +1,4 @@
-CREATE TABLE habits (
+CREATE TABLE practices (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
     description VARCHAR(255) NOT NULL,

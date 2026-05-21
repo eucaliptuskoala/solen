@@ -1,7 +1,7 @@
 package org.solen.business.checkin;
 
 import org.solen.domain.checkin.CheckIn;
-import org.solen.domain.habits.Habit;
+import org.solen.domain.practices.Practice;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ class CheckInTimelineBuilderTest {
 
     @Test
     void buildTimeline_singleCheckIn() {
-        Habit habit = Habit.builder()
+        Practice practice = Practice.builder()
                 .id(1L)
                 .name("Test")
                 .streak(1)
@@ -26,7 +26,7 @@ class CheckInTimelineBuilderTest {
 
         CheckIn checkIn = CheckIn.builder()
                 .id(1L)
-                .habit(habit)
+                .practice(practice)
                 .date(LocalDate.of(2026, 1, 1))
                 .streakValue(1)
                 .content("Test")
@@ -42,7 +42,7 @@ class CheckInTimelineBuilderTest {
 
     @Test
     void buildTimeline_noStreakReset() {
-        Habit habit = Habit.builder()
+        Practice practice = Practice.builder()
                 .id(1L)
                 .name("Test")
                 .streak(2)
@@ -50,8 +50,8 @@ class CheckInTimelineBuilderTest {
                 .thresholdDays(3)
                 .build();
 
-        CheckIn ci1 = CheckIn.builder().id(1L).habit(habit).date(LocalDate.of(2026, 1, 1)).streakValue(1).build();
-        CheckIn ci2 = CheckIn.builder().id(2L).habit(habit).date(LocalDate.of(2026, 1, 3)).streakValue(2).build();
+        CheckIn ci1 = CheckIn.builder().id(1L).practice(practice).date(LocalDate.of(2026, 1, 1)).streakValue(1).build();
+        CheckIn ci2 = CheckIn.builder().id(2L).practice(practice).date(LocalDate.of(2026, 1, 3)).streakValue(2).build();
 
         List<CheckIn> result = builder.buildTimeline(List.of(ci1, ci2));
 

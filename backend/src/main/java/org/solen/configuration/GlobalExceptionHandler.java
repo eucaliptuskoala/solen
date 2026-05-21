@@ -3,8 +3,8 @@ package org.solen.configuration;
 import org.solen.business.exceptions.CategoryNotFoundByIdException;
 import org.solen.business.exceptions.CheckInNotFoundException;
 import org.solen.business.exceptions.EmailAlreadyExistsException;
-import org.solen.business.exceptions.HabitAlreadyExistsException;
-import org.solen.business.exceptions.HabitNotFoundByIdException;
+import org.solen.business.exceptions.PracticeAlreadyExistsException;
+import org.solen.business.exceptions.PracticeNotFoundByIdException;
 import org.solen.business.exceptions.StreakAlreadyUpdatedException;
 import org.solen.business.exceptions.UserNotFoundByEmailException;
 import org.solen.business.exceptions.UserNotFoundByIdException;
@@ -37,8 +37,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(HabitAlreadyExistsException.class)
-    public ResponseEntity<String> handleHabitAlreadyExists(HabitAlreadyExistsException ex) {
+    @ExceptionHandler(PracticeAlreadyExistsException.class)
+    public ResponseEntity<String> handlePracticeAlreadyExists(PracticeAlreadyExistsException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
@@ -57,8 +57,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(HabitNotFoundByIdException.class)
-    public ResponseEntity<String> handleHabitNotFoundById(HabitNotFoundByIdException ex) {
+    @ExceptionHandler(PracticeNotFoundByIdException.class)
+    public ResponseEntity<String> handlePracticeNotFoundById(PracticeNotFoundByIdException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 

@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 public class CheckInTimelineBuilder {
 
     // Post-fetch safety net: after loading check-ins from the DB, re-inspect
-    // consecutive entries for the same habit. If the gap in days exceeds the
-    // habit's thresholdDays, the streak is reset to 1 (a new chain has begun).
+    // consecutive entries for the same practice. If the gap in days exceeds the
+    // practice's thresholdDays, the streak is reset to 1 (a new chain has begun).
     //
     // The primary streak value is snapshot on the CheckIn at creation time by
     // CreateCheckInUseCaseImpl / UpdateStreakUseCaseImpl. This builder only
@@ -24,22 +24,22 @@ public class CheckInTimelineBuilder {
     // No gap-fill entries are inserted for missing days; only actual check-in
     // records appear in the returned timeline.
     public List<CheckIn> buildTimeline(List<CheckIn> rawCheckIns) {
-        Map<Long, List<CheckIn>> groupedByHabit = rawCheckIns.stream()
-                .collect(Collectors.groupingBy(ci -> ci.getHabit().getId()));
+        Map<Long, List<CheckIn>> groupedByPractice = rawCheckIns.stream()
+                .collect(Collectors.groupingBy(ci -> ci.getPractice().getId()));
 
         List<CheckIn> result = new ArrayList<>();
 
-        for (Map.Entry<Long, List<CheckIn>> entry : groupedByHabit.entrySet()) {
+        for (Map.Entry<Long, List<CheckIn>> entry : groupedByPractice.entrySet()) {
             List<CheckIn> sorted = entry.getValue().stream()
                     .sorted(Comparator.comparing(CheckIn::getDate))
                     .toList();
 
-            int threshold = sorted.get(0).getHabit().getThresholdDays();
+            int threshold = sorted.get(0).getPractice().getThresholdDays();
 
             for (CheckIn ci : sorted) {
                 if (!result.isEmpty()) {
                     CheckIn last = result.get(result.size() - 1);
-                    if (last.getHabit().getId().equals(ci.getHabit().getId())) {
+                    if (last.getPractice().getId().equals(ci.getPractice().getId())) {
                         long daysBetween = ci.getDate().toEpochDay() - last.getDate().toEpochDay();
                         if (daysBetween > threshold) {
                             ci.setStreakValue(1);

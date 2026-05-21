@@ -46,10 +46,10 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void handleHabitAlreadyExists_returns409() {
-        ResponseEntity<String> response = handler.handleHabitAlreadyExists(new HabitAlreadyExistsException());
+    void handlePracticeAlreadyExists_returns409() {
+        ResponseEntity<String> response = handler.handlePracticeAlreadyExists(new PracticeAlreadyExistsException());
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        assertEquals("Habit Already Exists!", response.getBody());
+        assertEquals("Practice Already Exists!", response.getBody());
     }
 
     @Test
@@ -74,10 +74,10 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    void handleHabitNotFound_returns404() {
-        ResponseEntity<String> response = handler.handleHabitNotFoundById(new HabitNotFoundByIdException(7L));
+    void handlePracticeNotFound_returns404() {
+        ResponseEntity<String> response = handler.handlePracticeNotFoundById(new PracticeNotFoundByIdException(7L));
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Habit with id 7 does not exist", response.getBody());
+        assertEquals("Practice with id 7 does not exist", response.getBody());
     }
 
     @Test

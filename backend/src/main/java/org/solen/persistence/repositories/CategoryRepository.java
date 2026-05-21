@@ -2,7 +2,7 @@ package org.solen.persistence.repositories;
 
 import lombok.AllArgsConstructor;
 import org.solen.business.repos.ICategoryRepository;
-import org.solen.domain.habits.Category;
+import org.solen.domain.practices.Category;
 import org.solen.persistence.converters.CategoryConverter;
 import org.solen.persistence.entities.CategoryEntity;
 import org.solen.persistence.jparepos.CategoryJpaRepository;

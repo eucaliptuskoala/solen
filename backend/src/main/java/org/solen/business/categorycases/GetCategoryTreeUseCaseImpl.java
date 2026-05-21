@@ -1,7 +1,7 @@
 package org.solen.business.categorycases;
 
 import org.solen.business.repos.ICategoryRepository;
-import org.solen.domain.habits.Category;
+import org.solen.domain.practices.Category;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

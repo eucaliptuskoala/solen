@@ -22,7 +22,7 @@ public class CheckInRepository implements ICheckInRepository {
 
     @Override
     public CheckIn findById(Long id) {
-        CheckInEntity entity = jpaRepository.findByIdWithHabitAndCreator(id);
+        CheckInEntity entity = jpaRepository.findByIdWithPracticeAndCreator(id);
         return entity != null ? converter.convertToDomain(entity) : null;
     }
 
@@ -43,8 +43,8 @@ public class CheckInRepository implements ICheckInRepository {
     }
 
     @Override
-    public List<CheckIn> findByHabitCreatorId(Long userId){
-        return jpaRepository.findByHabitCreatorId(userId).stream().map(converter::convertToDomain).toList();
+    public List<CheckIn> findByPracticeCreatorId(Long userId){
+        return jpaRepository.findByPracticeCreatorId(userId).stream().map(converter::convertToDomain).toList();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class CheckInRepository implements ICheckInRepository {
     }
 
     @Override
-    public Set<Long> findHabitIdsCheckedInTodayByUserId(Long userId) {
-        return jpaRepository.findHabitIdsCheckedInOnDate(userId, LocalDate.now()).stream().collect(Collectors.toSet());
+    public Set<Long> findPracticeIdsCheckedInTodayByUserId(Long userId) {
+        return jpaRepository.findPracticeIdsCheckedInOnDate(userId, LocalDate.now()).stream().collect(Collectors.toSet());
     }
 }

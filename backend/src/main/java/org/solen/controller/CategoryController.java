@@ -11,7 +11,7 @@ import org.solen.controller.dto.category.CategoryResponse;
 import org.solen.controller.dto.category.CreateCategoryRequest;
 import org.solen.controller.dto.category.UpdateCategoryRequest;
 import org.solen.controller.mappers.CategoryMapper;
-import org.solen.domain.habits.Category;
+import org.solen.domain.practices.Category;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

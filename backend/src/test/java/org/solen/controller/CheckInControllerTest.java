@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.solen.business.checkin.*;
 import org.solen.business.checkin.fypstrategy.IGetForYouCheckInsUseCase;
 import org.solen.business.exceptions.CheckInNotFoundException;
-import org.solen.business.exceptions.HabitNotFoundByIdException;
+import org.solen.business.exceptions.PracticeNotFoundByIdException;
 import org.solen.business.usercases.UserDetailsService;
 import org.solen.configuration.GlobalExceptionHandler;
 import org.solen.configuration.security.JwtUtil;
@@ -107,7 +107,7 @@ class CheckInControllerTest {
     @WithMockUser
     void createCheckIn_returnsCreated() throws Exception {
         CreateCheckInRequest request = CreateCheckInRequest.builder()
-                .habitId(1L)
+                .practiceId(1L)
                 .content("Great session")
                 .isPublic(false)
                 .mood(Mood.GOOD)
@@ -127,12 +127,12 @@ class CheckInControllerTest {
 
     @Test
     @WithMockUser
-    void createCheckIn_habitNotFound_returns404() throws Exception {
+    void createCheckIn_practiceNotFound_returns404() throws Exception {
         CreateCheckInRequest request = CreateCheckInRequest.builder()
-                .habitId(99L).content("test").isPublic(false).mood(Mood.OKAY)
+                .practiceId(99L).content("test").isPublic(false).mood(Mood.OKAY)
                 .build();
         when(createCheckInUseCase.createWithDetails(99L, "test", false, Mood.OKAY))
-                .thenThrow(new HabitNotFoundByIdException(99L));
+                .thenThrow(new PracticeNotFoundByIdException(99L));
 
         mockMvc.perform(post("/checkins/checkin")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -211,7 +211,7 @@ class CheckInControllerTest {
 
     @Test
     @WithMockUser
-    void createCheckIn_missingHabitId_returns400() throws Exception {
+    void createCheckIn_missingPracticeId_returns400() throws Exception {
         String body = "{\"content\":\"test\",\"isPublic\":false,\"mood\":\"OKAY\"}";
 
         mockMvc.perform(post("/checkins/checkin")

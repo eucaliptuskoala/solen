@@ -42,7 +42,7 @@ INSERT INTO categories (id, name, parent_id) VALUES
 
 
 -- HABITS (~30, mix of different categories)
-INSERT INTO habits (id, name, description, streak, last_updated_streak, threshold_days, category_id, creator_id) VALUES
+INSERT INTO practices (id, name, description, streak, last_updated_streak, threshold_days, category_id, creator_id) VALUES
                                                                                                                      (1,'Drink Water','At least 2L daily',10,'2026-01-07',7,6,1),
                                                                                                                      (2,'Workout','Strength training',4,'2026-01-05',5,8,1),
                                                                                                                      (3,'Learn Coding','Solve problems on LeetCode',14,'2026-01-07',7,12,1),
@@ -76,7 +76,7 @@ INSERT INTO habits (id, name, description, streak, last_updated_streak, threshol
 
 
 -- CHECK_INS
-INSERT INTO check_ins (habit_id, date, streak_value, content, is_public, mood, created_at) VALUES
+INSERT INTO check_ins (practice_id, date, streak_value, content, is_public, mood, created_at) VALUES
 (1,'2025-12-01',1,NULL,false,NULL,'2025-12-01'),
 (1,'2025-12-02',2,NULL,false,NULL,'2025-12-02'),
 (1,'2025-12-03',3,'Hit 2.5L today!',true,'GOOD','2025-12-03'),
@@ -114,5 +114,5 @@ INSERT INTO check_ins (habit_id, date, streak_value, content, is_public, mood, c
 
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
 SELECT setval('categories_id_seq', (SELECT MAX(id) FROM categories));
-SELECT setval('habits_id_seq', (SELECT MAX(id) FROM habits));
+SELECT setval('practices_id_seq', (SELECT MAX(id) FROM practices));
 SELECT setval('check_ins_id_seq', (SELECT MAX(id) FROM check_ins));

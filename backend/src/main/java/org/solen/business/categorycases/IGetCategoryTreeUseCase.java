@@ -1,6 +1,6 @@
 package org.solen.business.categorycases;
 
-import org.solen.domain.habits.Category;
+import org.solen.domain.practices.Category;
 
 import java.util.List;
 

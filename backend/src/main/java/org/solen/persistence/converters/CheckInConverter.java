@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class CheckInConverter {
 
-    private HabitConverter habitConverter;
+    private PracticeConverter practiceConverter;
 
     public CheckInEntity convertToEntity(CheckIn checkIn) {
         return CheckInEntity.builder()
                 .id(checkIn.getId())
-                .habit(habitConverter.convertToEntity(checkIn.getHabit()))
+                .practice(practiceConverter.convertToEntity(checkIn.getPractice()))
                 .date(checkIn.getDate())
                 .streakValue(checkIn.getStreakValue())
                 .content(checkIn.getContent())
@@ -27,7 +27,7 @@ public class CheckInConverter {
     public CheckIn convertToDomain(CheckInEntity entity) {
         return CheckIn.builder()
                 .id(entity.getId())
-                .habit(habitConverter.convertToDomain(entity.getHabit()))
+                .practice(practiceConverter.convertToDomain(entity.getPractice()))
                 .date(entity.getDate())
                 .streakValue(entity.getStreakValue())
                 .content(entity.getContent())

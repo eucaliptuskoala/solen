@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name="check_ins",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"habit_id", "date"})
+                @UniqueConstraint(columnNames = {"practice_id", "date"})
         }
 )
 public class CheckInEntity {
@@ -26,8 +26,8 @@ public class CheckInEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "habit_id", nullable = false)
-    private HabitEntity habit;
+    @JoinColumn(name = "practice_id", nullable = false)
+    private PracticeEntity practice;
 
     @Column(name="date", nullable = false)
     private LocalDate date;

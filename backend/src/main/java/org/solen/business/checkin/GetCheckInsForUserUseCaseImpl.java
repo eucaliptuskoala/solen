@@ -24,17 +24,17 @@ public class GetCheckInsForUserUseCaseImpl implements IGetCheckInsForUserUseCase
         } else if (from != null) {
             raw = checkInRepository.findCheckInsForUser(userId, from, LocalDate.now());
         } else if (to != null) {
-            raw = checkInRepository.findByHabitCreatorId(userId).stream()
+            raw = checkInRepository.findByPracticeCreatorId(userId).stream()
                     .filter(ci -> !ci.getDate().isAfter(to))
                     .toList();
         } else {
-            raw = checkInRepository.findByHabitCreatorId(userId);
+            raw = checkInRepository.findByPracticeCreatorId(userId);
         }
         return timelineBuilder.buildTimeline(raw);
     }
 
     @Override
-    public Set<Long> findHabitIdsCheckedInTodayByUserId(Long userId) {
-        return checkInRepository.findHabitIdsCheckedInTodayByUserId(userId);
+    public Set<Long> findPracticeIdsCheckedInTodayByUserId(Long userId) {
+        return checkInRepository.findPracticeIdsCheckedInTodayByUserId(userId);
     }
 }
