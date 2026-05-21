@@ -1,10 +1,10 @@
 import { useEffect, useState, useCallback } from "react";
 import CheckInAPI from "../apis/CheckInAPI";
-import UserActivityCalendar from "../components/habitprogress/UserActivityCalendar";
-import HabitProgressBarChart from "../components/habitprogress/HabitProgressBarChart";
+import UserActivityCalendar from "../components/practiceprogress/UserActivityCalendar";
+import PracticeProgressBarChart from "../components/practiceprogress/PracticeProgressBarChart";
 import Button from "../components/ui/Button";
 import { today, daysAgo, formatShort } from "../utils/dates";
-import { groupCheckInsByHabit, buildActivityData } from "../utils/checkins";
+import { groupCheckInsByPractice, buildActivityData } from "../utils/checkins";
 import PageHeader from "../components/ui/PageHeader";
 import Card from "../components/ui/Card";
 import Input from "../components/ui/Input";
@@ -26,7 +26,7 @@ const rangeLabels = {
 };
 
 function ProgressPage() {
-  const [progressPerHabit, setProgressPerHabit] = useState({});
+  const [progressPerPractice, setProgressPerPractice] = useState({});
   const [contribution, setContribution] = useState([]);
   const [startDate, setStartDate] = useState(daysAgo(30));
   const [endDate, setEndDate] = useState(today());
@@ -39,7 +39,7 @@ function ProgressPage() {
   const fetchWithRange = useCallback((start, end) => {
     CheckInAPI.getAll(start || undefined, end || undefined)
       .then((data) => {
-        setProgressPerHabit(groupCheckInsByHabit(data));
+        setProgressPerPractice(groupCheckInsByPractice(data));
         setContribution(buildActivityData(data));
       })
       .catch(() => setError("Failed to load progress"));
@@ -246,12 +246,12 @@ function ProgressPage() {
           Per-practice trends
         </h2>
         <div className="flex flex-col gap-[var(--space-md)]">
-          {Object.entries(progressPerHabit).map(([name, habitProgress]) => {
+          {Object.entries(progressPerPractice).map(([name, practiceProgress]) => {
             const isAll = activePreset === "all";
             const totalDays = dayCount + 1;
             const pct =
               totalDays > 0
-                ? Math.round((habitProgress.length / totalDays) * 100)
+                ? Math.round((practiceProgress.length / totalDays) * 100)
                 : 0;
               return (
                 <Card key={name}>
@@ -260,10 +260,10 @@ function ProgressPage() {
                     {name}
                   </h3>
                   <span className="font-mono text-[0.8rem] text-solen-muted">
-                    {habitProgress.length} check-in{habitProgress.length !== 1 ? "s" : ""}{!isAll && pct > 0 ? ` (${pct}%)` : ""}
+                    {practiceProgress.length} check-in{practiceProgress.length !== 1 ? "s" : ""}{!isAll && pct > 0 ? ` (${pct}%)` : ""}
                   </span>
                 </div>
-                <HabitProgressBarChart data={habitProgress} />
+                <PracticeProgressBarChart data={practiceProgress} />
                 </Card>
               );
             })}

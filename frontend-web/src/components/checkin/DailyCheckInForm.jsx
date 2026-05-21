@@ -10,15 +10,15 @@ function DailyCheckInForm({ practices, onSave }) {
   const [hidden, setHidden] = useState(false);
   const [mood, setMood] = useState(null);
   const [reflection, setReflection] = useState("");
-  const [selectedHabitId, setSelectedHabitId] = useState(null);
+  const [selectedPracticeId, setSelectedPracticeId] = useState(null);
   const [isPublic, setIsPublic] = useState(false);
 
   const handleSave = async () => {
-    if (!mood || !selectedHabitId) return;
-    await onSave({ mood, content: reflection, habitId: selectedHabitId, public: isPublic });
+    if (!mood || !selectedPracticeId) return;
+    await onSave({ mood, content: reflection, practiceId: selectedPracticeId, public: isPublic });
     setMood(null);
     setReflection("");
-    setSelectedHabitId(null);
+    setSelectedPracticeId(null);
   };
 
   if (hidden) return null;
@@ -40,7 +40,7 @@ function DailyCheckInForm({ practices, onSave }) {
         ) : (
           <div className="flex flex-wrap gap-2">
             {practices.map((p) => (
-              <PracticeSelectButton key={p.id} practice={p} selected={selectedHabitId === p.id} disabled={p.checkedInToday} onClick={() => !p.checkedInToday && setSelectedHabitId(p.id)}>
+              <PracticeSelectButton key={p.id} practice={p} selected={selectedPracticeId === p.id} disabled={p.checkedInToday} onClick={() => !p.checkedInToday && setSelectedPracticeId(p.id)}>
                 <span className="inline-flex items-center gap-1 font-mono text-xs text-solen-accent">
                   <svg viewBox="0 0 16 16" width="12" height="12">
                     <circle cx="8" cy="8" r="6" fill="oklch(68% 0.16 75 / 0.2)" />
@@ -72,7 +72,7 @@ function DailyCheckInForm({ practices, onSave }) {
       </div>
 
       <div className="flex items-center gap-4 mt-4">
-        <Button variant="primary" onClick={handleSave} disabled={!mood || !selectedHabitId}>
+        <Button variant="primary" onClick={handleSave} disabled={!mood || !selectedPracticeId}>
           Save check-in
         </Button>
         <Button variant="secondary" onClick={() => setHidden(true)}>

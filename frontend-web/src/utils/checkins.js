@@ -1,14 +1,14 @@
-export function groupCheckInsByHabit(checkIns) {
-  const perHabits = {};
+export function groupCheckInsByPractice(checkIns) {
+  const perPractices = {};
   checkIns.forEach((ci) => {
-    const name = ci.habit?.name || "Unknown";
-    if (!perHabits[name]) perHabits[name] = [];
-    perHabits[name].push({ date: ci.date, streakValue: ci.streakValue });
+    const name = ci.practice?.name || "Unknown";
+    if (!perPractices[name]) perPractices[name] = [];
+    perPractices[name].push({ date: ci.date, streakValue: ci.streakValue });
   });
-  Object.values(perHabits).forEach((hp) =>
+  Object.values(perPractices).forEach((hp) =>
     hp.sort((a, b) => new Date(a.date) - new Date(b.date))
   );
-  return perHabits;
+  return perPractices;
 }
 
 export function buildActivityData(checkIns) {

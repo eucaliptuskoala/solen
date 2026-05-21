@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import UserAPI from "../apis/UserAPI";
 import AuthAPI from "../apis/AuthAPI";
 import AuthHandler from "../apis/AuthHandler";
-import HabitAPI from "../apis/HabitAPI";
+import PracticeAPI from "../apis/PracticeAPI";
 import CategoryTreeBrowser from "../components/landing/CategoryTreeBrowser";
 import AuthSun from "../components/AuthSun";
 import Button from "../components/ui/Button";
@@ -48,9 +48,9 @@ function SignUpPage() {
     if (selected.length > 0) {
       Promise.all(
         selected.map(({ id: categoryId, name }) =>
-          HabitAPI.createHabit({ name, description: "", userId: AuthHandler.getUserId(), categoryId })
+          PracticeAPI.createPractice({ name, description: "", userId: AuthHandler.getUserId(), categoryId })
         )
-      ).catch((err) => console.error("Failed to create habits", err)).finally(() => navigate("/dashboard"));
+      ).catch((err) => console.error("Failed to create practices", err)).finally(() => navigate("/dashboard"));
     } else {
       navigate("/dashboard");
     }

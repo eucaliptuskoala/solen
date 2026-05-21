@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import HabitAPI from "../apis/HabitAPI";
+import PracticeAPI from "../apis/PracticeAPI";
 import CheckInAPI from "../apis/CheckInAPI";
 import AuthHandler from "../apis/AuthHandler";
 import PracticeCardList from "../components/practice/PracticeCardList";
@@ -29,21 +29,21 @@ function DashboardPage() {
 
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  const [popupHabit, setPopupHabit] = useState(null);
+  const [popupPractice, setPopupPractice] = useState(null);
 
   const todayStr = formatDate(new Date().toISOString());
 
   const fetchPractices = useCallback(() => {
-    HabitAPI.getHabitsByUser()
+    PracticeAPI.getPracticesByUser()
       .then(setPractices)
       .catch((err) => console.error("Failed to fetch practices", err));
   }, []);
 
   useEffect(() => { fetchPractices(); }, [fetchPractices]);
 
-  const handleDone = (habitId) => {
-    const habit = practices.find((p) => p.id === habitId);
-    setPopupHabit(habit || { id: habitId, name: "Practice" });
+  const handleDone = (practiceId) => {
+    const practice = practices.find((p) => p.id === practiceId);
+    setPopupPractice(practice || { id: practiceId, name: "Practice" });
   };
 
   const saveCheckIn = async (data) => {
@@ -58,7 +58,7 @@ function DashboardPage() {
 
   const handlePopupSave = async (data) => {
     await saveCheckIn(data);
-    setPopupHabit(null);
+    setPopupPractice(null);
   };
 
   const handleDailyCheckInSave = saveCheckIn;
@@ -66,7 +66,7 @@ function DashboardPage() {
   const handleCreate = () => {
     const userId = AuthHandler.getUserId();
     if (!userId) return;
-    HabitAPI.createHabit({
+    PracticeAPI.createPractice({
       name: newName,
       description: newDesc,
       userId,
@@ -79,19 +79,19 @@ function DashboardPage() {
         setNewCategoryId(null);
         fetchPractices();
       })
-      .catch((err) => console.error("Failed to create habit", err));
+      .catch((err) => console.error("Failed to create practice", err));
   };
 
   const handleDeleteTarget = (practice) => setDeleteTarget(practice);
 
   const handleDeleteConfirm = () => {
     if (!deleteTarget) return;
-    HabitAPI.deleteHabit(deleteTarget.id)
+    PracticeAPI.deletePractice(deleteTarget.id)
       .then(() => {
         setDeleteTarget(null);
         fetchPractices();
       })
-      .catch((err) => console.error("Failed to delete habit", err));
+      .catch((err) => console.error("Failed to delete practice", err));
   };
 
   return (
@@ -128,11 +128,11 @@ function DashboardPage() {
       />
 
       <CheckInPopup
-        isOpen={!!popupHabit}
-        habitId={popupHabit?.id}
-        habitName={popupHabit?.name}
+        isOpen={!!popupPractice}
+        practiceId={popupPractice?.id}
+        practiceName={popupPractice?.name}
         onSave={handlePopupSave}
-        onClose={() => setPopupHabit(null)}
+        onClose={() => setPopupPractice(null)}
       />
 
       <DeleteConfirmationDialog

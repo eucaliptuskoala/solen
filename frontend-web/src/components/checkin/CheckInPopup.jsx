@@ -7,10 +7,10 @@ import Modal from "../ui/Modal";
 import Label from "../ui/Label";
 import PracticeSelectButton from "../ui/PracticeSelectButton";
 
-function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, onClose }) {
+function CheckInPopup({ isOpen, practiceId, practiceName, availablePractices, onSave, onClose }) {
   const [mood, setMood] = useState(null);
   const [content, setContent] = useState("");
-  const [pickedHabitId, setPickedHabitId] = useState(null);
+  const [pickedPracticeId, setPickedPracticeId] = useState(null);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
@@ -19,7 +19,7 @@ function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, 
     return () => {
       setMood(null);
       setContent("");
-      setPickedHabitId(null);
+      setPickedPracticeId(null);
       setSaving(false);
       setSuccess(false);
       setIsPublic(false);
@@ -28,13 +28,13 @@ function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, 
 
   if (!isOpen) return null;
 
-  const effectiveHabitId = habitId || pickedHabitId;
+  const effectivePracticeId = practiceId || pickedPracticeId;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!mood || !effectiveHabitId) return;
+    if (!mood || !effectivePracticeId) return;
     setSaving(true);
-    await onSave({ habitId: effectiveHabitId, mood, content, public: isPublic });
+    await onSave({ practiceId: effectivePracticeId, mood, content, public: isPublic });
     setSuccess(true);
     setTimeout(() => {
       onClose();
@@ -42,7 +42,7 @@ function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, 
       setSaving(false);
       setMood(null);
       setContent("");
-      setPickedHabitId(null);
+      setPickedPracticeId(null);
     }, 600);
   };
 
@@ -65,7 +65,7 @@ function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, 
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <h3 className="font-display text-[1.15rem] font-[400] mb-[var(--space-sm)]">{habitName ? `Check in: ${habitName}` : "New check-in"}</h3>
+      <h3 className="font-display text-[1.15rem] font-[400] mb-[var(--space-sm)]">{practiceName ? `Check in: ${practiceName}` : "New check-in"}</h3>
       <p className="font-body text-[length:var(--fs-body)] leading-relaxed text-solen-muted mb-[var(--space-lg)]">How are you feeling?</p>
 
       <form onSubmit={handleSubmit}>
@@ -74,7 +74,7 @@ function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, 
           <MoodPicker value={mood} onChange={setMood} />
         </div>
 
-        {!habitId && availablePractices && (
+        {!practiceId && availablePractices && (
         <div className="mb-[var(--space-lg)]">
             <Label>Practice</Label>
               {availablePractices.filter(h => !h.checkedInToday).length === 0 ? (
@@ -84,7 +84,7 @@ function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, 
             ) : (
               <div className="flex flex-wrap gap-[var(--space-sm)]">
                 {availablePractices.filter(h => !h.checkedInToday).map(h => (
-                  <PracticeSelectButton key={h.id} practice={h} selected={pickedHabitId === h.id} onClick={() => setPickedHabitId(h.id)} />
+                  <PracticeSelectButton key={h.id} practice={h} selected={pickedPracticeId === h.id} onClick={() => setPickedPracticeId(h.id)} />
                 ))}
               </div>
             )}
@@ -113,7 +113,7 @@ function CheckInPopup({ isOpen, habitId, habitName, availablePractices, onSave, 
 
         <div className="flex gap-[var(--space-sm)] justify-end">
           <Button variant="secondary" onClick={onClose}>Cancel</Button>
-          <Button variant="primary" type="submit" disabled={!mood || !effectiveHabitId || saving}>
+          <Button variant="primary" type="submit" disabled={!mood || !effectivePracticeId || saving}>
             {saving ? "Saving..." : "Save check-in"}
           </Button>
         </div>

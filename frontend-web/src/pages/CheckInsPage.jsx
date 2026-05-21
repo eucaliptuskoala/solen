@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import CheckInAPI from "../apis/CheckInAPI";
-import HabitAPI from "../apis/HabitAPI";
+import PracticeAPI from "../apis/PracticeAPI";
 import CheckInTimeline from "../components/checkin/CheckInTimeline";
 import EditCheckInModal from "../components/checkin/EditCheckInModal";
 import CheckInPopup from "../components/checkin/CheckInPopup";
@@ -21,7 +21,7 @@ function CheckInsPage() {
   }, []);
 
   const fetchPractices = useCallback(() => {
-    HabitAPI.getHabitsByUser()
+    PracticeAPI.getPracticesByUser()
       .then(setPractices)
       .catch((err) => console.error("Failed to fetch practices", err));
   }, []);
@@ -53,8 +53,8 @@ function CheckInsPage() {
       .catch((err) => console.error("Failed to delete check-in", err));
   };
 
-  const handleNewCheckIn = async ({ habitId, mood, content, public: isPublic }) => {
-    await CheckInAPI.create({ habitId, mood, content, public: isPublic });
+  const handleNewCheckIn = async ({ practiceId, mood, content, public: isPublic }) => {
+    await CheckInAPI.create({ practiceId, mood, content, public: isPublic });
     setShowNew(false);
     showToast("Check-in saved!");
     fetchEntries();
@@ -73,8 +73,8 @@ function CheckInsPage() {
 
       <CheckInPopup
         isOpen={showNew}
-        habitId={null}
-        habitName={null}
+        practiceId={null}
+        practiceName={null}
         availablePractices={practices}
         onSave={handleNewCheckIn}
         onClose={() => setShowNew(false)}

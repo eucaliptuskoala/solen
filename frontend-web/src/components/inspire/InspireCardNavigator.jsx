@@ -17,8 +17,8 @@ function InspireCardNavigator({ entries }) {
   const entry = entries[index];
   const userName = entry.user?.name || "Anonymous";
   const initial = userName.charAt(0).toUpperCase();
-  const categoryName = entry.habit?.categoryName;
-  const practiceName = entry.habit?.name;
+  const categoryName = entry.practice?.categoryName;
+  const practiceName = entry.practice?.name;
   const date = entry.date
     ? new Date(entry.date + "T00:00:00").toLocaleDateString("en-US", {
         month: "short",

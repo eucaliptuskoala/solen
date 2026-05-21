@@ -17,8 +17,8 @@ describe("ProgressPage", () => {
 
   it("renders progress after data loads", async () => {
     CheckInAPI.getAll.mockResolvedValue([
-      { date: "2026-01-01", streakValue: 1, habit: { name: "Running" } },
-      { date: "2026-01-02", streakValue: 1, habit: { name: "Running" } },
+      { date: "2026-01-01", streakValue: 1, practice: { name: "Running" } },
+      { date: "2026-01-02", streakValue: 1, practice: { name: "Running" } },
     ]);
 
     render(<ProgressPage />);

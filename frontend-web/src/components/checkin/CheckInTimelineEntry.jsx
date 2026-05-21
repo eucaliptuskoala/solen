@@ -13,10 +13,10 @@ function CheckInTimelineEntry({ entry, onEdit, onDelete }) {
         <div className="flex items-center justify-between gap-[var(--space-sm)] mb-[var(--space-sm)] flex-wrap">
           <div className="flex items-center gap-[var(--space-sm)] flex-wrap">
             <span className="w-6 h-6 shrink-0"><MoodIcon mood={entry.mood} size={24} /></span>
-            {entry.habit?.categoryName && <Badge>{entry.habit.categoryName}</Badge>}
-            {entry.habit?.name && (
+            {entry.practice?.categoryName && <Badge>{entry.practice.categoryName}</Badge>}
+            {entry.practice?.name && (
               <span className="font-display text-[0.9rem]">
-                {entry.habit.name}
+                {entry.practice.name}
               </span>
             )}
           </div>

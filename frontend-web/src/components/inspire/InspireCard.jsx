@@ -4,7 +4,7 @@ import Badge from "../ui/Badge";
 function InspireCard({ entry }) {
   const userName = entry.user?.name || "Anonymous";
   const initial = userName.charAt(0).toUpperCase();
-  const categoryName = entry.habit?.categoryName;
+  const categoryName = entry.practice?.categoryName;
   const date = entry.date ? new Date(entry.date + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "";
 
   return (

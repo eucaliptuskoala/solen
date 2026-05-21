@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-function HabitProgressBarChart({ data }) {
+function PracticeProgressBarChart({ data }) {
   const chartData = data.map((p) => ({
     date: p.date,
     value: p.streakValue || 0,
@@ -34,4 +34,4 @@ function HabitProgressBarChart({ data }) {
   );
 }
 
-export default HabitProgressBarChart;
+export default PracticeProgressBarChart;
