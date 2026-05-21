@@ -11,6 +11,8 @@ import org.solen.domain.habits.Category;
 import org.solen.domain.habits.Habit;
 import org.solen.domain.users.User;
 import org.junit.jupiter.api.BeforeEach;
+
+import static org.solen.business.habitcases.creationstrategy.NameUtils.normalizeName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -114,8 +116,8 @@ class CategoryHabitCreationStrategyTest {
 
     @Test
     void normalizeName_trimsAndCapitalizes() {
-        assertEquals("Hello", CategoryHabitCreationStrategy.normalizeName("  hello  "));
-        assertEquals("World", CategoryHabitCreationStrategy.normalizeName("WORLD"));
-        assertEquals("Test", CategoryHabitCreationStrategy.normalizeName("test"));
+        assertEquals("Hello", normalizeName("  hello  "));
+        assertEquals("World", normalizeName("WORLD"));
+        assertEquals("Test", normalizeName("test"));
     }
 }

@@ -27,10 +27,7 @@ public class HabitCreationStrategyService {
     }
 
     public Habit getStrategy (CreateHabitRequest request, Long userId){
-        if (request == null){
-            throw new IllegalArgumentException("Request is null");
-        }
-        else if(request.getCategoryId() == null){
+        if(request.getCategoryId() == null){
             return custom.createHabit(request, userId);
         }
         else{

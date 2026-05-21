@@ -39,15 +39,13 @@ public class CheckInController {
             @RequestParam(required = false) LocalDate from,
             @RequestParam(required = false) LocalDate to
     ) {
-        Long userId = userIdProvider.getUserId();
         GetCheckInsDTO dto = new GetCheckInsDTO(from, to);
-        List<CheckIn> checkIns = getCheckInsForUserUseCase.getCheckInsForUser(userId, dto.getFrom(), dto.getTo());
+        List<CheckIn> checkIns = getCheckInsForUserUseCase.getCheckInsForUser(userIdProvider.getUserId(), dto.getFrom(), dto.getTo());
         return ResponseEntity.ok(checkIns.stream().map(mapper::convertToDto).toList());
     }
 
     @PostMapping("/checkin")
     public ResponseEntity<CheckInDto> createCheckIn(@Valid @RequestBody CreateCheckInRequest request) {
-        Long userId = userIdProvider.getUserId();
         CheckIn checkIn = createCheckInUseCase.createWithDetails(
                 request.getHabitId(), request.getContent(), request.isPublic(), request.getMood());
         return ResponseEntity.ok(mapper.convertToDto(checkIn));

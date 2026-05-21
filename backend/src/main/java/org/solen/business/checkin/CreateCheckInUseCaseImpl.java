@@ -9,6 +9,7 @@ import org.solen.domain.checkin.CheckIn;
 import org.solen.domain.checkin.Mood;
 import org.solen.domain.habits.Habit;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class CreateCheckInUseCaseImpl implements ICreateCheckInUseCase {
     }
 
     @Override
+    @Transactional
     public CheckIn createWithDetails(Long habitId, String content, boolean isPublic, Mood mood) {
         Habit habit = habitRepository.findById(habitId);
         if (habit == null) {

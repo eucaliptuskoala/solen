@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.solen.business.repos.IHabitRepository;
 import org.solen.domain.habits.Habit;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ public class StreakValidator {
 
     private IHabitRepository repository;
 
+    @Transactional
     public void validateStreak(Habit habit) {
         // Never updated → still in initial state, no reset needed
         if (habit.getLastUpdatedStreak() == null) {

@@ -71,9 +71,4 @@ class HabitCreationStrategyServiceTest {
         assertEquals(habitCustom, result);
     }
 
-    @Test
-    void getStrategy_nullRequest_throws() {
-        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> strategyService.getStrategy(null, userId));
-        assertEquals("Request is null", ex.getMessage());
-    }
 }

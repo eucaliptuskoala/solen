@@ -8,6 +8,8 @@ import org.solen.business.repos.IUserRepository;
 import org.solen.controller.dto.habit.CreateHabitRequest;
 import org.solen.domain.habits.Habit;
 import org.solen.domain.users.User;
+
+import static org.solen.business.habitcases.creationstrategy.NameUtils.normalizeName;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,17 +42,12 @@ public class CustomHabitCreationStrategy implements IHabitCreationStrategy {
         }
 
         return habitRepository.save(Habit.builder()
-                .name(normalizeName(request.getName()))
+                .name(newHabitName)
                 .description(request.getDescription())
                 .streak(0)
                 .thresholdDays(1)
                 .creator(user)
                 .category(null)
                 .build());
-    }
-
-    public static String normalizeName(String name) {
-        name = name.trim().toLowerCase();
-        return Character.toUpperCase(name.charAt(0)) + name.substring(1);
     }
 }

@@ -1,5 +1,6 @@
 package org.solen.controller.dto.checkin;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,7 @@ import org.solen.domain.checkin.Mood;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateCheckInRequest {
+    @NotNull
     private Long habitId;
     private String content;
     private boolean isPublic;

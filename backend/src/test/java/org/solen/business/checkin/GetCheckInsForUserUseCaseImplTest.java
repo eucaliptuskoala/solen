@@ -88,4 +88,38 @@ class GetCheckInsForUserUseCaseImplTest {
 
         assertTrue(result.isEmpty());
     }
+
+    @Test
+    void getCheckInsForUser_withFromOnly() {
+        LocalDate from = LocalDate.of(2026, 5, 1);
+        when(checkInRepository.findCheckInsForUser(1L, from, LocalDate.now()))
+                .thenReturn(List.of(checkIn));
+        when(timelineBuilder.buildTimeline(any())).thenReturn(List.of(checkIn));
+
+        List<CheckIn> result = getCheckInsUseCase.getCheckInsForUser(1L, from, null);
+
+        assertEquals(1, result.size());
+        verify(checkInRepository).findCheckInsForUser(1L, from, LocalDate.now());
+    }
+
+    @Test
+    void getCheckInsForUser_withToOnly() {
+        LocalDate to = LocalDate.of(2026, 5, 21);
+        CheckIn before = CheckIn.builder()
+                .id(1L).habit(checkIn.getHabit()).date(LocalDate.of(2026, 5, 20))
+                .streakValue(1).content("before").mood(Mood.OKAY)
+                .build();
+        CheckIn after = CheckIn.builder()
+                .id(2L).habit(checkIn.getHabit()).date(LocalDate.of(2026, 5, 25))
+                .streakValue(1).content("after").mood(Mood.OKAY)
+                .build();
+        when(checkInRepository.findByHabitCreatorId(1L)).thenReturn(List.of(before, after));
+        when(timelineBuilder.buildTimeline(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        List<CheckIn> result = getCheckInsUseCase.getCheckInsForUser(1L, null, to);
+
+        assertEquals(1, result.size());
+        assertEquals("before", result.get(0).getContent());
+        verify(checkInRepository).findByHabitCreatorId(1L);
+    }
 }
