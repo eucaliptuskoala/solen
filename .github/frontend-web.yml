@@ -1,0 +1,48 @@
+name: Frontend CI/CD
+
+on:
+  push:
+    branches: [main, dev]
+    paths:
+      - 'frontend-web/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'frontend-web/**'
+
+jobs:
+  build-and-analyse:
+    name: Build & Analyse
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend-web
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # required for SonarCloud
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend-web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_BASE_API_URL: ${{ secrets.VITE_BASE_API_URL }}
+
+      - name: SonarCloud analysis
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: frontend-web
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

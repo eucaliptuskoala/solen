@@ -2,14 +2,8 @@ import { useMemo } from "react";
 
 const CELL_SIZE = 14;
 const CELL_GAP = 3;
-const DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
+const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-function toDateOrUndefined(value) {
-  if (!value) return undefined;
-  const d = new Date(value);
-  return isNaN(d.getTime()) ? undefined : d;
-}
 
 function getDaysInRange(from, to) {
   const days = [];
@@ -72,10 +66,7 @@ function pickColor(value, maxValue) {
   return COLORS[idx] || COLORS[0];
 }
 
-function UserActivityCalendar({ data, startDate, endDate }) {
-  const from = toDateOrUndefined(startDate);
-  const to = toDateOrUndefined(endDate);
-
+function UserActivityCalendar({ data }) {
   const { lookup, weeks, months, maxValue, days } = useMemo(() => {
     if (!data || data.length === 0) return { lookup: {}, weeks: [], months: [], maxValue: 0, days: [] };
 
@@ -86,14 +77,16 @@ function UserActivityCalendar({ data, startDate, endDate }) {
       if (d.value > max) max = d.value;
     }
 
-    const rangeStart = from || new Date(Object.keys(lookup).sort()[0]);
-    const rangeEnd = to || new Date(Object.keys(lookup).sort().slice(-1)[0]);
+    const now = new Date();
+    const year = now.getFullYear();
+    const rangeStart = new Date(year, 0, 1);
+    const rangeEnd = now;
     const dayList = getDaysInRange(rangeStart, rangeEnd);
     const weeks = buildWeeks(dayList);
     const months = getMonths(weeks);
 
     return { lookup, weeks, months, maxValue: max, days: dayList };
-  }, [data, from, to]);
+  }, [data]);
 
   if (!data || data.length === 0 || days.length === 0) {
     return (
@@ -127,7 +120,7 @@ function UserActivityCalendar({ data, startDate, endDate }) {
             <text
               key={i}
               x={36}
-              y={36 + i * (CELL_SIZE + CELL_GAP) + CELL_SIZE / 2 + 4}
+              y={30 + i * (CELL_SIZE + CELL_GAP) + CELL_SIZE / 2 + 3}
               fontSize={10}
               fill="oklch(60% 0.02 85)"
               textAnchor="end"

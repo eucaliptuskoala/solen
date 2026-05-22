@@ -8,7 +8,7 @@ import DeleteConfirmationDialog from "../components/practice/DeleteConfirmationD
 import CheckInPopup from "../components/checkin/CheckInPopup";
 import DailyCheckInForm from "../components/checkin/DailyCheckInForm";
 import PageHeader from "../components/ui/PageHeader";
-import { formatDate } from "../utils/dates";
+import { today, formatDate } from "../utils/dates";
 import useToast from "../hooks/useToast";
 
 function getGreeting() {
@@ -31,7 +31,7 @@ function DashboardPage() {
 
   const [popupPractice, setPopupPractice] = useState(null);
 
-  const todayStr = formatDate(new Date().toISOString());
+  const todayStr = formatDate(today());
 
   const fetchPractices = useCallback(() => {
     PracticeAPI.getPracticesByUser()

@@ -53,8 +53,9 @@ dependencies {
 
 sonar {
     properties {
-        property "sonar.projectKey", "solen_be"
-        property "sonar.projectName", "solen_be"
+        property "sonar.projectKey", "eucaliptuskoala_solen"
+        property "sonar.projectName", "solen"
+        property "sonar.organization", "eucaliptuskoala"
         property "sonar.qualitygate.wait", true
         property "sonar.coverage.jacoco.xmlReportPaths", layout.buildDirectory.file("/reports/jacoco/test/jacocoTestReport.xml")
     }

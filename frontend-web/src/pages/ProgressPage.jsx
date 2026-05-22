@@ -245,15 +245,11 @@ function ProgressPage() {
         <div className="flex items-center justify-between mb-[var(--space-md)]">
           <h2 className="font-display text-[1.2rem] font-[400]">Activity</h2>
           <span className="font-mono text-[0.7rem] tracking-[0.05em] uppercase text-solen-muted">
-            {heatmapLabel}
+            This year
           </span>
         </div>
         <Card>
-          <UserActivityCalendar
-            data={contribution}
-            startDate={startDate}
-            endDate={endDate}
-          />
+          <UserActivityCalendar data={contribution} />
         </Card>
       </div>
 
