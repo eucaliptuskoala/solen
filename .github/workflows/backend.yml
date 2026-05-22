@@ -49,7 +49,7 @@ jobs:
         run: ./gradlew test
 
       - name: SonarCloud analysis
-        run: ./gradlew sonar
+        run: ./gradlew sonar --stacktrace
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
