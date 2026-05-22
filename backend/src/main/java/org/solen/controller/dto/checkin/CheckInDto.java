@@ -23,4 +23,6 @@ public class CheckInDto {
     private boolean isPublic;
     private Mood mood;
     private LocalDateTime createdAt;
+    private int likeCount;
+    private boolean isLikedByCurrentUser;
 }

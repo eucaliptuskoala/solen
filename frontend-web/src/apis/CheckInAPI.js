@@ -14,6 +14,7 @@ const CheckInAPI = {
   update: (id, request) => api.put(`${CHECKIN_BASE_URL}/${id}`, request).then(res => res.data),
   delete: (id) => api.delete(`${CHECKIN_BASE_URL}/${id}`).then(res => res.data),
   getFyp: () => api.get(CHECKIN_BASE_URL + "/fyp").then(res => res.data),
+  toggleLike: (id) => api.post(`${CHECKIN_BASE_URL}/${id}/like`).then(res => res.data),
 };
 
 export default CheckInAPI;

@@ -1,7 +1,8 @@
 import MoodIcon from "../MoodIcon";
 import Badge from "../ui/Badge";
+import LikeButton from "../ui/LikeButton";
 
-function InspireCard({ entry }) {
+function InspireCard({ entry, onToggleLike }) {
   const userName = entry.user?.name || "Anonymous";
   const initial = userName.charAt(0).toUpperCase();
   const categoryName = entry.practice?.categoryName;
@@ -26,6 +27,11 @@ function InspireCard({ entry }) {
       </div>
       <div className="flex items-center justify-between border-t border-solen-border mt-[var(--space-md)] pt-[var(--space-md)]">
         <span className="font-mono text-[0.7rem] text-solen-muted">{date}</span>
+        <LikeButton
+          initialLiked={entry.isLikedByCurrentUser}
+          initialCount={entry.likeCount}
+          onToggle={() => onToggleLike(entry.id)}
+        />
       </div>
     </div>
   );

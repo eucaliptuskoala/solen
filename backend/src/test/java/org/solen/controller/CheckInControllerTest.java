@@ -1,6 +1,7 @@
 package org.solen.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.solen.business.checkin.CheckInLikeEnricher;
 import org.solen.business.checkin.*;
 import org.solen.business.checkin.fypstrategy.IGetForYouCheckInsUseCase;
 import org.solen.business.exceptions.CheckInNotFoundException;
@@ -70,6 +71,12 @@ class CheckInControllerTest {
 
     @MockitoBean
     private UserDetailsService userDetailsService;
+
+    @MockitoBean
+    private IToggleCheckInLikeUseCase toggleCheckInLikeUseCase;
+
+    @MockitoBean
+    private CheckInLikeEnricher checkInLikeEnricher;
 
     @Test
     @WithMockUser

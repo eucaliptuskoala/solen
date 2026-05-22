@@ -1,8 +1,9 @@
 import { useState, useCallback } from "react";
 import MoodIcon from "../MoodIcon";
 import Badge from "../ui/Badge";
+import LikeButton from "../ui/LikeButton";
 
-function InspireCardNavigator({ entries }) {
+function InspireCardNavigator({ entries, onToggleLike }) {
   const [index, setIndex] = useState(0);
 
   const go = useCallback(
@@ -44,8 +45,13 @@ function InspireCardNavigator({ entries }) {
           {entry.mood && <MoodIcon mood={entry.mood} size={24} />}
         </div>
         <div className="text-[1.05rem] leading-[1.7]">{entry.content}</div>
-        <div className="flex items-center justify-center pt-0 mt-[var(--space-lg)] border-none">
+        <div className="flex items-center justify-between pt-0 mt-[var(--space-lg)] border-none">
           <span className="font-mono text-[0.7rem] text-solen-muted">{date}</span>
+          <LikeButton
+            initialLiked={entry.isLikedByCurrentUser}
+            initialCount={entry.likeCount}
+            onToggle={() => onToggleLike(entry.id)}
+          />
         </div>
       </div>
 

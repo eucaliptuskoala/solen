@@ -2,15 +2,19 @@ package org.solen.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.solen.business.checkin.CheckInLikeEnricher;
 import org.solen.business.checkin.ICreateCheckInUseCase;
 import org.solen.business.checkin.IDeleteCheckInUseCase;
 import org.solen.business.checkin.IGetCheckInsForUserUseCase;
+import org.solen.business.checkin.IToggleCheckInLikeUseCase;
 import org.solen.business.checkin.IUpdateCheckInUseCase;
+import org.solen.business.checkin.ToggleLikeResult;
 import org.solen.business.checkin.fypstrategy.IGetForYouCheckInsUseCase;
 import org.solen.configuration.security.UserIdProvider;
 import org.solen.controller.dto.checkin.CheckInDto;
 import org.solen.controller.dto.checkin.CreateCheckInRequest;
 import org.solen.controller.dto.checkin.GetCheckInsDTO;
+import org.solen.controller.dto.checkin.ToggleLikeResponse;
 import org.solen.controller.dto.checkin.UpdateCheckInRequest;
 import org.solen.controller.mappers.CheckInMapper;
 import org.solen.domain.checkin.CheckIn;
@@ -31,6 +35,8 @@ public class CheckInController {
     private IUpdateCheckInUseCase updateCheckInUseCase;
     private IDeleteCheckInUseCase deleteCheckInUseCase;
     private IGetForYouCheckInsUseCase getForYouCheckInsUseCase;
+    private IToggleCheckInLikeUseCase toggleCheckInLikeUseCase;
+    private CheckInLikeEnricher checkInLikeEnricher;
     private CheckInMapper mapper;
     private UserIdProvider userIdProvider;
 
@@ -72,6 +78,15 @@ public class CheckInController {
     public ResponseEntity<List<CheckInDto>> getForYouCheckIns() {
         Long userId = userIdProvider.getUserId();
         List<CheckIn> checkIns = getForYouCheckInsUseCase.getForYouCheckIns(userId);
-        return ResponseEntity.ok(checkIns.stream().map(mapper::convertToDto).toList());
+        List<CheckInDto> dtos = checkIns.stream().map(mapper::convertToDto).toList();
+        checkInLikeEnricher.enrich(dtos, userId);
+        return ResponseEntity.ok(dtos);
+    }
+
+    @PostMapping("/{id}/like")
+    public ResponseEntity<ToggleLikeResponse> toggleLike(@PathVariable Long id) {
+        Long userId = userIdProvider.getUserId();
+        ToggleLikeResult result = toggleCheckInLikeUseCase.toggle(id, userId);
+        return ResponseEntity.ok(new ToggleLikeResponse(result.isLiked(), result.getLikeCount()));
     }
 }

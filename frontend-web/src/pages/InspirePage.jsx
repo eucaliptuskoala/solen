@@ -16,6 +16,16 @@ function InspirePage() {
 
   useEffect(() => { fetchEntries(); }, [fetchEntries]);
 
+  const handleToggleLike = useCallback(async (id) => {
+    const result = await CheckInAPI.toggleLike(id);
+    setEntries((prev) =>
+      prev.map((e) =>
+        e.id === id ? { ...e, likeCount: result.likeCount, isLikedByCurrentUser: result.liked } : e
+      )
+    );
+    return result;
+  }, []);
+
   return (
     <main className="max-w-[1280px] mx-auto px-[var(--gutter)] py-[var(--space-xl)]">
       <div className="flex items-center justify-between mb-16 flex-wrap gap-4 animate-[fade-in_0.5s_ease_both]">
@@ -48,12 +58,12 @@ function InspirePage() {
       ) : view === "feed" ? (
         <div className="grid gap-4 md:grid-cols-2 animate-[fade-in_0.5s_ease_0.1s_both]">
           {entries.map((entry) => (
-            <InspireCard key={entry.id} entry={entry} />
+            <InspireCard key={entry.id} entry={entry} onToggleLike={handleToggleLike} />
           ))}
         </div>
       ) : (
         <div className="animate-[fade-in_0.5s_ease_0.1s_both]">
-          <InspireCardNavigator entries={entries} />
+          <InspireCardNavigator entries={entries} onToggleLike={handleToggleLike} />
         </div>
       )}
     </main>
