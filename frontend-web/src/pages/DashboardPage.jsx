@@ -100,6 +100,8 @@ function DashboardPage() {
 
       <DailyCheckInForm practices={practices} onSave={handleDailyCheckInSave} />
 
+      <div className="border-t border-solen-border mb-[var(--space-xl)]" />
+
       <div className="flex items-center justify-between mb-[var(--space-lg)] animate-[fade-in_0.5s_ease_0.2s_both]">
         <h2 className="font-display text-[1.3rem] font-normal">Your practices</h2>
         <button className="inline-flex items-center gap-2 px-[18px] py-2 rounded-[8px] text-[0.85rem] font-medium text-solen-muted no-underline hover:bg-solen-surface-soft hover:text-solen-fg transition-all duration-200 cursor-pointer font-body bg-transparent border-none" onClick={() => setShowCreateModal(true)}>

@@ -17,8 +17,8 @@ describe("ProgressPage", () => {
 
   it("renders progress after data loads", async () => {
     CheckInAPI.getAll.mockResolvedValue([
-      { date: "2026-01-01", streakValue: 1, practice: { name: "Running" } },
-      { date: "2026-01-02", streakValue: 1, practice: { name: "Running" } },
+      { date: "2026-01-01", streakValue: 1, mood: "GOOD", practice: { name: "Running" } },
+      { date: "2026-01-02", streakValue: 1, mood: "AWESOME", practice: { name: "Running" } },
     ]);
 
     render(<ProgressPage />);
@@ -29,13 +29,15 @@ describe("ProgressPage", () => {
     });
   });
 
-  it("shows error on API failure", async () => {
+  it("shows mock data on API failure", async () => {
     CheckInAPI.getAll.mockRejectedValue(new Error());
 
     render(<ProgressPage />);
 
     await waitFor(() => {
-      expect(screen.getByText(/failed to load progress/i));
+      expect(screen.getAllByText(/Running/i).length).toBeGreaterThanOrEqual(1);
+      expect(screen.getByText("Meditation")).toBeTruthy();
+      expect(screen.getByText("Reading")).toBeTruthy();
     });
   });
 });

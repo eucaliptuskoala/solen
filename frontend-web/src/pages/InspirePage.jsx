@@ -36,6 +36,8 @@ function InspirePage() {
         </div>
       </div>
 
+      <div className="border-t border-solen-border mb-[var(--space-xl)]" />
+
       {entries.length === 0 ? (
         <div className="text-center py-[var(--space-2xl)] text-solen-muted">
           <p className="font-display text-[1.15rem] mb-[var(--space-sm)] text-solen-fg">No stories yet</p>

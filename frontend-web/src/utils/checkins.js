@@ -1,9 +1,20 @@
+const MOOD_MAP = { AWFUL: 0, BAD: 1, OKAY: 2, GOOD: 3, AWESOME: 4 };
+
+export function moodToValue(mood) {
+  return mood != null ? MOOD_MAP[mood] : undefined;
+}
+
 export function groupCheckInsByPractice(checkIns) {
   const perPractices = {};
   checkIns.forEach((ci) => {
     const name = ci.practice?.name || "Unknown";
     if (!perPractices[name]) perPractices[name] = [];
-    perPractices[name].push({ date: ci.date, streakValue: ci.streakValue });
+    perPractices[name].push({
+      date: ci.date,
+      streakValue: ci.streakValue,
+      mood: ci.mood,
+      moodValue: moodToValue(ci.mood),
+    });
   });
   Object.values(perPractices).forEach((hp) =>
     hp.sort((a, b) => new Date(a.date) - new Date(b.date))

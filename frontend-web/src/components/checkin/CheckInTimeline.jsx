@@ -39,6 +39,8 @@ function CheckInTimeline({ entries, onEdit, onDelete, onCreate }) {
         <Button variant="secondary" onClick={onCreate}>+ New check-in</Button>
       </div>
 
+      <div className="border-t border-solen-border mb-[var(--space-xl)]" />
+
       {sorted.length === 0 ? (
         <div className="text-center py-24 text-solen-muted">
           <p className="font-body text-[length:var(--fs-body)] leading-relaxed text-solen-muted mb-[var(--space-md)]">No check-ins yet</p>

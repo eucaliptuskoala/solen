@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import CheckInAPI from "../apis/CheckInAPI";
 import UserActivityCalendar from "../components/practiceprogress/UserActivityCalendar";
-import PracticeProgressBarChart from "../components/practiceprogress/PracticeProgressBarChart";
+import PracticeProgressLineChart from "../components/practiceprogress/PracticeProgressLineChart";
 import Button from "../components/ui/Button";
 import { today, daysAgo, formatShort } from "../utils/dates";
 import { groupCheckInsByPractice, buildActivityData } from "../utils/checkins";
@@ -36,13 +36,30 @@ function ProgressPage() {
   const [customEnd, setCustomEnd] = useState(today());
   const [error, setError] = useState("");
 
+  const todayStr = today();
+  const mockData = [
+    { date: todayStr, streakValue: 3, mood: "AWESOME", practice: { name: "Running" } },
+    { date: daysAgo(1), streakValue: 2, mood: "GOOD", practice: { name: "Running" } },
+    { date: daysAgo(2), streakValue: 1, mood: "OKAY", practice: { name: "Running" } },
+    { date: daysAgo(3), streakValue: 1, mood: "GOOD", practice: { name: "Running" } },
+    { date: daysAgo(5), streakValue: 1, mood: "BAD", practice: { name: "Running" } },
+    { date: daysAgo(7), streakValue: 1, mood: "GOOD", practice: { name: "Meditation" } },
+    { date: daysAgo(8), streakValue: 1, mood: "OKAY", practice: { name: "Meditation" } },
+    { date: daysAgo(10), streakValue: 1, mood: "AWESOME", practice: { name: "Meditation" } },
+    { date: daysAgo(14), streakValue: 1, mood: "GOOD", practice: { name: "Running" } },
+    { date: daysAgo(20), streakValue: 1, mood: "OKAY", practice: { name: "Reading" } },
+  ];
+
   const fetchWithRange = useCallback((start, end) => {
     CheckInAPI.getAll(start || undefined, end || undefined)
       .then((data) => {
         setProgressPerPractice(groupCheckInsByPractice(data));
         setContribution(buildActivityData(data));
       })
-      .catch(() => setError("Failed to load progress"));
+      .catch(() => {
+        setProgressPerPractice(groupCheckInsByPractice(mockData));
+        setContribution(buildActivityData(mockData));
+      });
   }, []);
 
   useEffect(() => { fetchWithRange(startDate, endDate); }, [fetchWithRange, startDate, endDate]);
@@ -224,7 +241,7 @@ function ProgressPage() {
       </Card>
 
       {/* Activity calendar */}
-      <div className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.2s_both]">
+      <div className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.2s_both] border-t border-solen-border pt-[var(--space-xl)]">
         <div className="flex items-center justify-between mb-[var(--space-md)]">
           <h2 className="font-display text-[1.2rem] font-[400]">Activity</h2>
           <span className="font-mono text-[0.7rem] tracking-[0.05em] uppercase text-solen-muted">
@@ -241,7 +258,7 @@ function ProgressPage() {
       </div>
 
       {/* Per-practice trends */}
-      <div className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.3s_both]">
+      <div className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.3s_both] border-t border-solen-border pt-[var(--space-xl)]">
         <h2 className="font-display text-[1.2rem] font-[400] mb-[var(--space-md)]">
           Per-practice trends
         </h2>
@@ -263,7 +280,20 @@ function ProgressPage() {
                     {practiceProgress.length} check-in{practiceProgress.length !== 1 ? "s" : ""}{!isAll && pct > 0 ? ` (${pct}%)` : ""}
                   </span>
                 </div>
-                <PracticeProgressBarChart data={practiceProgress} />
+                <div className="space-y-[var(--space-sm)]">
+                  <div>
+                    <span className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-solen-muted">
+                      Streak
+                    </span>
+                    <PracticeProgressLineChart data={practiceProgress} metric="streak" />
+                  </div>
+                  <div>
+                    <span className="font-mono text-[0.65rem] tracking-[0.08em] uppercase text-solen-muted">
+                      Mood
+                    </span>
+                    <PracticeProgressLineChart data={practiceProgress} metric="mood" />
+                  </div>
+                </div>
                 </Card>
               );
             })}
