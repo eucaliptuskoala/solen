@@ -9,7 +9,6 @@ import org.solen.domain.checkin.CheckIn;
 import org.solen.domain.checkin.Mood;
 import org.solen.domain.practices.Practice;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,11 +23,10 @@ public class CreateCheckInUseCaseImpl implements ICreateCheckInUseCase {
 
     @Override
     public CheckIn create(Long practiceId) {
-        return createWithDetails(practiceId, null, false, null);
+        return this.createWithDetails(practiceId, null, false, null);
     }
 
     @Override
-    @Transactional
     public CheckIn createWithDetails(Long practiceId, String content, boolean isPublic, Mood mood) {
         Practice practice = practiceRepository.findById(practiceId);
         if (practice == null) {

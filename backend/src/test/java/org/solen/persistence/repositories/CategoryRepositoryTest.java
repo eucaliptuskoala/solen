@@ -53,8 +53,7 @@ class CategoryRepositoryTest {
 
         var roots = categoryRepository.findRootCategories();
 
-        assertThat(roots).hasSize(3);
-        assertThat(roots).allMatch(c -> c.getParent() == null);
+        assertThat(roots).hasSize(3).allMatch(c -> c.getParent() == null);
     }
 
     @Test

@@ -98,7 +98,7 @@ class CheckInControllerTest {
     void getCheckIns_withDateRange_returnsList() throws Exception {
         when(userIdProvider.getUserId()).thenReturn(1L);
         CheckIn checkIn = CheckIn.builder().id(1L).date(LocalDate.of(2026, 5, 1)).build();
-        when(getCheckInsForUserUseCase.getCheckInsForUser(eq(1L), eq(LocalDate.of(2026, 5, 1)), eq(LocalDate.of(2026, 5, 21))))
+        when(getCheckInsForUserUseCase.getCheckInsForUser(1L, LocalDate.of(2026, 5, 1), LocalDate.of(2026, 5, 21)))
                 .thenReturn(List.of(checkIn));
         when(mapper.convertToDto(checkIn))
                 .thenReturn(CheckInDto.builder().id(1L).build());
