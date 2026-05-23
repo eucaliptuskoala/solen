@@ -4,6 +4,8 @@ import { describe, it, expect, vi, afterEach } from "vitest";
 import ProgressPage from "../ProgressPage";
 import CheckInAPI from "../../apis/CheckInAPI";
 
+// test
+
 vi.mock("../../apis/CheckInAPI", () => ({
   default: {
     getAll: vi.fn(),
