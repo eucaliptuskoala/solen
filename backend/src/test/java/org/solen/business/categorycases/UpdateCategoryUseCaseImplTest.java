@@ -38,9 +38,10 @@ class UpdateCategoryUseCaseImplTest {
     @Test
     void updateCategory_notFound() {
         when(categoryRepository.findById(99L)).thenReturn(null);
+        UpdateCategoryRequest request = UpdateCategoryRequest.builder().build();
 
         assertThrows(CategoryNotFoundByIdException.class,
-                () -> updateCategoryUseCase.updateCategory(99L, UpdateCategoryRequest.builder().build()));
+                () -> updateCategoryUseCase.updateCategory(99L, request));
     }
 
     @Test
