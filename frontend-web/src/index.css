@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-solen-bg: oklch(97.5% 0.010 85);
   --color-solen-surface: oklch(99% 0.008 85);
@@ -56,6 +58,35 @@
   --fs-sub: clamp(1.1rem, 1.4vw, 1.2rem);
   --fs-body: clamp(1.05rem, 1.3vw, 1.15rem);
   --pt-hero: clamp(60px, 15vh, 120px);
+}
+
+html.dark {
+  --color-solen-bg: oklch(10% 0.008 75);
+  --color-solen-surface: oklch(16% 0.012 75);
+  --color-solen-surface-soft: oklch(23% 0.018 75);
+  --color-solen-fg: oklch(88% 0.010 85);
+  --color-solen-muted: oklch(55% 0.03 80);
+  --color-solen-border: oklch(26% 0.018 75);
+  --color-solen-accent-subtle: oklch(68% 0.16 75 / 0.10);
+
+  --color-solen-mood-awful-bg: oklch(25% 0.08 250);
+  --color-solen-mood-bad-bg: oklch(28% 0.07 230);
+  --color-solen-mood-okay-bg: oklch(30% 0.06 100);
+  --color-solen-mood-good-bg: oklch(32% 0.12 80);
+  --color-solen-mood-awesome-bg: oklch(35% 0.18 80);
+}
+
+html.dark body {
+  background: linear-gradient(180deg, var(--color-solen-bg), oklch(12% 0.010 75));
+}
+
+html.dark .nav-dropdown-menu {
+  box-shadow: 0 8px 32px rgb(0 0 0 / 0.4);
+}
+
+html.dark .nav-dropdown-menu a.active {
+  color: var(--color-solen-accent-glow);
+  background: var(--color-solen-accent-subtle);
 }
 
 @keyframes fade-in {

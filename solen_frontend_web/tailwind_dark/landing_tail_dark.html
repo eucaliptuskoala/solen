@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solen — gentle care, daily (dark)</title>
+<link rel="stylesheet" href="css/tailwind-solen-dark.css">
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+<style>
+  .landing-sun-ray {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 20%;
+    background: linear-gradient(to top, var(--color-solen-accent), transparent);
+    transform-origin: bottom center;
+    opacity: 0;
+    animation: ray-appear 0.6s ease forwards;
+  }
+  .landing-sun-ray:nth-child(1) { transform: translate(-50%, -100%) rotate(0deg); animation-delay: 0.3s; }
+  .landing-sun-ray:nth-child(2) { transform: translate(-50%, -100%) rotate(30deg); animation-delay: 0.35s; }
+  .landing-sun-ray:nth-child(3) { transform: translate(-50%, -100%) rotate(60deg); animation-delay: 0.4s; }
+  .landing-sun-ray:nth-child(4) { transform: translate(-50%, -100%) rotate(90deg); animation-delay: 0.45s; }
+  .landing-sun-ray:nth-child(5) { transform: translate(-50%, -100%) rotate(120deg); animation-delay: 0.5s; }
+  .landing-sun-ray:nth-child(6) { transform: translate(-50%, -100%) rotate(150deg); animation-delay: 0.55s; }
+  .landing-sun-ray:nth-child(7) { transform: translate(-50%, -100%) rotate(180deg); animation-delay: 0.6s; }
+  .landing-sun-ray:nth-child(8) { transform: translate(-50%, -100%) rotate(210deg); animation-delay: 0.65s; }
+  .landing-sun-ray:nth-child(9) { transform: translate(-50%, -100%) rotate(240deg); animation-delay: 0.7s; }
+  .landing-sun-ray:nth-child(10) { transform: translate(-50%, -100%) rotate(270deg); animation-delay: 0.75s; }
+  .landing-sun-ray:nth-child(11) { transform: translate(-50%, -100%) rotate(300deg); animation-delay: 0.8s; }
+  .landing-sun-ray:nth-child(12) { transform: translate(-50%, -100%) rotate(330deg); animation-delay: 0.85s; }
+</style>
+</head>
+<body class="bg-solen-bg text-solen-fg font-body antialiased min-h-screen">
+
+<nav class="flex items-center justify-between h-16 max-w-[1280px] mx-auto px-[var(--gutter,24px)]">
+  <a href="index_tail_dark.html" class="flex items-center gap-[10px] font-display text-[1.35rem] tracking-[-0.01em] text-solen-fg no-underline">
+    <span class="relative w-7 h-7 rounded-full bg-solen-accent flex-shrink-0
+      after:content-[''] after:absolute after:inset-[-6px] after:rounded-full after:border after:border-solen-accent after:opacity-30"></span>
+    Solen
+  </a>
+  <div class="flex items-center gap-[var(--space-md,16px)]">
+    <a href="sign-in_tail_dark.html" class="inline-flex items-center gap-2 px-[18px] py-2 rounded-[8px] text-[0.85rem] font-medium text-solen-muted no-underline hover:bg-solen-surface-soft hover:text-solen-fg transition-all duration-200">Sign in</a>
+    <a href="sign-up_tail_dark.html" class="inline-flex items-center gap-2 px-[18px] py-2 rounded-[8px] text-[0.85rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200">Get started</a>
+  </div>
+</nav>
+
+<main class="max-w-[1280px] mx-auto px-[var(--gutter,24px)] py-[var(--space-xl,64px)]">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-[var(--space-2xl,96px)] items-center min-h-[80vh] py-[var(--space-2xl,96px)]">
+    <div class="max-w-[540px] animate-[fade-in_0.5s_ease_both]">
+      <div class="font-mono text-[0.75rem] tracking-[0.1em] uppercase text-solen-accent mb-[var(--space-lg,32px)]">Solen</div>
+      <h1 class="font-display text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.1] tracking-[-0.02em] font-[400] text-solen-fg mb-[var(--space-lg,32px)]">Gentle care,<br>daily.</h1>
+      <p class="text-[clamp(1.1rem,1.4vw,1.2rem)] leading-[1.7] text-solen-muted mb-[var(--space-xl,64px)] max-w-[440px]">A warm space for your personal check-ins and quiet reflections. No streaks to keep, no graphs to chase — just a moment with yourself, every day.</p>
+      <div class="flex flex-col sm:flex-row gap-[var(--space-md,16px)] items-start sm:items-center">
+        <a href="sign-up_tail_dark.html" class="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200">Begin your practice</a>
+        <a href="sign-in_tail_dark.html" class="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-solen-fg no-underline hover:bg-solen-surface-soft transition-all duration-200">Sign in</a>
+      </div>
+      <p class="font-mono text-[0.7rem] text-solen-muted mt-[var(--space-md,16px)] opacity-60">Free. No account needed to browse.</p>
+    </div>
+
+    <div class="relative w-full max-w-[420px] mx-auto aspect-square animate-[fade-in_0.5s_ease_0.1s_both]">
+      <div class="absolute inset-[18%] rounded-full bg-[radial-gradient(circle_at_40%_35%,oklch(85%_0.18_80),oklch(68%_0.16_75))] shadow-[0_0_80px_oklch(68%_0.16_75_/_0.3),0_0_160px_oklch(68%_0.16_75_/_0.12)] animate-[sun-pulse_4s_ease-in-out_infinite]
+        after:content-[''] after:absolute after:inset-[20%] after:rounded-full after:bg-[radial-gradient(circle_at_55%_40%,oklch(92%_0.12_85),transparent_70%)]"></div>
+      <div class="landing-sun-ray"></div><div class="landing-sun-ray"></div><div class="landing-sun-ray"></div>
+      <div class="landing-sun-ray"></div><div class="landing-sun-ray"></div><div class="landing-sun-ray"></div>
+      <div class="landing-sun-ray"></div><div class="landing-sun-ray"></div><div class="landing-sun-ray"></div>
+      <div class="landing-sun-ray"></div><div class="landing-sun-ray"></div><div class="landing-sun-ray"></div>
+      <div class="absolute inset-[4%] rounded-full border border-solen-accent/10 animate-[sun-rotate_20s_linear_infinite]
+        before:content-[''] before:absolute before:inset-[14%] before:rounded-full before:border before:border-solen-accent/5 before:animate-[sun-rotate_30s_linear_infinite_reverse]"></div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-[var(--space-xl,64px)] py-[var(--space-2xl,96px)] border-t border-solen-border">
+    <div class="font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted leading-[1.6]">
+      <strong class="block font-display text-[1.1rem] tracking-[0] uppercase-none text-solen-fg mb-[var(--space-sm,8px)]">Reflect, not track</strong>
+      A check-in is a moment of presence, not a data point. Your reflections belong to you.
+    </div>
+    <div class="font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted leading-[1.6]">
+      <strong class="block font-display text-[1.1rem] tracking-[0] uppercase-none text-solen-fg mb-[var(--space-sm,8px)]">Your rhythm</strong>
+      No streaks, no pressure. Practices adapt to your life, not the other way around.
+    </div>
+    <div class="font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted leading-[1.6]">
+      <strong class="block font-display text-[1.1rem] tracking-[0] uppercase-none text-solen-fg mb-[var(--space-sm,8px)]">Warm by design</strong>
+      Sun-washed colours, generous space, quiet typography. Built to feel like morning light, not a dashboard.
+    </div>
+  </div>
+</main>
+
+<footer class="text-center py-[var(--space-xl,64px)] border-t border-solen-border font-mono text-[0.7rem] text-solen-muted">
+  Solen &mdash; gentle care, daily
+</footer>
+
+</body>
+</html>

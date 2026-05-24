@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign up — Solen (dark)</title>
+<link rel="stylesheet" href="css/tailwind-solen-dark.css">
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-solen-bg text-solen-fg font-body antialiased min-h-screen">
+
+<nav class="flex items-center justify-between h-16 max-w-[1280px] mx-auto px-[var(--gutter,24px)]">
+  <a href="index_tail_dark.html" class="flex items-center gap-[10px] font-display text-[1.35rem] tracking-[-0.01em] text-solen-fg no-underline">
+    <span class="relative w-7 h-7 rounded-full bg-solen-accent flex-shrink-0
+      after:content-[''] after:absolute after:inset-[-6px] after:rounded-full after:border after:border-solen-accent after:opacity-30"></span>
+    Solen
+  </a>
+  <div class="flex items-center gap-[var(--space-md,16px)]">
+    <span class="text-[0.875rem] text-solen-muted">Already have an account?</span>
+    <a href="sign-in_tail_dark.html" class="inline-flex items-center gap-2 px-[18px] py-2 rounded-[8px] text-[0.85rem] font-medium text-solen-muted no-underline hover:bg-solen-surface-soft hover:text-solen-fg transition-all duration-200">Sign in</a>
+  </div>
+</nav>
+
+<main class="max-w-[560px] mx-auto px-[var(--gutter,24px)] pt-[var(--space-2xl,96px)]">
+
+  <!-- Step 1: Registration -->
+  <div id="step1">
+    <div class="text-center mb-[var(--space-xl,64px)]">
+      <h1 class="font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.15] tracking-[-0.015em] font-[400] text-solen-fg mb-[var(--space-sm,8px)]">Join Solen</h1>
+      <p class="text-[0.95rem] text-solen-muted">Create your account to begin your practice.</p>
+    </div>
+
+    <form class="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-xl,64px)]" onsubmit="event.preventDefault(); goToStep2()">
+      <div class="mb-[var(--space-lg,32px)]">
+        <label for="name" class="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm,8px)]">Name</label>
+        <input type="text" id="name" class="w-full px-4 py-3 border border-solen-border rounded-[8px] bg-solen-bg text-[1rem] text-solen-fg outline-none transition-[border-color] duration-200 placeholder:text-solen-muted/60 focus:border-solen-accent focus:shadow-[0_0_0_3px_oklch(68%_0.16_75_/_0.15)]" placeholder="Your name" required>
+      </div>
+      <div class="mb-[var(--space-lg,32px)]">
+        <label for="email" class="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm,8px)]">Email</label>
+        <input type="email" id="email" class="w-full px-4 py-3 border border-solen-border rounded-[8px] bg-solen-bg text-[1rem] text-solen-fg outline-none transition-[border-color] duration-200 placeholder:text-solen-muted/60 focus:border-solen-accent focus:shadow-[0_0_0_3px_oklch(68%_0.16_75_/_0.15)]" placeholder="you@example.com" required>
+      </div>
+      <div class="mb-[var(--space-lg,32px)]">
+        <label for="password" class="block font-mono text-[0.7rem] tracking-[0.08em] uppercase text-solen-muted mb-[var(--space-sm,8px)]">Password</label>
+        <input type="password" id="password" class="w-full px-4 py-3 border border-solen-border rounded-[8px] bg-solen-bg text-[1rem] text-solen-fg outline-none transition-[border-color] duration-200 placeholder:text-solen-muted/60 focus:border-solen-accent focus:shadow-[0_0_0_3px_oklch(68%_0.16_75_/_0.15)]" placeholder="Choose a password" required minlength="8">
+      </div>
+      <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200 cursor-pointer font-body">Continue</button>
+    </form>
+
+    <div class="text-center mt-[var(--space-lg,32px)] text-[0.85rem] text-solen-muted">
+      By continuing, you agree to Solen's terms and privacy policy.
+    </div>
+  </div>
+
+  <!-- Step 2: Category Tree Onboarding -->
+  <div id="step2" style="display:none">
+    <div class="text-center mb-[var(--space-xl,64px)]">
+      <span class="block font-mono text-[0.75rem] tracking-[0.05em] uppercase text-solen-muted mb-[var(--space-sm,8px)]">Step 2 of 2</span>
+      <h2 class="font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.15] tracking-[-0.015em] font-[400] text-solen-fg mb-[var(--space-sm,8px)]">Pick your practices</h2>
+      <p class="text-[0.9rem] text-solen-muted">Browse categories and select the practices you'd like to track. You can always change these later.</p>
+    </div>
+
+    <div class="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-md,16px)] max-h-[420px] overflow-y-auto">
+      <ul class="list-none m-0 p-0" id="categoryTree">
+        <li>
+          <div class="flex items-center gap-[var(--space-sm,8px)] px-3 py-2 rounded-[8px] cursor-pointer select-none hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleTree(this)">
+            <span class="inline-block w-5 h-5 flex items-center justify-center transition-transform duration-200 flex-shrink-0 text-[0.7rem] text-solen-muted">▶</span>
+            <span class="w-5 h-5 rounded-[4px] flex items-center justify-center font-mono text-[0.6rem] text-solen-muted flex-shrink-0">🏃</span>
+            <span>Movement</span>
+            <span class="font-mono text-[0.7rem] text-solen-muted ml-auto">3</span>
+          </div>
+          <ul class="pl-7 hidden tree-children">
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Yoga</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Walking</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Stretching</div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="flex items-center gap-[var(--space-sm,8px)] px-3 py-2 rounded-[8px] cursor-pointer select-none hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleTree(this)">
+            <span class="inline-block w-5 h-5 flex items-center justify-center transition-transform duration-200 flex-shrink-0 text-[0.7rem] text-solen-muted">▶</span>
+            <span class="w-5 h-5 rounded-[4px] flex items-center justify-center font-mono text-[0.6rem] text-solen-muted flex-shrink-0">🧘</span>
+            <span>Mindfulness</span>
+            <span class="font-mono text-[0.7rem] text-solen-muted ml-auto">4</span>
+          </div>
+          <ul class="pl-7 hidden tree-children">
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Meditation</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Deep breathing</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Body scan</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Journaling</div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="flex items-center gap-[var(--space-sm,8px)] px-3 py-2 rounded-[8px] cursor-pointer select-none hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleTree(this)">
+            <span class="inline-block w-5 h-5 flex items-center justify-center transition-transform duration-200 flex-shrink-0 text-[0.7rem] text-solen-muted">▶</span>
+            <span class="w-5 h-5 rounded-[4px] flex items-center justify-center font-mono text-[0.6rem] text-solen-muted flex-shrink-0">🎨</span>
+            <span>Creativity</span>
+            <span class="font-mono text-[0.7rem] text-solen-muted ml-auto">3</span>
+          </div>
+          <ul class="pl-7 hidden tree-children">
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Drawing</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Writing</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Music practice</div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="flex items-center gap-[var(--space-sm,8px)] px-3 py-2 rounded-[8px] cursor-pointer select-none hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleTree(this)">
+            <span class="inline-block w-5 h-5 flex items-center justify-center transition-transform duration-200 flex-shrink-0 text-[0.7rem] text-solen-muted">▶</span>
+            <span class="w-5 h-5 rounded-[4px] flex items-center justify-center font-mono text-[0.6rem] text-solen-muted flex-shrink-0">🥗</span>
+            <span>Wellness</span>
+            <span class="font-mono text-[0.7rem] text-solen-muted ml-auto">3</span>
+          </div>
+          <ul class="pl-7 hidden tree-children">
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Drink water</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Healthy meal</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Sleep routine</div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="flex items-center gap-[var(--space-sm,8px)] px-3 py-2 rounded-[8px] cursor-pointer select-none hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleTree(this)">
+            <span class="inline-block w-5 h-5 flex items-center justify-center transition-transform duration-200 flex-shrink-0 text-[0.7rem] text-solen-muted">▶</span>
+            <span class="w-5 h-5 rounded-[4px] flex items-center justify-center font-mono text-[0.6rem] text-solen-muted flex-shrink-0">📚</span>
+            <span>Learning</span>
+            <span class="font-mono text-[0.7rem] text-solen-muted ml-auto">3</span>
+          </div>
+          <ul class="pl-7 hidden tree-children">
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Read 10 pages</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Study session</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Language practice</div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="flex items-center gap-[var(--space-sm,8px)] px-3 py-2 rounded-[8px] cursor-pointer select-none hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleTree(this)">
+            <span class="inline-block w-5 h-5 flex items-center justify-center transition-transform duration-200 flex-shrink-0 text-[0.7rem] text-solen-muted">▶</span>
+            <span class="w-5 h-5 rounded-[4px] flex items-center justify-center font-mono text-[0.6rem] text-solen-muted flex-shrink-0">☕</span>
+            <span>Rest &amp; Ritual</span>
+            <span class="font-mono text-[0.7rem] text-solen-muted ml-auto">2</span>
+          </div>
+          <ul class="pl-7 hidden tree-children">
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Morning coffee</div></li>
+            <li><div class="flex items-center gap-[var(--space-sm,8px)] pl-10 pr-3 py-[6px] rounded-[8px] cursor-pointer text-[0.9rem] hover:bg-solen-surface-soft transition-[background] duration-150" onclick="toggleLeaf(this)"><span class="invisible w-5 h-5">▶</span>Evening wind-down</div></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="flex items-center justify-between mt-[var(--space-md,16px)]">
+      <span class="font-mono text-[0.75rem] text-solen-muted" id="selectedCount">0 practices selected</span>
+    </div>
+
+    <div class="flex items-center justify-between mt-[var(--space-xl,64px)] pt-[var(--space-lg,32px)] border-t border-solen-border">
+      <button class="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-solen-muted no-underline hover:bg-solen-surface-soft transition-all duration-200 cursor-pointer font-body bg-transparent border-none" onclick="finishOnboarding(true)">Skip</button>
+      <button class="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200 cursor-pointer font-body" onclick="finishOnboarding(false)">Finish</button>
+    </div>
+  </div>
+</main>
+
+<script>
+function goToStep2() {
+  var name = document.getElementById('name').value.trim();
+  var email = document.getElementById('email').value.trim();
+  var password = document.getElementById('password').value;
+  if (!name || !email || !password || password.length < 8) {
+    alert('Please fill in all fields with a valid password (8+ characters).');
+    return;
+  }
+  document.getElementById('step1').style.display = 'none';
+  document.getElementById('step2').style.display = 'block';
+}
+
+function toggleTree(el) {
+  var toggle = el.querySelector('span:first-child');
+  var children = el.nextElementSibling;
+  toggle.style.transform = toggle.style.transform === 'rotate(90deg)' ? '' : 'rotate(90deg)';
+  children.classList.toggle('hidden');
+}
+
+function toggleLeaf(el) {
+  el.classList.toggle('bg-solen-accent-subtle');
+  el.classList.toggle('text-solen-accent');
+  updateSelectedCount();
+}
+
+function updateSelectedCount() {
+  var selected = 0;
+  var leaves = document.querySelectorAll('#categoryTree .tree-children li > div');
+  leaves.forEach(function(l) {
+    if (l.classList.contains('bg-solen-accent-subtle')) selected++;
+  });
+  document.getElementById('selectedCount').textContent = selected + ' practices selected';
+}
+
+function finishOnboarding(skipped) {
+  window.location.href = 'dashboard_tail_dark.html';
+}
+</script>
+
+</body>
+</html>

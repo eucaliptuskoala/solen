@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solen — dark edition</title>
+<link rel="stylesheet" href="css/tailwind-solen-dark.css">
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-solen-bg text-solen-fg font-body antialiased min-h-screen">
+
+<nav class="flex items-center justify-between h-16 max-w-[1280px] mx-auto px-[var(--gutter,24px)]">
+  <a href="index_tail_dark.html" class="flex items-center gap-[10px] font-display text-[1.35rem] tracking-[-0.01em] text-solen-fg no-underline">
+    <span class="relative w-7 h-7 rounded-full bg-solen-accent flex-shrink-0
+      after:content-[''] after:absolute after:inset-[-6px] after:rounded-full after:border after:border-solen-accent after:opacity-30"></span>
+    Solen
+  </a>
+  <div class="flex items-center gap-[var(--space-md,16px)]">
+    <a href="sign-in_tail_dark.html" class="inline-flex items-center gap-2 px-[18px] py-2 rounded-[8px] text-[0.85rem] font-medium text-solen-muted no-underline hover:bg-solen-surface-soft hover:text-solen-fg transition-all duration-200">Sign in</a>
+    <a href="sign-up_tail_dark.html" class="inline-flex items-center gap-2 px-[18px] py-2 rounded-[8px] text-[0.85rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200">Get started</a>
+  </div>
+</nav>
+
+<main class="max-w-[1280px] mx-auto px-[var(--gutter,24px)] py-[var(--space-xl,64px)]">
+  <div class="text-center max-w-[640px] mx-auto py-[clamp(48px,10vh,100px)] animate-[fade-in_0.5s_ease_both]">
+    <div class="w-12 h-12 rounded-full bg-solen-accent mx-auto mb-[var(--space-lg,32px)] shadow-[0_0_60px_oklch(68%_0.16_75_/_0.25)] animate-[sun-pulse_4s_ease-in-out_infinite]"></div>
+    <span class="block font-mono text-[0.75rem] tracking-[0.05em] uppercase text-solen-muted mb-[var(--space-md,16px)]">Solen</span>
+    <h1 class="font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.1] tracking-[-0.02em] font-[400] text-solen-fg mb-[var(--space-lg,32px)]">Gentle care, daily.</h1>
+    <p class="font-body text-[clamp(1.05rem,1.3vw,1.15rem)] leading-[1.7] text-solen-muted mb-[var(--space-xl,64px)]">A warm space for personal check-ins and quiet reflection. Browse the screens below to explore the Solen experience.</p>
+  </div>
+
+  <div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-[var(--space-md,16px)] mt-[var(--space-xl,64px)] animate-[fade-in_0.5s_ease_0.1s_both]">
+    <a href="landing_tail_dark.html" class="flex flex-col items-center gap-[var(--space-sm,8px)] p-[var(--space-lg,32px)] bg-solen-surface border border-solen-border rounded-[8px] text-center no-underline text-inherit transition-all duration-200 hover:border-solen-accent-dim">
+      <div class="w-10 h-10 rounded-[8px] bg-solen-accent-subtle flex items-center justify-center text-solen-accent">
+        <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5"><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M10 4v3m0 6v3M4 10h3m6 0h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="font-display text-[0.95rem]">Landing</div>
+      <div class="font-body text-[0.75rem] text-solen-muted leading-[1.4]">Hero + CTA with sun illustration</div>
+    </a>
+    <a href="sign-up_tail_dark.html" class="flex flex-col items-center gap-[var(--space-sm,8px)] p-[var(--space-lg,32px)] bg-solen-surface border border-solen-border rounded-[8px] text-center no-underline text-inherit transition-all duration-200 hover:border-solen-accent-dim">
+      <div class="w-10 h-10 rounded-[8px] bg-solen-accent-subtle flex items-center justify-center text-solen-accent">
+        <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5"><path d="M14 17v-1a3 3 0 00-3-3H5a3 3 0 00-3 3v1" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M17 11v4m-2-2h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="font-display text-[0.95rem]">Sign Up</div>
+      <div class="font-body text-[0.75rem] text-solen-muted leading-[1.4]">Registration + category tree onboarding</div>
+    </a>
+    <a href="sign-in_tail_dark.html" class="flex flex-col items-center gap-[var(--space-sm,8px)] p-[var(--space-lg,32px)] bg-solen-surface border border-solen-border rounded-[8px] text-center no-underline text-inherit transition-all duration-200 hover:border-solen-accent-dim">
+      <div class="w-10 h-10 rounded-[8px] bg-solen-accent-subtle flex items-center justify-center text-solen-accent">
+        <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5"><path d="M14 17v-1a3 3 0 00-3-3H5a3 3 0 00-3 3v1" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M17 9v4m-2-2h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="font-display text-[0.95rem]">Sign In</div>
+      <div class="font-body text-[0.75rem] text-solen-muted leading-[1.4]">Warm-themed authentication</div>
+    </a>
+    <a href="dashboard_tail_dark.html" class="flex flex-col items-center gap-[var(--space-sm,8px)] p-[var(--space-lg,32px)] bg-solen-surface border border-solen-border rounded-[8px] text-center no-underline text-inherit transition-all duration-200 hover:border-solen-accent-dim">
+      <div class="w-10 h-10 rounded-[8px] bg-solen-accent-subtle flex items-center justify-center text-solen-accent">
+        <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5"><rect x="3" y="3" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="font-display text-[0.95rem]">Dashboard</div>
+      <div class="font-body text-[0.75rem] text-solen-muted leading-[1.4]">Daily check-in + practice grid</div>
+    </a>
+    <a href="checkins_tail_dark.html" class="flex flex-col items-center gap-[var(--space-sm,8px)] p-[var(--space-lg,32px)] bg-solen-surface border border-solen-border rounded-[8px] text-center no-underline text-inherit transition-all duration-200 hover:border-solen-accent-dim">
+      <div class="w-10 h-10 rounded-[8px] bg-solen-accent-subtle flex items-center justify-center text-solen-accent">
+        <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="font-display text-[0.95rem]">Check-Ins</div>
+      <div class="font-body text-[0.75rem] text-solen-muted leading-[1.4]">Chronological journal timeline</div>
+    </a>
+    <a href="progress_tail_dark.html" class="flex flex-col items-center gap-[var(--space-sm,8px)] p-[var(--space-lg,32px)] bg-solen-surface border border-solen-border rounded-[8px] text-center no-underline text-inherit transition-all duration-200 hover:border-solen-accent-dim">
+      <div class="w-10 h-10 rounded-[8px] bg-solen-accent-subtle flex items-center justify-center text-solen-accent">
+        <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5"><rect x="3" y="10" width="3" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="8.5" y="5" width="3" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="3" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="font-display text-[0.95rem]">Progress</div>
+      <div class="font-body text-[0.75rem] text-solen-muted leading-[1.4]">Charts + calendar heatmap</div>
+    </a>
+    <a href="inspire_tail_dark.html" class="flex flex-col items-center gap-[var(--space-sm,8px)] p-[var(--space-lg,32px)] bg-solen-surface border border-solen-border rounded-[8px] text-center no-underline text-inherit transition-all duration-200 hover:border-solen-accent-dim">
+      <div class="w-10 h-10 rounded-[8px] bg-solen-accent-subtle flex items-center justify-center text-solen-accent">
+        <svg viewBox="0 0 20 20" fill="none" class="w-5 h-5"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2" fill="currentColor"/></svg>
+      </div>
+      <div class="font-display text-[0.95rem]">Inspire</div>
+      <div class="font-body text-[0.75rem] text-solen-muted leading-[1.4]">Community check-in feed</div>
+    </a>
+  </div>
+
+  <div class="mt-[var(--space-2xl,96px)] p-[var(--space-lg,32px)] bg-solen-surface-soft border border-solen-border rounded-[8px] text-[0.85rem] leading-[1.7] text-solen-muted">
+    <h3 class="font-display text-[1rem] font-[400] mb-[var(--space-sm,8px)] text-solen-fg">Solen design system — dark edition</h3>
+    <ul class="pl-[var(--space-lg,32px)] flex flex-col gap-[6px]">
+      <li><strong>Surface:</strong> Deep warm charcoal. Accent amber (oklch 68% 0.16 75) glows like a lamp in a dark room.</li>
+      <li><strong>Typography:</strong> Same editorial posture — serif display + system sans.</li>
+      <li><strong>Mood colors:</strong> Dimmed backgrounds for night comfort; accent glows preserved.</li>
+      <li><strong>Good for:</strong> Evening journaling, low-light environments, or anyone who prefers a darker canvas.</li>
+    </ul>
+  </div>
+</main>
+
+</body>
+</html>
