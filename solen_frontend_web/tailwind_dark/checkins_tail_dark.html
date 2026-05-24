@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Check-Ins — Solen (dark)</title>
+<link rel="stylesheet" href="css/tailwind-solen-dark.css">
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-solen-bg text-solen-fg font-body antialiased min-h-screen">
+
+<nav class="flex items-center justify-between h-16 max-w-[1280px] mx-auto px-[var(--gutter,24px)]">
+  <a href="index_tail_dark.html" class="flex items-center gap-[10px] font-display text-[1.35rem] tracking-[-0.01em] text-solen-fg no-underline">
+    <span class="relative w-7 h-7 rounded-full bg-solen-accent flex-shrink-0
+      after:content-[''] after:absolute after:inset-[-6px] after:rounded-full after:border after:border-solen-accent after:opacity-30"></span>
+    Solen
+  </a>
+  <div class="relative" id="navContainer">
+    <button class="flex items-center gap-3 px-4 py-2 rounded-[8px] border border-solen-border bg-solen-surface cursor-pointer transition-all duration-200 font-body text-[0.9rem] text-solen-fg hover:bg-solen-surface-soft" onclick="toggleNav()">
+      <span class="w-7 h-7 rounded-full bg-solen-accent-dim flex items-center justify-center text-[var(--color-solen-surface)] font-mono text-[0.75rem] font-semibold">A</span>
+      <span>Alex</span>
+      <svg class="w-3.5 h-3.5 transition-transform duration-300" id="navChevron" viewBox="0 0 14 14"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+    </button>
+    <div class="nav-dropdown-menu" id="navMenu">
+      <div class="px-[18px] pt-2 pb-1 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-solen-muted opacity-60">Navigate</div>
+      <a href="dashboard_tail_dark.html" class="flex items-center gap-3 px-[18px] py-3 text-[0.9rem] text-solen-fg transition-[background] duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent hover:bg-solen-surface-soft">
+        <svg viewBox="0 0 18 18" class="w-[18px] h-[18px] flex-shrink-0 opacity-60" fill="none"><rect x="2" y="2" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="10" y="2" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="2" y="10" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="10" y="10" width="6" height="6" rx="1.5" fill="currentColor"/></svg>
+        Dashboard
+      </a>
+      <a href="checkins_tail_dark.html" class="flex items-center gap-3 px-[18px] py-3 text-[0.9rem] text-solen-fg transition-[background] duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent bg-solen-accent-subtle text-solen-accent">
+        <svg viewBox="0 0 18 18" class="w-[18px] h-[18px] flex-shrink-0 opacity-60" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        Check-Ins
+      </a>
+      <a href="progress_tail_dark.html" class="flex items-center gap-3 px-[18px] py-3 text-[0.9rem] text-solen-fg transition-[background] duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent hover:bg-solen-surface-soft">
+        <svg viewBox="0 0 18 18" class="w-[18px] h-[18px] flex-shrink-0 opacity-60" fill="none"><rect x="2" y="8" width="3" height="8" rx="1" fill="currentColor"/><rect x="7.5" y="4" width="3" height="12" rx="1" fill="currentColor"/><rect x="13" y="2" width="3" height="14" rx="1" fill="currentColor"/></svg>
+        Progress
+      </a>
+      <a href="inspire_tail_dark.html" class="flex items-center gap-3 px-[18px] py-3 text-[0.9rem] text-solen-fg transition-[background] duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent hover:bg-solen-surface-soft">
+        <svg viewBox="0 0 18 18" class="w-[18px] h-[18px] flex-shrink-0 opacity-60" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="9" cy="9" r="2" fill="currentColor"/></svg>
+        Inspire
+      </a>
+      <div class="h-px bg-solen-border my-1"></div>
+      <button class="flex items-center gap-3 px-[18px] py-3 text-[0.9rem] text-solen-fg transition-[background] duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent hover:bg-solen-surface-soft font-body" onclick="signOut()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-[1280px] mx-auto px-[var(--gutter,24px)] py-[var(--space-xl,64px)]">
+  <div class="flex items-center justify-between mb-[var(--space-xl,64px)] flex-wrap gap-[var(--space-md,16px)] animate-[fade-in_0.5s_ease_both]">
+    <div>
+      <span class="block font-mono text-[0.75rem] tracking-[0.05em] uppercase text-solen-muted mb-[var(--space-sm,8px)]">Your journal</span>
+      <h1 class="font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.15] tracking-[-0.015em] font-[400]">Check-Ins</h1>
+    </div>
+    <div class="flex gap-[var(--space-sm,8px)] flex-wrap">
+      <button class="px-4 py-[6px] border border-solen-border rounded-full bg-solen-accent text-[var(--color-solen-surface)] text-[0.8rem] font-body cursor-pointer transition-all duration-150" onclick="setFilter(this, 'all')">All</button>
+      <button class="px-4 py-[6px] border border-solen-border rounded-full bg-solen-surface text-solen-muted text-[0.8rem] font-body cursor-pointer transition-all duration-150 hover:border-solen-accent-dim" onclick="setFilter(this, 'this-week')">This week</button>
+      <button class="px-4 py-[6px] border border-solen-border rounded-full bg-solen-surface text-solen-muted text-[0.8rem] font-body cursor-pointer transition-all duration-150 hover:border-solen-accent-dim" onclick="setFilter(this, 'this-month')">This month</button>
+    </div>
+  </div>
+
+  <div class="relative timeline-line animate-[fade-in_0.5s_ease_0.1s_both]">
+
+    <div class="relative pl-[52px] pb-[var(--space-lg,32px)]" data-date="2026-05-16">
+      <div class="absolute left-2 top-1 w-[18px] h-[18px] rounded-full border-2 border-solen-accent bg-solen-accent flex items-center justify-center"></div>
+      <div class="font-mono text-[0.75rem] text-solen-muted mb-[var(--space-xs,4px)]">Fri 16 May 2026</div>
+      <div class="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg,32px)] transition-[border-color] duration-200 hover:border-solen-accent-dim">
+        <div class="flex items-center justify-between gap-[var(--space-sm,8px)] mb-[var(--space-sm,8px)] flex-wrap">
+          <div class="flex items-center gap-[var(--space-sm,8px)] flex-wrap">
+            <svg class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--color-solen-mood-awesome-bg)"/><ellipse cx="8" cy="10" rx="2" ry="1.5" fill="var(--color-solen-mood-awesome)"/><ellipse cx="16" cy="10" rx="2" ry="1.5" fill="var(--color-solen-mood-awesome)"/><path d="M8 15c2 2 6 2 8 0" stroke="var(--color-solen-mood-awesome)" stroke-width="1.3" fill="none"/></svg>
+            <span class="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">Movement</span>
+            <span class="font-display text-[0.9rem]">Morning stretch</span>
+          </div>
+          <span class="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full bg-solen-accent-subtle border border-solen-accent/20 text-solen-accent">Public</span>
+        </div>
+        <div class="text-[0.95rem] leading-[1.7] whitespace-pre-wrap">Started the day with a gentle 10-minute stretch by the window. The light was warm and soft — felt good to move slowly.</div>
+        <div class="flex items-center justify-between mt-[var(--space-md,16px)] pt-[var(--space-md,16px)] border-t border-solen-border">
+          <span class="font-body text-[0.875rem] leading-[1.5] text-solen-muted">7:23 AM</span>
+          <div class="flex gap-[var(--space-sm,8px)]">
+            <button class="bg-transparent border-none cursor-pointer font-body text-[0.8rem] text-solen-muted px-2 py-1 rounded-[4px] transition-all duration-150 hover:bg-solen-surface-soft hover:text-solen-fg" onclick="editEntry(this)">Edit</button>
+            <button class="bg-transparent border-none cursor-pointer font-body text-[0.8rem] text-solen-muted px-2 py-1 rounded-[4px] transition-all duration-150 hover:bg-solen-surface-soft hover:text-solen-fg" onclick="deleteEntry(this)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative pl-[52px] pb-[var(--space-lg,32px)]" data-date="2026-05-15">
+      <div class="absolute left-2 top-1 w-[18px] h-[18px] rounded-full border-2 border-solen-accent bg-solen-accent flex items-center justify-center"></div>
+      <div class="font-mono text-[0.75rem] text-solen-muted mb-[var(--space-xs,4px)]">Thu 15 May 2026</div>
+      <div class="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg,32px)] transition-[border-color] duration-200 hover:border-solen-accent-dim">
+        <div class="flex items-center justify-between gap-[var(--space-sm,8px)] mb-[var(--space-sm,8px)] flex-wrap">
+          <div class="flex items-center gap-[var(--space-sm,8px)] flex-wrap">
+            <svg class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--color-solen-mood-good-bg)"/><ellipse cx="8" cy="9" rx="1.5" ry="1.5" fill="var(--color-solen-mood-good)"/><ellipse cx="16" cy="9" rx="1.5" ry="1.5" fill="var(--color-solen-mood-good)"/><path d="M8 15c2 2 6 2 8 0" stroke="var(--color-solen-mood-good)" stroke-width="1.3" fill="none"/></svg>
+            <span class="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">Mindfulness</span>
+            <span class="font-display text-[0.9rem]">Meditation</span>
+          </div>
+          <span class="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">Private</span>
+        </div>
+        <div class="text-[0.95rem] leading-[1.7] whitespace-pre-wrap">Sat quietly for 15 minutes. My mind wandered to tomorrow's meeting, but I brought it back. That's the practice.</div>
+        <div class="flex items-center justify-between mt-[var(--space-md,16px)] pt-[var(--space-md,16px)] border-t border-solen-border">
+          <span class="font-body text-[0.875rem] leading-[1.5] text-solen-muted">8:45 PM</span>
+          <div class="flex gap-[var(--space-sm,8px)]">
+            <button class="bg-transparent border-none cursor-pointer font-body text-[0.8rem] text-solen-muted px-2 py-1 rounded-[4px] transition-all duration-150 hover:bg-solen-surface-soft hover:text-solen-fg" onclick="editEntry(this)">Edit</button>
+            <button class="bg-transparent border-none cursor-pointer font-body text-[0.8rem] text-solen-muted px-2 py-1 rounded-[4px] transition-all duration-150 hover:bg-solen-surface-soft hover:text-solen-fg" onclick="deleteEntry(this)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative pl-[52px] pb-[var(--space-lg,32px)]" data-date="2026-05-14">
+      <div class="absolute left-2 top-1 w-[18px] h-[18px] rounded-full border-2 border-solen-accent bg-solen-accent flex items-center justify-center"></div>
+      <div class="font-mono text-[0.75rem] text-solen-muted mb-[var(--space-xs,4px)]">Wed 14 May 2026</div>
+      <div class="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg,32px)] transition-[border-color] duration-200 hover:border-solen-accent-dim">
+        <div class="flex items-center justify-between gap-[var(--space-sm,8px)] mb-[var(--space-sm,8px)] flex-wrap">
+          <div class="flex items-center gap-[var(--space-sm,8px)] flex-wrap">
+            <svg class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="var(--color-solen-mood-okay-bg)"/><ellipse cx="8" cy="10" rx="1.5" ry="2" fill="var(--color-solen-mood-okay)" opacity="0.35"/><ellipse cx="16" cy="10" rx="1.5" ry="2" fill="var(--color-solen-mood-okay)" opacity="0.35"/><path d="M8 16c2 1 6 1 8 0" stroke="var(--color-solen-mood-okay)" stroke-width="1.2" fill="none"/></svg>
+            <span class="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">Wellness</span>
+            <span class="font-display text-[0.9rem]">Drink water</span>
+          </div>
+          <span class="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">Private</span>
+        </div>
+        <div class="text-[0.95rem] leading-[1.7] whitespace-pre-wrap">Forgot to drink water until 3 PM. Trying to be gentler about it.</div>
+        <div class="flex items-center justify-between mt-[var(--space-md,16px)] pt-[var(--space-md,16px)] border-t border-solen-border">
+          <span class="font-body text-[0.875rem] leading-[1.5] text-solen-muted">3:12 PM</span>
+          <div class="flex gap-[var(--space-sm,8px)]">
+            <button class="bg-transparent border-none cursor-pointer font-body text-[0.8rem] text-solen-muted px-2 py-1 rounded-[4px] transition-all duration-150 hover:bg-solen-surface-soft hover:text-solen-fg" onclick="editEntry(this)">Edit</button>
+            <button class="bg-transparent border-none cursor-pointer font-body text-[0.8rem] text-solen-muted px-2 py-1 rounded-[4px] transition-all duration-150 hover:bg-solen-surface-soft hover:text-solen-fg" onclick="deleteEntry(this)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center py-[var(--space-2xl,96px)] text-solen-muted hidden" id="emptyTimeline">
+    <p class="font-body text-[clamp(1.05rem,1.3vw,1.15rem)] leading-[1.7] text-solen-muted mb-[var(--space-md,16px)]">No check-ins yet</p>
+    <p class="font-body text-[0.875rem] leading-[1.5] text-solen-muted">Your daily reflections will appear here once you start checking in.</p>
+  </div>
+</main>
+
+<script>
+function toggleNav() {
+  var menu = document.getElementById('navMenu');
+  var chevron = document.getElementById('navChevron');
+  menu.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  var menu = document.getElementById('navMenu');
+  var container = document.getElementById('navContainer');
+  if (container && !container.contains(e.target)) {
+    menu.classList.remove('open');
+    var ch = document.getElementById('navChevron');
+    if (ch) ch.classList.remove('open');
+  }
+});
+
+function setFilter(btn, filter) {
+  document.querySelectorAll('.rounded-full.border').forEach(function(b) {
+    b.classList.remove('bg-solen-accent', 'text-[var(--color-solen-surface)]');
+    b.classList.add('bg-solen-surface', 'text-solen-muted');
+  });
+  btn.classList.remove('bg-solen-surface', 'text-solen-muted');
+  btn.classList.add('bg-solen-accent', 'text-[var(--color-solen-surface)]');
+}
+
+function editEntry(btn) { alert('Edit check-in: content, mood, and privacy settings.'); }
+
+function deleteEntry(btn) {
+  if (confirm('Delete this check-in?')) {
+    var card = btn.closest('[data-date]');
+    card.style.opacity = '0';
+    card.style.transform = 'translateX(20px)';
+    card.style.transition = 'all 0.3s';
+    setTimeout(function() { card.remove(); }, 300);
+  }
+}
+
+function signOut() { window.location.href = 'landing_tail_dark.html'; }
+</script>
+
+</body>
+</html>

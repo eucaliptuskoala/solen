@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard — Solen (dark)</title>
+<link rel="stylesheet" href="css/tailwind-solen-dark.css">
+<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-solen-bg text-solen-fg font-body antialiased min-h-screen">
+
+<nav class="flex items-center justify-between h-16 max-w-[1280px] mx-auto px-[var(--gutter,24px)]">
+  <a href="index_tail_dark.html" class="flex items-center gap-[10px] font-display text-[1.35rem] tracking-[-0.01em] text-solen-fg no-underline">
+    <span class="relative w-7 h-7 rounded-full bg-solen-accent flex-shrink-0
+      after:content-[''] after:absolute after:inset-[-6px] after:rounded-full after:border after:border-solen-accent after:opacity-30"></span>
+    Solen
+  </a>
+  <div class="relative" id="navContainer">
+    <button class="flex items-center gap-3 px-4 py-2 rounded-[8px] border border-solen-border bg-solen-surface cursor-pointer transition-all duration-200 font-body text-[0.9rem] text-solen-fg hover:bg-solen-surface-soft" onclick="toggleNav()">
+      <span class="w-7 h-7 rounded-full bg-solen-accent-dim flex items-center justify-center text-[var(--color-solen-surface)] font-mono text-[0.75rem] font-semibold">A</span>
+      <span>Alex</span>
+      <svg class="w-3.5 h-3.5 transition-transform duration-300" id="navChevron" viewBox="0 0 14 14"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+    </button>
+    <div class="nav-dropdown-menu" id="navMenu">
+      <div class="px-[18px] pt-2 pb-1 font-mono text-[0.65rem] tracking-[0.08em] uppercase text-solen-muted opacity-60">Navigate</div>
+      <a href="dashboard_tail_dark.html" class="flex items-center gap-3 px-[18px] py-3 text-[0.9rem] text-solen-fg transition-[background] duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent hover:bg-solen-surface-soft bg-solen-accent-subtle text-solen-accent">
+        <svg viewBox="0 0 18 18" class="w-[18px] h-[18px] flex-shrink-0 opacity-60" fill="none"><rect x="2" y="2" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="10" y="2" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="2" y="10" width="6" height="6" rx="1.5" fill="currentColor"/><rect x="10" y="10" width="6" height="6" rx="1.5" fill="currentColor"/></svg>
+        Dashboard
+      </a>
+      <a href="checkins_tail_dark.html" class="flex items-center gap-3 px-[18px] py-3 text-[0.9rem] text-solen-fg transition-[background] duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent hover:bg-solen-surface-soft">
+        <svg viewBox="0 0 18 18" class="w-[18px] h-[18px] flex-shrink-0 opacity-60" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        Check-Ins
+      </a>
+      <a href="progress_tail_dark.html" class="flex items-center gap-3 px-[18px] py-3 text-[0.9rem] text-solen-fg transition-[background] duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent hover:bg-solen-surface-soft">
+        <svg viewBox="0 0 18 18" class="w-[18px] h-[18px] flex-shrink-0 opacity-60" fill="none"><rect x="2" y="8" width="3" height="8" rx="1" fill="currentColor"/><rect x="7.5" y="4" width="3" height="12" rx="1" fill="currentColor"/><rect x="13" y="2" width="3" height="14" rx="1" fill="currentColor"/></svg>
+        Progress
+      </a>
+      <a href="inspire_tail_dark.html" class="flex items-center gap-3 px-[18px] py-3 text-[0.9rem] text-solen-fg transition-[background] duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent hover:bg-solen-surface-soft">
+        <svg viewBox="0 0 18 18" class="w-[18px] h-[18px] flex-shrink-0 opacity-60" fill="none"><circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5" fill="none"/><circle cx="9" cy="9" r="2" fill="currentColor"/></svg>
+        Inspire
+      </a>
+      <div class="h-px bg-solen-border my-1"></div>
+      <button class="flex items-center gap-3 px-[18px] py-3 text-[0.9rem] text-solen-fg transition-[background] duration-150 cursor-pointer no-underline border-none w-full text-left bg-transparent hover:bg-solen-surface-soft font-body" onclick="signOut()">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<main class="max-w-[1280px] mx-auto px-[var(--gutter,24px)] py-[var(--space-xl,64px)]">
+  <div class="mb-[var(--space-xl,64px)] animate-[fade-in_0.5s_ease_both]">
+    <span class="block font-mono text-[0.75rem] tracking-[0.05em] uppercase text-solen-muted mb-[var(--space-sm,8px)]">Fri 16 May 2026</span>
+    <h1 class="font-display text-[clamp(2rem,3.5vw,3rem)] leading-[1.15] tracking-[-0.015em] font-[400]">Good morning, Alex.</h1>
+  </div>
+
+  <!-- Check-in prompt -->
+  <div class="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg,32px)] mb-[var(--space-xl,64px)] animate-[fade-in_0.5s_ease_0.1s_both]" id="checkinPrompt">
+    <h2 class="font-display text-[1.3rem] font-[400] mb-[var(--space-lg,32px)]">How are you feeling today?</h2>
+
+    <div class="flex gap-[var(--space-md,16px)] flex-wrap mb-[var(--space-md,16px)]" id="moodPicker">
+      <button class="flex flex-col items-center gap-[6px] px-2 py-3 border border-solen-border rounded-[8px] bg-solen-surface cursor-pointer transition-all duration-200 min-w-[64px] font-body text-[0.75rem] text-solen-muted hover:border-solen-accent hover:bg-solen-accent-subtle" data-mood="AWFUL" onclick="selectMood(this)">
+        <svg viewBox="0 0 32 32" fill="none" class="w-8 h-8"><circle cx="16" cy="16" r="13" fill="var(--color-solen-mood-awful-bg)"/><path d="M6 6l4 4m-4 0l4-4" stroke="var(--color-solen-mood-awful)" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="12" cy="14" rx="2" ry="2.5" fill="var(--color-solen-mood-awful)" opacity="0.4"/><ellipse cx="20" cy="14" rx="2" ry="2.5" fill="var(--color-solen-mood-awful)" opacity="0.4"/><path d="M10 22c2-1.5 6-1.5 8 0" stroke="var(--color-solen-mood-awful)" stroke-width="1.2" fill="none"/><path d="M23 9l-3 2m3 0l-3-2" stroke="var(--color-solen-mood-awful)" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span>Awful</span>
+      </button>
+      <button class="flex flex-col items-center gap-[6px] px-2 py-3 border border-solen-border rounded-[8px] bg-solen-surface cursor-pointer transition-all duration-200 min-w-[64px] font-body text-[0.75rem] text-solen-muted hover:border-solen-accent hover:bg-solen-accent-subtle" data-mood="BAD" onclick="selectMood(this)">
+        <svg viewBox="0 0 32 32" fill="none" class="w-8 h-8"><circle cx="16" cy="16" r="13" fill="var(--color-solen-mood-bad-bg)"/><path d="M10 8l2 2m-2 0l2-2" stroke="var(--color-solen-mood-bad)" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="12" cy="14" rx="2" ry="2.5" fill="var(--color-solen-mood-bad)" opacity="0.3"/><ellipse cx="20" cy="14" rx="2" ry="2.5" fill="var(--color-solen-mood-bad)" opacity="0.3"/><path d="M11 21c2-1 6-1 8 0" stroke="var(--color-solen-mood-bad)" stroke-width="1.2" fill="none"/><path d="M26 8l-2 3" stroke="var(--color-solen-mood-bad)" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span>Bad</span>
+      </button>
+      <button class="flex flex-col items-center gap-[6px] px-2 py-3 border border-solen-border rounded-[8px] bg-solen-surface cursor-pointer transition-all duration-200 min-w-[64px] font-body text-[0.75rem] text-solen-muted hover:border-solen-accent hover:bg-solen-accent-subtle" data-mood="OKAY" onclick="selectMood(this)">
+        <svg viewBox="0 0 32 32" fill="none" class="w-8 h-8"><circle cx="16" cy="16" r="13" fill="var(--color-solen-mood-okay-bg)"/><ellipse cx="11" cy="13" rx="2" ry="2.5" fill="var(--color-solen-mood-okay)" opacity="0.35"/><ellipse cx="21" cy="13" rx="2" ry="2.5" fill="var(--color-solen-mood-okay)" opacity="0.35"/><path d="M10 20c2 1.5 6 1.5 8 0" stroke="var(--color-solen-mood-okay)" stroke-width="1.2" fill="none"/><circle cx="26" cy="12" r="1.5" fill="var(--color-solen-mood-okay)" opacity="0.5"/></svg>
+        <span>Okay</span>
+      </button>
+      <button class="flex flex-col items-center gap-[6px] px-2 py-3 border border-solen-border rounded-[8px] bg-solen-surface cursor-pointer transition-all duration-200 min-w-[64px] font-body text-[0.75rem] text-solen-muted hover:border-solen-accent hover:bg-solen-accent-subtle" data-mood="GOOD" onclick="selectMood(this)">
+        <svg viewBox="0 0 32 32" fill="none" class="w-8 h-8"><circle cx="16" cy="16" r="13" fill="var(--color-solen-mood-good-bg)"/><ellipse cx="11" cy="12" rx="2" ry="2" fill="var(--color-solen-mood-good)"/><ellipse cx="21" cy="12" rx="2" ry="2" fill="var(--color-solen-mood-good)"/><path d="M11 19c2 2 6 2 8 0" stroke="var(--color-solen-mood-good)" stroke-width="1.3" fill="none"/><path d="M24 7l2 2-2 2" stroke="var(--color-solen-mood-good)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 7l2 2-2 2" stroke="var(--color-solen-mood-good)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Good</span>
+      </button>
+      <button class="flex flex-col items-center gap-[6px] px-2 py-3 border border-solen-border rounded-[8px] bg-solen-surface cursor-pointer transition-all duration-200 min-w-[64px] font-body text-[0.75rem] text-solen-muted hover:border-solen-accent hover:bg-solen-accent-subtle" data-mood="AWESOME" onclick="selectMood(this)">
+        <svg viewBox="0 0 32 32" fill="none" class="w-8 h-8"><circle cx="16" cy="16" r="13" fill="var(--color-solen-mood-awesome-bg)"/><circle cx="16" cy="16" r="11" fill="var(--color-solen-mood-awesome)" opacity="0.3"/><ellipse cx="11" cy="12" rx="2.5" ry="1.5" fill="var(--color-solen-mood-awesome)"/><ellipse cx="21" cy="12" rx="2.5" ry="1.5" fill="var(--color-solen-mood-awesome)"/><path d="M11 18c2 3 6 3 8 0" stroke="var(--color-solen-mood-awesome)" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M24 4l4 3-4 2" stroke="var(--color-solen-mood-awesome)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 2l4 3-4 2" stroke="var(--color-solen-mood-awesome)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 4l4 3-4 2" stroke="var(--color-solen-mood-awesome)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Awesome</span>
+      </button>
+    </div>
+
+    <textarea placeholder="What's on your mind today? (optional)" rows="2" id="checkinReflection" class="w-full px-4 py-3 border border-solen-border rounded-[8px] bg-solen-bg text-[0.95rem] text-solen-fg outline-none resize-vertical transition-[border-color] duration-200 font-body min-h-[60px] focus:border-solen-accent mb-[var(--space-md,16px)]"></textarea>
+
+    <div class="flex items-center gap-[var(--space-md,16px)]">
+      <button class="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200 cursor-pointer font-body" onclick="submitCheckin()">Save check-in</button>
+      <button class="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-solen-fg no-underline hover:bg-solen-surface-soft transition-all duration-200 cursor-pointer font-body bg-transparent border-none" onclick="skipCheckin()">Skip for now</button>
+    </div>
+  </div>
+
+  <!-- Checked in state (hidden until check-in is saved) -->
+  <div class="hidden items-center gap-[var(--space-md,16px)] font-display text-[1rem] text-solen-accent mb-[var(--space-xl,64px)]" id="checkedInState">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="w-6 h-6"><path d="M20 6L9 17l-5-5"/></svg>
+    <span>Today's check-in saved.</span>
+  </div>
+
+  <!-- Practices section -->
+  <div class="flex items-center justify-between mb-[var(--space-lg,32px)] animate-[fade-in_0.5s_ease_0.2s_both]">
+    <h2 class="font-display text-[1.3rem] font-[400]">Your practices</h2>
+    <button class="inline-flex items-center gap-2 px-[18px] py-2 rounded-[8px] text-[0.85rem] font-medium text-solen-muted no-underline hover:bg-solen-surface-soft hover:text-solen-fg transition-all duration-200 cursor-pointer font-body bg-transparent border-none" onclick="alert('New practice dialog would open here with Category tree browser')">+ New practice</button>
+  </div>
+
+  <div class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-[var(--space-md,16px)] animate-[fade-in_0.5s_ease_0.3s_both]">
+    <!-- Practice 1 -->
+    <div class="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg,32px)] transition-all duration-200 hover:border-solen-accent-dim" id="practice1">
+      <div class="flex items-start justify-between gap-[var(--space-sm,8px)] mb-[var(--space-sm,8px)]">
+        <div>
+          <div class="font-display text-[1.1rem]">Morning stretch</div>
+          <div class="flex items-center gap-[var(--space-sm,8px)] flex-wrap mt-[var(--space-sm,8px)]">
+            <span class="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">Movement</span>
+            <span class="inline-flex items-center gap-1 font-mono text-[0.75rem] text-solen-accent">
+              <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="8" cy="8" r="6" fill="oklch(68% 0.16 75 / 0.2)"/><circle cx="8" cy="8" r="3" fill="var(--color-solen-accent)"/></svg>
+              12 days
+            </span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-solen-border bg-transparent cursor-pointer transition-all duration-200 flex-shrink-0 hover:border-solen-accent hover:bg-solen-accent-subtle" onclick="markDone(this, 'practice1')">
+            <svg viewBox="0 0 16 16" width="14" height="14" stroke="var(--color-solen-muted)" stroke-width="2" fill="none" stroke-linecap="round"><path d="M3 8l3 4 7-7"/></svg>
+          </button>
+          <button class="w-8 h-8 flex items-center justify-center border-none bg-transparent cursor-pointer rounded-[4px] text-solen-muted transition-all duration-150 hover:bg-solen-surface-soft hover:text-solen-fg" onclick="showDeleteDialog('Morning stretch')">•••</button>
+        </div>
+      </div>
+      <div class="font-body text-[0.875rem] leading-[1.5] text-solen-muted">Gentle stretches to start the day.</div>
+    </div>
+
+    <!-- Practice 2 -->
+    <div class="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg,32px)] transition-all duration-200 hover:border-solen-accent-dim" id="practice2">
+      <div class="flex items-start justify-between gap-[var(--space-sm,8px)] mb-[var(--space-sm,8px)]">
+        <div>
+          <div class="font-display text-[1.1rem]">Read 10 pages</div>
+          <div class="flex items-center gap-[var(--space-sm,8px)] flex-wrap mt-[var(--space-sm,8px)]">
+            <span class="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">Mindfulness</span>
+            <span class="inline-flex items-center gap-1 font-mono text-[0.75rem] text-solen-accent">
+              <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="8" cy="8" r="6" fill="oklch(68% 0.16 75 / 0.2)"/><circle cx="8" cy="8" r="3" fill="var(--color-solen-accent)"/></svg>
+              5 days
+            </span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-solen-border bg-transparent cursor-pointer transition-all duration-200 flex-shrink-0 hover:border-solen-accent hover:bg-solen-accent-subtle" onclick="markDone(this, 'practice2')">
+            <svg viewBox="0 0 16 16" width="14" height="14" stroke="var(--color-solen-muted)" stroke-width="2" fill="none" stroke-linecap="round"><path d="M3 8l3 4 7-7"/></svg>
+          </button>
+          <button class="w-8 h-8 flex items-center justify-center border-none bg-transparent cursor-pointer rounded-[4px] text-solen-muted transition-all duration-150 hover:bg-solen-surface-soft hover:text-solen-fg" onclick="showDeleteDialog('Read 10 pages')">•••</button>
+        </div>
+      </div>
+      <div class="font-body text-[0.875rem] leading-[1.5] text-solen-muted">A quiet moment with a book.</div>
+    </div>
+
+    <!-- Practice 3 -->
+    <div class="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-lg,32px)] transition-all duration-200 hover:border-solen-accent-dim" id="practice3">
+      <div class="flex items-start justify-between gap-[var(--space-sm,8px)] mb-[var(--space-sm,8px)]">
+        <div>
+          <div class="font-display text-[1.1rem]">Drink water</div>
+          <div class="flex items-center gap-[var(--space-sm,8px)] flex-wrap mt-[var(--space-sm,8px)]">
+            <span class="inline-flex items-center px-[10px] py-[2px] font-mono text-[0.7rem] tracking-[0.03em] rounded-full border border-solen-border text-solen-muted bg-solen-surface">Wellness</span>
+            <span class="inline-flex items-center gap-1 font-mono text-[0.75rem] text-solen-accent">
+              <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="8" cy="8" r="6" fill="oklch(68% 0.16 75 / 0.2)"/><circle cx="8" cy="8" r="3" fill="var(--color-solen-accent)"/></svg>
+              21 days
+            </span>
+          </div>
+        </div>
+        <div class="flex items-center gap-1">
+          <button class="flex items-center justify-center w-10 h-10 rounded-full border-2 border-solen-border bg-transparent cursor-pointer transition-all duration-200 flex-shrink-0 hover:border-solen-accent hover:bg-solen-accent-subtle" onclick="markDone(this, 'practice3')">
+            <svg viewBox="0 0 16 16" width="14" height="14" stroke="var(--color-solen-muted)" stroke-width="2" fill="none" stroke-linecap="round"><path d="M3 8l3 4 7-7"/></svg>
+          </button>
+          <button class="w-8 h-8 flex items-center justify-center border-none bg-transparent cursor-pointer rounded-[4px] text-solen-muted transition-all duration-150 hover:bg-solen-surface-soft hover:text-solen-fg" onclick="showDeleteDialog('Drink water')">•••</button>
+        </div>
+      </div>
+      <div class="font-body text-[0.875rem] leading-[1.5] text-solen-muted">Stay hydrated through the day.</div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="text-center py-[var(--space-2xl,96px)] text-solen-muted hidden" id="emptyState">
+    <p class="font-display text-[1.15rem] mb-[var(--space-md,16px)] text-solen-fg">No practices yet</p>
+    <div class="font-body text-[0.875rem] leading-[1.5] mb-[var(--space-lg,32px)]">Start by adding a practice that matters to you.</div>
+    <button class="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200 cursor-pointer font-body">+ Add your first practice</button>
+  </div>
+</main>
+
+<!-- Delete Dialog -->
+<div class="dialog-overlay" id="deleteDialog">
+  <div class="bg-solen-surface border border-solen-border rounded-[8px] p-[var(--space-xl,64px)] max-w-[400px] w-[90%] shadow-[0_16_48px_rgb(0_0_0_/_0.4)]">
+    <h3 class="font-display text-[1.15rem] font-[400] mb-[var(--space-sm,8px)]">Delete practice?</h3>
+    <p class="text-[0.9rem] text-solen-muted mb-[var(--space-lg,32px)] leading-[1.6]" id="deleteDialogText">This will remove the practice and all its check-ins. This can't be undone.</p>
+    <div class="flex gap-[var(--space-sm,8px)] justify-end">
+      <button class="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-solen-fg no-underline hover:bg-solen-surface-soft transition-all duration-200 cursor-pointer font-body bg-transparent border-none" onclick="closeDeleteDialog()">Cancel</button>
+      <button class="inline-flex items-center gap-2 px-7 py-3 rounded-[8px] text-[0.95rem] font-medium text-white bg-[oklch(55%_0.10_25)] border border-[oklch(55%_0.10_25)] no-underline hover:bg-[oklch(50%_0.12_25)] transition-all duration-200 cursor-pointer font-body" onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var selectedMood = null;
+var deletingPractice = null;
+
+function toggleNav() {
+  var menu = document.getElementById('navMenu');
+  var chevron = document.getElementById('navChevron');
+  menu.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  var menu = document.getElementById('navMenu');
+  var container = document.getElementById('navContainer');
+  if (container && !container.contains(e.target)) {
+    menu.classList.remove('open');
+    var ch = document.getElementById('navChevron');
+    if (ch) ch.classList.remove('open');
+  }
+});
+
+function selectMood(el) {
+  document.querySelectorAll('#moodPicker .flex-col').forEach(function(b) { b.classList.remove('border-solen-accent', 'bg-solen-accent-subtle', 'text-solen-accent'); });
+  el.classList.add('border-solen-accent', 'bg-solen-accent-subtle', 'text-solen-accent');
+  selectedMood = el.dataset.mood;
+}
+
+function submitCheckin() {
+  if (!selectedMood) { alert('Please select your mood first.'); return; }
+  document.getElementById('checkinPrompt').style.display = 'none';
+  var state = document.getElementById('checkedInState');
+  state.classList.remove('hidden');
+  state.classList.add('flex');
+}
+
+function skipCheckin() {
+  document.getElementById('checkinPrompt').style.display = 'none';
+}
+
+function markDone(btn, cardId) {
+  btn.classList.toggle('checked');
+  if (btn.classList.contains('checked')) {
+    btn.style.borderColor = 'var(--color-solen-accent)';
+    btn.style.background = 'var(--color-solen-accent)';
+    btn.querySelector('svg').style.stroke = 'var(--color-solen-surface)';
+    var card = document.getElementById(cardId);
+    card.style.borderColor = 'var(--color-solen-accent)';
+    card.style.background = 'oklch(68% 0.16 75 / 0.1)';
+  } else {
+    btn.style.borderColor = '';
+    btn.style.background = '';
+    btn.querySelector('svg').style.stroke = '';
+    var card = document.getElementById(cardId);
+    card.style.borderColor = '';
+    card.style.background = '';
+  }
+}
+
+function showDeleteDialog(name) {
+  deletingPractice = name;
+  document.getElementById('deleteDialogText').textContent = 'Are you sure you want to delete "' + name + '"? This will remove the practice and all its check-ins. This can\'t be undone.';
+  document.getElementById('deleteDialog').classList.add('open');
+}
+
+function closeDeleteDialog() {
+  document.getElementById('deleteDialog').classList.remove('open');
+  deletingPractice = null;
+}
+
+function confirmDelete() {
+  alert('Deleted: ' + deletingPractice);
+  closeDeleteDialog();
+}
+
+function signOut() { window.location.href = 'landing_tail_dark.html'; }
+</script>
+
+</body>
+</html>

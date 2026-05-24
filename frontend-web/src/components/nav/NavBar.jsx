@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthHandler from "../../apis/AuthHandler";
+import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
   {
@@ -97,6 +98,8 @@ function NavBar() {
           <Link to="/sign-up" className="inline-flex items-center gap-2 px-[18px] py-2 rounded-[8px] text-[0.85rem] font-medium text-[var(--color-solen-surface)] bg-solen-accent border border-solen-accent no-underline hover:bg-solen-accent-glow hover:border-solen-accent-glow hover:shadow-[0_0_24px_oklch(78%_0.18_80_/_0.25)] transition-all duration-200">
             Get started
           </Link>
+          <span className="w-px h-6 bg-solen-border" />
+          <ThemeToggle />
         </div>
       )}
 
@@ -109,6 +112,11 @@ function NavBar() {
         </div>
       )}
 
+      {token && (
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+        </div>
+      )}
       {token && (
         <div className="relative">
           <button
