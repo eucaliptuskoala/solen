@@ -90,4 +90,15 @@ class JwtAuthFilterTest {
         assertNull(SecurityContextHolder.getContext().getAuthentication());
         verify(filterChain).doFilter(request, response);
     }
+
+    @Test
+    void doFilter_withBearerTokenButNoEmail_doesNothing() throws Exception {
+        when(request.getHeader("Authorization")).thenReturn("Bearer bad-token");
+        when(jwtUtil.extractEmail("bad-token")).thenReturn(null);
+
+        filter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+        verify(filterChain).doFilter(request, response);
+    }
 }

@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -121,5 +122,15 @@ class GetCheckInsForUserUseCaseImplTest {
         assertEquals(1, result.size());
         assertEquals("before", result.get(0).getContent());
         verify(checkInRepository).findByPracticeCreatorId(1L);
+    }
+
+    @Test
+    void findPracticeIdsCheckedInTodayByUserId() {
+        when(checkInRepository.findPracticeIdsCheckedInTodayByUserId(1L)).thenReturn(Set.of(10L, 20L));
+
+        Set<Long> result = getCheckInsUseCase.findPracticeIdsCheckedInTodayByUserId(1L);
+
+        assertEquals(Set.of(10L, 20L), result);
+        verify(checkInRepository).findPracticeIdsCheckedInTodayByUserId(1L);
     }
 }

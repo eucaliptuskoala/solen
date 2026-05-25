@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -103,5 +104,68 @@ class CheckInRepositoryTest {
 
         assertEquals(2, found.size());
         verify(jpaRepository, times(1)).findCheckInsForUser(1L, LocalDate.now().minusDays(1), LocalDate.now());
+    }
+
+    @Test
+    void findById_whenExists_returnsCheckIn() {
+        CheckInEntity entity = new CheckInEntity();
+        Practice practice = Practice.builder().id(1L).build();
+        CheckIn checkIn = CheckIn.builder().id(1L).practice(practice).date(LocalDate.now()).streakValue(3).build();
+
+        when(jpaRepository.findByIdWithPracticeAndCreator(1L)).thenReturn(entity);
+        when(converter.convertToDomain(entity)).thenReturn(checkIn);
+
+        CheckIn result = checkInRepository.findById(1L);
+
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+        verify(jpaRepository).findByIdWithPracticeAndCreator(1L);
+    }
+
+    @Test
+    void findById_whenNotExists_returnsNull() {
+        when(jpaRepository.findByIdWithPracticeAndCreator(99L)).thenReturn(null);
+
+        CheckIn result = checkInRepository.findById(99L);
+
+        assertNull(result);
+        verify(jpaRepository).findByIdWithPracticeAndCreator(99L);
+    }
+
+    @Test
+    void findByCheckInIdAndEmail_returnsTrue() {
+        when(jpaRepository.findByCheckInIdAndEmail(1L, "user@test.com")).thenReturn(true);
+
+        boolean result = checkInRepository.findByCheckInIdAndEmail(1L, "user@test.com");
+
+        assertTrue(result);
+        verify(jpaRepository).findByCheckInIdAndEmail(1L, "user@test.com");
+    }
+
+    @Test
+    void findByCheckInIdAndEmail_returnsFalse() {
+        when(jpaRepository.findByCheckInIdAndEmail(99L, "other@test.com")).thenReturn(false);
+
+        boolean result = checkInRepository.findByCheckInIdAndEmail(99L, "other@test.com");
+
+        assertFalse(result);
+        verify(jpaRepository).findByCheckInIdAndEmail(99L, "other@test.com");
+    }
+
+    @Test
+    void deleteById_delegatesToJpaRepository() {
+        checkInRepository.deleteById(1L);
+
+        verify(jpaRepository).deleteById(1L);
+    }
+
+    @Test
+    void findPracticeIdsCheckedInTodayByUserId() {
+        when(jpaRepository.findPracticeIdsCheckedInOnDate(1L, LocalDate.now())).thenReturn(List.of(1L, 2L));
+
+        Set<Long> result = checkInRepository.findPracticeIdsCheckedInTodayByUserId(1L);
+
+        assertEquals(Set.of(1L, 2L), result);
+        verify(jpaRepository).findPracticeIdsCheckedInOnDate(1L, LocalDate.now());
     }
 }

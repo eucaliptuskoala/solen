@@ -11,8 +11,8 @@ on:
       - 'frontend-web/**'
 
 jobs:
-  build-and-analyse:
-    name: Build & Analyse
+  ci:
+    name: CI
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -21,8 +21,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # required for SonarCloud
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -34,11 +32,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint
+        run: npm run lint
+
       - name: Build
         run: npm run build
         env:
           VITE_BASE_API_URL: ${{ secrets.VITE_BASE_API_URL }}
-          
+
+      - name: Test
+        run: npm test
+
       - name: Deploy to Vercel
-        if: success()
+        if: github.ref == 'refs/heads/main'
         run: npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }} --yes

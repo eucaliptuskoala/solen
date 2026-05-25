@@ -66,6 +66,16 @@ class CategoryRepositoryTest {
     }
 
     @Test
+    void findAll_returnsAllCategories() {
+        categoryRepository.save(Category.builder().name("A").build());
+        categoryRepository.save(Category.builder().name("B").build());
+
+        var all = categoryRepository.findAll();
+
+        assertThat(all).hasSize(2);
+    }
+
+    @Test
     void existsByName_returnsTrue_whenNameExists() {
         categoryRepository.save(Category.builder().name("Unique Name").build());
 

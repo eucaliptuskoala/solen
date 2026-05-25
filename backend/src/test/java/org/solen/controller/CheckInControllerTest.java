@@ -226,4 +226,28 @@ class CheckInControllerTest {
                         .content(body))
                 .andExpect(status().isBadRequest());
     }
+
+    @Test
+    @WithMockUser
+    void toggleLike_returnsResult() throws Exception {
+        when(userIdProvider.getUserId()).thenReturn(1L);
+        when(toggleCheckInLikeUseCase.toggle(10L, 1L)).thenReturn(new ToggleLikeResult(true, 5));
+
+        mockMvc.perform(post("/checkins/10/like"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.liked").value(true))
+                .andExpect(jsonPath("$.likeCount").value(5));
+    }
+
+    @Test
+    @WithMockUser
+    void toggleLike_unlike_returnsResult() throws Exception {
+        when(userIdProvider.getUserId()).thenReturn(1L);
+        when(toggleCheckInLikeUseCase.toggle(10L, 1L)).thenReturn(new ToggleLikeResult(false, 0));
+
+        mockMvc.perform(post("/checkins/10/like"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.liked").value(false))
+                .andExpect(jsonPath("$.likeCount").value(0));
+    }
 }

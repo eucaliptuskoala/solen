@@ -91,4 +91,23 @@ class CreateCheckInUseCaseImplTest {
         verify(practiceRepository, times(1)).findById(99L);
         verify(checkInRepository, never()).save(any());
     }
+
+    @Test
+    void createCheckInWithDetails_streakAlreadyUpdatedToday_doesNotIncrement() {
+        Practice practice = Practice.builder()
+                .id(1L)
+                .name("Yoga")
+                .streak(5)
+                .lastUpdatedStreak(LocalDateTime.now())
+                .thresholdDays(2)
+                .build();
+
+        when(practiceRepository.findById(1L)).thenReturn(practice);
+        when(checkInRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+
+        CheckIn created = createUseCase.createWithDetails(1L, "Already practiced", false, Mood.OKAY);
+
+        assertEquals(5, created.getStreakValue());
+        verify(practiceRepository, never()).save(any());
+    }
 }

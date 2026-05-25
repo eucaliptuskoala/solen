@@ -55,4 +55,20 @@ class UpdateCategoryUseCaseImplTest {
 
         assertNull(result.getParent());
     }
+
+    @Test
+    void updateCategory_setParent_withValidParentId() {
+        Category existing = Category.builder().id(1L).name("Child").build();
+        Category parent = Category.builder().id(2L).name("Parent").build();
+        UpdateCategoryRequest request = UpdateCategoryRequest.builder().parentId(2L).build();
+
+        when(categoryRepository.findById(1L)).thenReturn(existing);
+        when(categoryRepository.findById(2L)).thenReturn(parent);
+        when(categoryRepository.save(any(Category.class))).thenAnswer(i -> i.getArgument(0));
+
+        Category result = updateCategoryUseCase.updateCategory(1L, request);
+
+        assertNotNull(result.getParent());
+        assertEquals(2L, result.getParent().getId());
+    }
 }
