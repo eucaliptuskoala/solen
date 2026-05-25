@@ -1,6 +1,6 @@
 function PageHeader({ eyebrow, title, className = "" }) {
   return (
-    <div className={`mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_both] ${className}`}>
+    <div className={`mb-[var(--space-lg)] animate-[fade-in_0.5s_ease_both] ${className}`}>
       <span className="font-mono text-xs tracking-[0.05em] uppercase text-solen-muted block mb-[var(--space-sm)]">
         {eyebrow}
       </span>

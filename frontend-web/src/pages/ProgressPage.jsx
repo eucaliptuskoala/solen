@@ -112,10 +112,35 @@ function ProgressPage() {
 
   return (
     <main className="max-w-[1280px] mx-auto px-[var(--gutter)] py-[var(--space-xl)]">
-      <PageHeader eyebrow="Your growth" title="Progress" />
+      <div className="flex items-center justify-between mb-[var(--space-lg)] flex-wrap gap-4 animate-[fade-in_0.5s_ease_both]">
+        <PageHeader eyebrow="Your growth" title="Progress" className="mb-0" />
+        <div className="flex flex-wrap gap-2">
+          {presets.map((p) => (
+            <button
+              key={p.key}
+              type="button"
+              className={`px-3.5 py-2 border rounded-[8px] cursor-pointer transition-all duration-200 text-center ${
+                activePreset === p.key
+                  ? "border-solen-accent bg-solen-accent text-[var(--color-solen-surface)]"
+                  : "border-solen-border bg-solen-surface text-solen-muted hover:bg-solen-surface-soft hover:text-solen-fg"
+              }`}
+              onClick={() => applyPreset(p)}
+            >
+              <span className="block font-display text-[0.85rem] leading-none mb-0.5">
+                {p.number}
+              </span>
+              <span className="block font-mono text-[0.55rem] tracking-[0.1em] uppercase opacity-70 leading-tight">
+                {p.unit}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
 
-      {/* Date range selector */}
-      <Card className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.1s_both]">
+      <div className="border-t border-solen-border mb-[var(--space-lg)]" />
+
+      {/* Range visualization + custom range */}
+      <Card className="mb-[var(--space-lg)] animate-[fade-in_0.5s_ease_0.1s_both]">
         <div className="flex items-start gap-4 mb-[var(--space-lg)]">
           <div className="w-9 h-9 rounded-[8px] border border-solen-border flex items-center justify-center flex-shrink-0 mt-0.5">
             <svg
@@ -137,28 +162,6 @@ function ProgressPage() {
               {rangeLabel}
             </span>
           </div>
-        </div>
-
-        <div className="flex flex-wrap gap-2 mb-[var(--space-lg)]">
-          {presets.map((p) => (
-            <button
-              key={p.key}
-              type="button"
-              className={`px-3.5 py-2 border rounded-[8px] cursor-pointer transition-all duration-200 text-center ${
-                activePreset === p.key
-                  ? "border-solen-accent bg-solen-accent text-[var(--color-solen-surface)]"
-                  : "border-solen-border bg-solen-surface text-solen-muted hover:bg-solen-surface-soft hover:text-solen-fg"
-              }`}
-              onClick={() => applyPreset(p)}
-            >
-              <span className="block font-display text-[0.85rem] leading-none mb-0.5">
-                {p.number}
-              </span>
-              <span className="block font-mono text-[0.55rem] tracking-[0.1em] uppercase opacity-70 leading-tight">
-                {p.unit}
-              </span>
-            </button>
-          ))}
         </div>
 
         <div className="relative h-9 mb-[var(--space-md)]">
@@ -241,7 +244,7 @@ function ProgressPage() {
       </Card>
 
       {/* Activity calendar */}
-      <div className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.2s_both] border-t border-solen-border pt-[var(--space-xl)]">
+      <div className="mb-[var(--space-lg)] animate-[fade-in_0.5s_ease_0.2s_both] border-t border-solen-border pt-[var(--space-lg)]">
         <div className="flex items-center justify-between mb-[var(--space-md)]">
           <h2 className="font-display text-[1.2rem] font-[400]">Activity</h2>
           <span className="font-mono text-[0.7rem] tracking-[0.05em] uppercase text-solen-muted">
@@ -254,7 +257,7 @@ function ProgressPage() {
       </div>
 
       {/* Per-practice trends */}
-      <div className="mb-[var(--space-xl)] animate-[fade-in_0.5s_ease_0.3s_both] border-t border-solen-border pt-[var(--space-xl)]">
+      <div className="mb-[var(--space-lg)] animate-[fade-in_0.5s_ease_0.3s_both] border-t border-solen-border pt-[var(--space-lg)]">
         <h2 className="font-display text-[1.2rem] font-[400] mb-[var(--space-md)]">
           Per-practice trends
         </h2>

@@ -100,7 +100,7 @@ function DashboardPage() {
 
       <DailyCheckInForm practices={practices} onSave={handleDailyCheckInSave} />
 
-      <div className="border-t border-solen-border mb-[var(--space-xl)]" />
+      <div className="border-t border-solen-border mb-[var(--space-lg)]" />
 
       <div className="flex items-center justify-between mb-[var(--space-lg)] animate-[fade-in_0.5s_ease_0.2s_both]">
         <h2 className="font-display text-[1.3rem] font-normal">Your practices</h2>

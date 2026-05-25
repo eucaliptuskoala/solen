@@ -28,7 +28,7 @@ function InspirePage() {
 
   return (
     <main className="max-w-[1280px] mx-auto px-[var(--gutter)] py-[var(--space-xl)]">
-      <div className="flex items-center justify-between mb-16 flex-wrap gap-4 animate-[fade-in_0.5s_ease_both]">
+      <div className="flex items-center justify-between mb-[var(--space-lg)] flex-wrap gap-4 animate-[fade-in_0.5s_ease_both]">
         <PageHeader eyebrow="Community" title="Inspire" className="mb-0" />
         <div className="flex border border-solen-border rounded-[8px] overflow-hidden">
           <button
@@ -46,7 +46,7 @@ function InspirePage() {
         </div>
       </div>
 
-      <div className="border-t border-solen-border mb-[var(--space-xl)]" />
+      <div className="border-t border-solen-border mb-[var(--space-md)]" />
 
       {entries.length === 0 ? (
         <div className="text-center py-[var(--space-2xl)] text-solen-muted">

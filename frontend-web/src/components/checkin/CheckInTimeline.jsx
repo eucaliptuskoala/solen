@@ -23,7 +23,7 @@ function CheckInTimeline({ entries, onEdit, onDelete, onCreate }) {
 
   return (
     <>
-      <div className="flex items-center justify-between mb-[var(--space-xl)] flex-wrap gap-[var(--space-md)] animate-[fade-in_0.5s_ease_both]">
+      <div className="flex items-center justify-between mb-[var(--space-lg)] flex-wrap gap-[var(--space-md)] animate-[fade-in_0.5s_ease_both]">
         <PageHeader eyebrow="Your journal" title="Check-Ins" className="mb-0" />
         <div className="flex gap-[var(--space-sm)] flex-wrap">
           {filters.map((f) => (
@@ -39,7 +39,7 @@ function CheckInTimeline({ entries, onEdit, onDelete, onCreate }) {
         <Button variant="secondary" onClick={onCreate}>+ New check-in</Button>
       </div>
 
-      <div className="border-t border-solen-border mb-[var(--space-xl)]" />
+      <div className="border-t border-solen-border mb-[var(--space-lg)]" />
 
       {sorted.length === 0 ? (
         <div className="text-center py-24 text-solen-muted">
