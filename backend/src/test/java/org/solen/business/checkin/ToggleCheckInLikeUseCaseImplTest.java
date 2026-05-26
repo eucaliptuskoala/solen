@@ -48,7 +48,7 @@ class ToggleCheckInLikeUseCaseImplTest {
 
     @Test
     void toggle_like_success() {
-        User user = makeUser(1L);
+        makeUser(1L);
         User other = makeUser(2L);
         CheckIn checkIn = makeCheckIn(10L, 100L, other);
 
@@ -66,7 +66,7 @@ class ToggleCheckInLikeUseCaseImplTest {
 
     @Test
     void toggle_unlike_success() {
-        User user = makeUser(1L);
+        makeUser(1L);
         User other = makeUser(2L);
         CheckIn checkIn = makeCheckIn(10L, 100L, other);
         CheckInLike existingLike = CheckInLike.builder().id(99L).checkInId(10L).userId(1L).build();
