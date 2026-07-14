@@ -5,7 +5,7 @@ import org.solen.business.exceptions.UserNotFoundByIdException;
 import org.solen.business.usercases.*;
 import org.solen.configuration.GlobalExceptionHandler;
 import org.solen.configuration.security.JwtUtil;
-import org.solen.configuration.security.UserIdProvider;
+import org.solen.configuration.security.UserInfoProvider;
 import org.solen.controller.dto.user.CreateUserRequest;
 import org.solen.controller.dto.user.UpdateUserRequest;
 import org.solen.controller.dto.user.UserDto;
@@ -57,7 +57,7 @@ class UserControllerTest {
     private UserMapper mapper;
 
     @MockitoBean
-    private UserIdProvider userIdProvider;
+    private UserInfoProvider userIdProvider;
 
     @MockitoBean
     private JwtUtil jwtUtil;

@@ -7,7 +7,7 @@ import org.solen.business.practicecases.*;
 import org.solen.business.usercases.UserDetailsService;
 import org.solen.configuration.GlobalExceptionHandler;
 import org.solen.configuration.security.JwtUtil;
-import org.solen.configuration.security.UserIdProvider;
+import org.solen.configuration.security.UserInfoProvider;
 import org.solen.controller.dto.practice.CreatePracticeRequest;
 import org.solen.controller.dto.practice.PracticeDto;
 import org.solen.controller.mappers.PracticeMapper;
@@ -59,7 +59,7 @@ class PracticeControllerTest {
     private PracticeMapper practiceMapper;
 
     @MockitoBean
-    private UserIdProvider userIdProvider;
+    private UserInfoProvider userIdProvider;
 
     @MockitoBean
     private JwtUtil jwtUtil;

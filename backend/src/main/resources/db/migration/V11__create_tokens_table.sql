@@ -1,0 +1,6 @@
+CREATE TABLE tokens (
+    id BIGSERIAL PRIMARY KEY,
+    creator_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token VARCHAR(36) NOT NULL,
+    expiration TIMESTAMP NOT NULL
+);

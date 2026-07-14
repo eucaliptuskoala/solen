@@ -7,7 +7,7 @@ import org.solen.business.practicecases.ICreatePracticeUseCase;
 import org.solen.business.practicecases.IDeletePracticeUseCase;
 import org.solen.business.practicecases.IGetPracticesByUserUseCase;
 import org.solen.business.practicecases.IUpdateStreakUseCase;
-import org.solen.configuration.security.UserIdProvider;
+import org.solen.configuration.security.UserInfoProvider;
 import org.solen.controller.dto.practice.CreatePracticeRequest;
 import org.solen.controller.dto.practice.PracticeDto;
 import org.solen.controller.mappers.PracticeMapper;
@@ -30,7 +30,7 @@ public class PracticeController {
     private IUpdateStreakUseCase updateStreakUseCase;
     private IGetCheckInsForUserUseCase getCheckInsForUserUseCase;
     private PracticeMapper practiceMapper;
-    private UserIdProvider userIdProvider;
+    private UserInfoProvider userIdProvider;
 
     @PostMapping
     public ResponseEntity<PracticeDto> createPractice(@Valid @RequestBody CreatePracticeRequest request){

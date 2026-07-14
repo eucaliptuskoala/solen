@@ -9,7 +9,7 @@ import org.solen.business.exceptions.PracticeNotFoundByIdException;
 import org.solen.business.usercases.UserDetailsService;
 import org.solen.configuration.GlobalExceptionHandler;
 import org.solen.configuration.security.JwtUtil;
-import org.solen.configuration.security.UserIdProvider;
+import org.solen.configuration.security.UserInfoProvider;
 import org.solen.controller.dto.checkin.CheckInDto;
 import org.solen.controller.dto.checkin.CreateCheckInRequest;
 import org.solen.controller.dto.checkin.UpdateCheckInRequest;
@@ -64,7 +64,7 @@ class CheckInControllerTest {
     private CheckInMapper mapper;
 
     @MockitoBean
-    private UserIdProvider userIdProvider;
+    private UserInfoProvider userIdProvider;
 
     @MockitoBean
     private JwtUtil jwtUtil;

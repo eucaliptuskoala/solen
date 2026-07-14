@@ -10,7 +10,7 @@ import org.solen.business.checkin.IToggleCheckInLikeUseCase;
 import org.solen.business.checkin.IUpdateCheckInUseCase;
 import org.solen.business.checkin.ToggleLikeResult;
 import org.solen.business.checkin.fypstrategy.IGetForYouCheckInsUseCase;
-import org.solen.configuration.security.UserIdProvider;
+import org.solen.configuration.security.UserInfoProvider;
 import org.solen.controller.dto.checkin.CheckInDto;
 import org.solen.controller.dto.checkin.CreateCheckInRequest;
 import org.solen.controller.dto.checkin.GetCheckInsDTO;
@@ -38,7 +38,7 @@ public class CheckInController {
     private IToggleCheckInLikeUseCase toggleCheckInLikeUseCase;
     private CheckInLikeEnricher checkInLikeEnricher;
     private CheckInMapper mapper;
-    private UserIdProvider userIdProvider;
+    private UserInfoProvider userIdProvider;
 
     @GetMapping
     public ResponseEntity<List<CheckInDto>> getCheckIns(

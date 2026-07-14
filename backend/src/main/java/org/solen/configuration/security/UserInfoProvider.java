@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class UserIdProvider {
+public class UserInfoProvider {
 
     private IUserRepository userRepository;
 
@@ -20,5 +20,9 @@ public class UserIdProvider {
             throw new UserNotFoundByEmailException(email);
         }
         return user.getId();
+    }
+
+    public String getUserEmail() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

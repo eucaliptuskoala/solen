@@ -21,7 +21,7 @@ class UserIdProviderTest {
     private IUserRepository userRepository;
 
     @InjectMocks
-    private UserIdProvider userIdProvider;
+    private UserInfoProvider userIdProvider;
 
     @Test
     void getUserId_success() {
