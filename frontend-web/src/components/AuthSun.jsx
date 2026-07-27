@@ -16,13 +16,6 @@ function AuthSun({ size = 50, className = "" }) {
           boxShadow: `0 0 ${Math.round(size * 1.1)}px oklch(68% 0.16 75 / 0.35)`,
         }}
       >
-        {/* Inner highlight
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{
-            background: "radial-gradient(circle at 55% 40%, oklch(92% 0.12 85 / 0.6), transparent 65%)",
-          }}
-        /> */}
       </div>
     </div>
   );

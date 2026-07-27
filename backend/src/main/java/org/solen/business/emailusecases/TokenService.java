@@ -6,16 +6,19 @@ import java.util.UUID;
 import org.solen.business.exceptions.TokenNotFoundException;
 import org.solen.business.repos.IEmailTokenRepository;
 import org.solen.domain.email.EmailToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import lombok.AllArgsConstructor;
-
 @Component
-@AllArgsConstructor
 public class TokenService {
 
-    private String frontendUrl = System.getenv("FRONTEND_URL");
+    private final String frontendUrl;
     private final IEmailTokenRepository tokenRepository;
+
+    public TokenService(@Value("${frontend.url}") String frontendUrl, IEmailTokenRepository tokenRepository) {
+        this.frontendUrl = frontendUrl;
+        this.tokenRepository = tokenRepository;
+    }
 
     public String generateToken(){
         return UUID.randomUUID().toString();

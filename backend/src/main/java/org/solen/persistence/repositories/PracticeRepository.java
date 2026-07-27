@@ -9,6 +9,7 @@ import org.solen.persistence.jparepos.PracticeJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @AllArgsConstructor
@@ -25,6 +26,7 @@ public class PracticeRepository implements IPracticeRepository {
 
     @Override
     public Practice findById(Long id) {
+        Objects.requireNonNull(id, "id must not be null");
         return jpaRepository.findById(id)
                 .map(converter::convertToDomain)
                 .orElse(null);
@@ -47,6 +49,7 @@ public class PracticeRepository implements IPracticeRepository {
 
     @Override
     public void deleteById(Long id) {
+        Objects.requireNonNull(id, "id must not be null");
         jpaRepository.deleteById(id);
     }
 

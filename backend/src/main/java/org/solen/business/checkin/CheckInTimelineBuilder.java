@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Component
@@ -31,7 +32,7 @@ public class CheckInTimelineBuilder {
 
         for (Map.Entry<Long, List<CheckIn>> entry : groupedByPractice.entrySet()) {
             List<CheckIn> sorted = entry.getValue().stream()
-                    .sorted(Comparator.comparing(CheckIn::getDate))
+                    .sorted(Comparator.comparing((CheckIn ci) -> Objects.requireNonNull(ci.getDate())))
                     .toList();
 
             int threshold = sorted.get(0).getPractice().getThresholdDays();
@@ -50,7 +51,7 @@ public class CheckInTimelineBuilder {
             }
         }
 
-        result.sort(Comparator.comparing(CheckIn::getDate).reversed());
+        result.sort(Comparator.comparing((CheckIn ci) -> Objects.requireNonNull(ci.getDate())).reversed());
         return result;
     }
 }

@@ -1,6 +1,6 @@
 const MOOD_MAP = { AWFUL: 0, BAD: 1, OKAY: 2, GOOD: 3, AWESOME: 4 };
 
-export function moodToValue(mood) {
+function moodToValue(mood) {
   return mood != null ? MOOD_MAP[mood] : undefined;
 }
 

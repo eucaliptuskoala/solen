@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
+
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -19,7 +21,7 @@ public class EmailController {
     private final UserInfoProvider userInfoProvider;
 
     @PostMapping
-    public void send(@RequestBody SendEmailRequest request){
+    public void send(@Valid @RequestBody SendEmailRequest request){
         if(request.getEmail() == null){
             String authEmail = userInfoProvider.getUserEmail();
             sendEmailUseCase.execute(request.getEmailType(), authEmail);

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,7 @@ public class CheckInRepository implements ICheckInRepository {
 
     @Override
     public void deleteById(Long id) {
+        Objects.requireNonNull(id, "id must not be null");
         jpaRepository.deleteById(id);
     }
 

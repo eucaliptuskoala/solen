@@ -3,9 +3,6 @@ import { useState, useEffect, useCallback } from "react";
 function getInitialTheme() {
   const stored = localStorage.getItem("solen-theme");
   if (stored === "dark" || stored === "light") return stored;
-  // return window.matchMedia("(prefers-color-scheme: dark)").matches
-  //   ? "dark"
-  //   : "light";
   return "light";
 }
 

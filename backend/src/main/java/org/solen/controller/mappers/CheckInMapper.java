@@ -5,6 +5,8 @@ import org.solen.controller.dto.checkin.CheckInDto;
 import org.solen.domain.checkin.CheckIn;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 @AllArgsConstructor
 public class CheckInMapper {
@@ -14,7 +16,7 @@ public class CheckInMapper {
     public CheckInDto convertToDto(CheckIn checkIn) {
         if (checkIn == null) { return null; }
         return CheckInDto.builder()
-                .id(checkIn.getId())
+                .id(Objects.requireNonNull(checkIn.getId()))
                 .practice(practiceMapper.convertToDto(checkIn.getPractice()))
                 .date(checkIn.getDate())
                 .streakValue(checkIn.getStreakValue())

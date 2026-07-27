@@ -70,7 +70,7 @@ class PracticeControllerTest {
     @Test
     @WithMockUser
     void createPractice_returnsCreated() throws Exception {
-        CreatePracticeRequest request = CreatePracticeRequest.builder().name("Morning run").build();
+        CreatePracticeRequest request = CreatePracticeRequest.builder().name("Morning run").description("A morning run").build();
         Practice practice = Practice.builder().id(1L).name("Morning run").build();
         when(userIdProvider.getUserId()).thenReturn(1L);
         when(createPracticeUseCase.createPractice(request, 1L)).thenReturn(practice);

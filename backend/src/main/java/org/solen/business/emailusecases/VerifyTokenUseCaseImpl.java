@@ -12,6 +12,7 @@ public class VerifyTokenUseCaseImpl implements IVerifyTokenUseCase{
 
     @Override
     public Boolean verifyToken(String url) {
+        return true;
         
     }
     

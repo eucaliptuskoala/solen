@@ -9,6 +9,7 @@ import org.solen.persistence.jparepos.UserJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @AllArgsConstructor
@@ -24,6 +25,7 @@ public class UserRepository  implements IUserRepository {
 
     @Override
     public boolean existsById(Long id) {
+        Objects.requireNonNull(id, "id must not be null");
         return jpaRepository.existsById(id);
     }
 
@@ -36,6 +38,7 @@ public class UserRepository  implements IUserRepository {
 
     @Override
     public User findById(Long id) {
+        Objects.requireNonNull(id, "id must not be null");
         UserEntity entity = jpaRepository.findById(id).orElse(null);
         if (entity == null) return null;
         return converter.convertToDomain(entity);
@@ -55,6 +58,7 @@ public class UserRepository  implements IUserRepository {
 
     @Override
     public void deleteById(Long id) {
+        Objects.requireNonNull(id, "id must not be null");
         jpaRepository.deleteById(id);
     }
 }

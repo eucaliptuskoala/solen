@@ -9,6 +9,7 @@ import org.solen.persistence.jparepos.CategoryJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @AllArgsConstructor
@@ -25,6 +26,7 @@ public class CategoryRepository implements ICategoryRepository {
 
     @Override
     public Category findById(Long id) {
+        Objects.requireNonNull(id, "id must not be null");
         return jpaRepository.findById(id)
                 .map(converter::convertToDomainWithChildren)
                 .orElse(null);
@@ -44,6 +46,7 @@ public class CategoryRepository implements ICategoryRepository {
 
     @Override
     public void deleteById(Long id) {
+        Objects.requireNonNull(id, "id must not be null");
         jpaRepository.deleteById(id);
     }
 

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,15 +35,15 @@ public class CheckInLikeRepository implements ICheckInLikeRepository {
 
     @Override
     public CheckInLike save(CheckInLike checkInLike) {
-        CheckInEntity checkInEntity = checkInJpaRepository.getReferenceById(checkInLike.getCheckInId());
-        UserEntity userEntity = userJpaRepository.getReferenceById(checkInLike.getUserId());
+        CheckInEntity checkInEntity = checkInJpaRepository.getReferenceById(Objects.requireNonNull(checkInLike.getCheckInId(), "checkInId must not be null"));
+        UserEntity userEntity = userJpaRepository.getReferenceById(Objects.requireNonNull(checkInLike.getUserId(), "userId must not be null"));
         CheckInLikeEntity entity = converter.convertToEntity(checkInLike, checkInEntity, userEntity);
         return converter.convertToDomain(jpaRepository.save(entity));
     }
 
     @Override
     public void delete(CheckInLike checkInLike) {
-        jpaRepository.deleteById(checkInLike.getId());
+        jpaRepository.deleteById(Objects.requireNonNull(checkInLike.getId(), "id must not be null"));
     }
 
     @Override

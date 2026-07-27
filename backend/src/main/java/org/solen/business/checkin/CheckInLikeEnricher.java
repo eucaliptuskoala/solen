@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 @Component
@@ -19,7 +20,7 @@ public class CheckInLikeEnricher {
     public void enrich(List<CheckInDto> dtos, Long userId) {
         if (dtos.isEmpty()) return;
 
-        List<Long> checkInIds = dtos.stream().map(CheckInDto::getId).toList();
+        List<Long> checkInIds = dtos.stream().map(dto -> Objects.requireNonNull(dto.getId())).toList();
         Map<Long, Integer> counts = likeRepository.countByCheckInIds(checkInIds);
         Set<Long> likedIds = new HashSet<>(likeRepository.findCheckInIdsLikedByUser(userId, checkInIds));
 

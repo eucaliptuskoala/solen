@@ -100,8 +100,6 @@ function ProgressPage() {
     activePreset === "all" ? 100 : Math.min(100, (dayCount / 365) * 100 + 10);
 
   const rangeLabel = rangeLabels[activePreset] || "Custom range";
-  const heatmapLabel =
-    rangeLabels[activePreset] || `${formatShort(startDate)} — ${formatShort(endDate)}`;
 
   if (error)
     return (
