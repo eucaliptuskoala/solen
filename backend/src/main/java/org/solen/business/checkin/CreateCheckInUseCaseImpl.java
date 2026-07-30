@@ -9,11 +9,13 @@ import org.solen.domain.checkin.CheckIn;
 import org.solen.domain.checkin.Mood;
 import org.solen.domain.practices.Practice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class CreateCheckInUseCaseImpl implements ICreateCheckInUseCase {
 

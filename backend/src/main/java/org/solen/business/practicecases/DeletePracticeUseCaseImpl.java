@@ -4,9 +4,10 @@ import lombok.AllArgsConstructor;
 import org.solen.business.exceptions.PracticeNotFoundByIdException;
 import org.solen.business.repos.IPracticeRepository;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class DeletePracticeUseCaseImpl implements IDeletePracticeUseCase {
 

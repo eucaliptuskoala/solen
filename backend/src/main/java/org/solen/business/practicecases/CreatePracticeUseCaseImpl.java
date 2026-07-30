@@ -5,8 +5,10 @@ import org.solen.business.practicecases.creationstrategy.PracticeCreationStrateg
 import org.solen.controller.dto.practice.CreatePracticeRequest;
 import org.solen.domain.practices.Practice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class CreatePracticeUseCaseImpl implements ICreatePracticeUseCase {
 

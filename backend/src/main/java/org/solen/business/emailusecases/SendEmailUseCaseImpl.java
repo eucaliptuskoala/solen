@@ -10,10 +10,12 @@ import org.solen.domain.email.EmailToken;
 import org.solen.domain.email.EmailType;
 import org.solen.domain.users.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class SendEmailUseCaseImpl implements ISendEmailUseCaseImpl{
 

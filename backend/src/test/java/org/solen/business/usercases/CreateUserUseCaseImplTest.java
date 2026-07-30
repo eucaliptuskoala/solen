@@ -35,7 +35,6 @@ class CreateUserUseCaseImplTest {
         request.setName("Test User");
         request.setPassword("password");
         request.setEmail("email@email.com");
-        request.setAdmin(false);
     }
 
     @Test

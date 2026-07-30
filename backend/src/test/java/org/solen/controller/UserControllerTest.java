@@ -3,6 +3,7 @@ package org.solen.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.solen.business.exceptions.UserNotFoundByIdException;
 import org.solen.business.usercases.*;
+import org.solen.configuration.AdminBootstrapRunner;
 import org.solen.configuration.GlobalExceptionHandler;
 import org.solen.configuration.security.JwtUtil;
 import org.solen.configuration.security.UserInfoProvider;
@@ -54,6 +55,9 @@ class UserControllerTest {
     private UpdateUserUseCase updateUserUseCase;
 
     @MockitoBean
+    private IPromoteToAdminUseCase promoteToAdminUseCase;
+
+    @MockitoBean
     private UserMapper mapper;
 
     @MockitoBean
@@ -64,6 +68,9 @@ class UserControllerTest {
 
     @MockitoBean
     private UserDetailsService userDetailsService;
+
+    @MockitoBean
+    private AdminBootstrapRunner adminBootstrapRunner;
 
     @Test
     void createUser_returnsCreated() throws Exception {
@@ -177,5 +184,26 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void promoteToAdmin_returnsUpdated() throws Exception {
+        User user = User.builder().id(1L).name("Alice").email("alice@test.com").isAdmin(true).build();
+        when(promoteToAdminUseCase.promote(1L)).thenReturn(user);
+        when(mapper.convertToDto(user))
+                .thenReturn(UserDto.builder().id(1L).name("Alice").email("alice@test.com").build());
+
+        mockMvc.perform(patch("/users/1/role"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Alice"));
+    }
+
+    @Test
+    void promoteToAdmin_notFound_returns404() throws Exception {
+        doThrow(new UserNotFoundByIdException(99L))
+                .when(promoteToAdminUseCase).promote(99L);
+
+        mockMvc.perform(patch("/users/99/role"))
+                .andExpect(status().isNotFound());
     }
 }

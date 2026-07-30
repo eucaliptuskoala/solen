@@ -6,6 +6,7 @@ import org.solen.business.usercases.CreateUserUseCase;
 import org.solen.business.usercases.DeleteUserUseCase;
 import org.solen.business.usercases.GetUserByIdUseCase;
 import org.solen.business.usercases.GetUsersUseCase;
+import org.solen.business.usercases.IPromoteToAdminUseCase;
 import org.solen.business.usercases.UpdateUserUseCase;
 import org.solen.controller.dto.user.CreateUserRequest;
 import org.solen.controller.dto.user.UpdateUserRequest;
@@ -13,6 +14,7 @@ import org.solen.controller.dto.user.UserDto;
 import org.solen.controller.mappers.UserMapper;
 import org.solen.domain.users.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +29,7 @@ public class UserController {
     private GetUsersUseCase getUsersUseCase;
     private GetUserByIdUseCase getUserByIdUseCase;
     private UpdateUserUseCase updateUserUseCase;
+    private IPromoteToAdminUseCase promoteToAdminUseCase;
     private UserMapper mapper;
 
     @PostMapping
@@ -36,26 +39,37 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@userSecurity.isOwnerOrAdmin(#id, authentication.name)")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         deleteUserUseCase.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
+    @PreAuthorize("@categorySecurity.isAdminByEmail(authentication.name)")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<User> users = getUsersUseCase.getUsers();
         return ResponseEntity.ok(users.stream().map(mapper::convertToDto).toList());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("@userSecurity.isOwnerOrAdmin(#id, authentication.name)")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         User user = getUserByIdUseCase.getUserById(id);
         return ResponseEntity.ok(mapper.convertToDto(user));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("@userSecurity.isOwnerOrAdmin(#id, authentication.name)")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest request) {
         User user = updateUserUseCase.updateUser(request, id);
+        return ResponseEntity.ok(mapper.convertToDto(user));
+    }
+
+    @PatchMapping("/{id}/role")
+    @PreAuthorize("@categorySecurity.isAdminByEmail(authentication.name)")
+    public ResponseEntity<UserDto> promoteToAdmin(@PathVariable Long id) {
+        User user = promoteToAdminUseCase.promote(id);
         return ResponseEntity.ok(mapper.convertToDto(user));
     }
 }

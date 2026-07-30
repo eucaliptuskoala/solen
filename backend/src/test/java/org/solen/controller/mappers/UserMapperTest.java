@@ -30,6 +30,5 @@ class UserMapperTest {
         assertEquals(1L, dto.getId());
         assertEquals("Alice", dto.getName());
         assertEquals("alice@test.com", dto.getEmail());
-        assertTrue(dto.isAdmin());
     }
 }

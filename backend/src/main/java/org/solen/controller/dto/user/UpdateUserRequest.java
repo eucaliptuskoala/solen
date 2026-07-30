@@ -21,6 +21,4 @@ public class UpdateUserRequest {
 
     @NotBlank
     private String password;
-
-    private boolean isAdmin;
 }
