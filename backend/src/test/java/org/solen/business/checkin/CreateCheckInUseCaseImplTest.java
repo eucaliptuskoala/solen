@@ -1,5 +1,6 @@
 package org.solen.business.checkin;
 
+import org.solen.business.exceptions.ForbiddenAccessException;
 import org.solen.business.exceptions.PracticeNotFoundByIdException;
 import org.solen.business.practicecases.StreakValidator;
 import org.solen.business.repos.ICheckInRepository;
@@ -7,6 +8,7 @@ import org.solen.business.repos.IPracticeRepository;
 import org.solen.domain.checkin.CheckIn;
 import org.solen.domain.checkin.Mood;
 import org.solen.domain.practices.Practice;
+import org.solen.domain.users.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,12 +43,13 @@ class CreateCheckInUseCaseImplTest {
                 .streak(10)
                 .lastUpdatedStreak(LocalDateTime.now())
                 .thresholdDays(7)
+                .creator(User.builder().id(1L).build())
                 .build();
 
         when(practiceRepository.findById(1L)).thenReturn(practice);
         when(checkInRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        CheckIn created = createUseCase.create(1L);
+        CheckIn created = createUseCase.create(1L, 1L);
 
         assertNotNull(created);
         assertEquals(10, created.getStreakValue());
@@ -66,12 +69,13 @@ class CreateCheckInUseCaseImplTest {
                 .streak(8)
                 .lastUpdatedStreak(LocalDateTime.now())
                 .thresholdDays(5)
+                .creator(User.builder().id(1L).build())
                 .build();
 
         when(practiceRepository.findById(1L)).thenReturn(practice);
         when(checkInRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        CheckIn created = createUseCase.createWithDetails(1L, "Peaceful session", true, Mood.GOOD);
+        CheckIn created = createUseCase.createWithDetails(1L, "Peaceful session", true, Mood.GOOD, 1L);
 
         assertNotNull(created);
         assertEquals(8, created.getStreakValue());
@@ -87,8 +91,24 @@ class CreateCheckInUseCaseImplTest {
     void createCheckIn_practiceNotFound() {
         when(practiceRepository.findById(99L)).thenReturn(null);
 
-        assertThrows(PracticeNotFoundByIdException.class, () -> createUseCase.create(99L));
+        assertThrows(PracticeNotFoundByIdException.class, () -> createUseCase.create(99L, 1L));
         verify(practiceRepository, times(1)).findById(99L);
+        verify(checkInRepository, never()).save(any());
+    }
+
+    @Test
+    void createCheckIn_notOwner_throwsForbidden() {
+        Practice practice = Practice.builder()
+                .id(1L)
+                .name("Someone else's practice")
+                .streak(3)
+                .thresholdDays(7)
+                .creator(User.builder().id(99L).build())
+                .build();
+
+        when(practiceRepository.findById(1L)).thenReturn(practice);
+
+        assertThrows(ForbiddenAccessException.class, () -> createUseCase.create(1L, 1L));
         verify(checkInRepository, never()).save(any());
     }
 
@@ -100,12 +120,13 @@ class CreateCheckInUseCaseImplTest {
                 .streak(5)
                 .lastUpdatedStreak(LocalDateTime.now())
                 .thresholdDays(2)
+                .creator(User.builder().id(1L).build())
                 .build();
 
         when(practiceRepository.findById(1L)).thenReturn(practice);
         when(checkInRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        CheckIn created = createUseCase.createWithDetails(1L, "Already practiced", false, Mood.OKAY);
+        CheckIn created = createUseCase.createWithDetails(1L, "Already practiced", false, Mood.OKAY, 1L);
 
         assertEquals(5, created.getStreakValue());
         verify(practiceRepository, never()).save(any());

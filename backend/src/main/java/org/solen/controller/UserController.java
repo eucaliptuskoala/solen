@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import org.solen.business.usercases.CreateUserUseCase;
 import org.solen.business.usercases.DeleteUserUseCase;
 import org.solen.business.usercases.GetUserByIdUseCase;
-import org.solen.business.usercases.GetUsersUseCase;
 import org.solen.business.usercases.IPromoteToAdminUseCase;
 import org.solen.business.usercases.UpdateUserUseCase;
 import org.solen.controller.dto.user.CreateUserRequest;
@@ -17,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/users")
 @AllArgsConstructor
@@ -26,7 +23,6 @@ public class UserController {
 
     private CreateUserUseCase createUserUseCase;
     private DeleteUserUseCase deleteUserUseCase;
-    private GetUsersUseCase getUsersUseCase;
     private GetUserByIdUseCase getUserByIdUseCase;
     private UpdateUserUseCase updateUserUseCase;
     private IPromoteToAdminUseCase promoteToAdminUseCase;
@@ -43,13 +39,6 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         deleteUserUseCase.deleteUser(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping
-    @PreAuthorize("@categorySecurity.isAdminByEmail(authentication.name)")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<User> users = getUsersUseCase.getUsers();
-        return ResponseEntity.ok(users.stream().map(mapper::convertToDto).toList());
     }
 
     @GetMapping("/{id}")

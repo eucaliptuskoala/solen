@@ -14,7 +14,12 @@ public class JwtUtil {
 
     private final SecretKey key;
 
+    private static final long EXPIRATION_MS = 7200000;
+
     public JwtUtil(@Value("${jwt.secret}") String secret) {
+        if (secret.getBytes().length < 32) {
+            throw new IllegalArgumentException("JWT secret must be at least 256 bits (32 bytes)");
+        }
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
@@ -24,7 +29,7 @@ public class JwtUtil {
                     .claim("userId", userId)
                     .claim("name", name)
                     .setIssuedAt(new Date())
-                    .setExpiration(new Date(System.currentTimeMillis() + 86400000))
+                    .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
                     .signWith(key, SignatureAlgorithm.HS256)
                     .compact();
     }

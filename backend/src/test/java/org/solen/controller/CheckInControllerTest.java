@@ -113,6 +113,7 @@ class CheckInControllerTest {
     @Test
     @WithMockUser
     void createCheckIn_returnsCreated() throws Exception {
+        when(userIdProvider.getUserId()).thenReturn(1L);
         CreateCheckInRequest request = CreateCheckInRequest.builder()
                 .practiceId(1L)
                 .content("Great session")
@@ -120,7 +121,7 @@ class CheckInControllerTest {
                 .mood(Mood.GOOD)
                 .build();
         CheckIn checkIn = CheckIn.builder().id(1L).build();
-        when(createCheckInUseCase.createWithDetails(1L, "Great session", false, Mood.GOOD))
+        when(createCheckInUseCase.createWithDetails(1L, "Great session", false, Mood.GOOD, 1L))
                 .thenReturn(checkIn);
         when(mapper.convertToDto(checkIn))
                 .thenReturn(CheckInDto.builder().id(1L).content("Great session").build());
@@ -135,10 +136,11 @@ class CheckInControllerTest {
     @Test
     @WithMockUser
     void createCheckIn_practiceNotFound_returns404() throws Exception {
+        when(userIdProvider.getUserId()).thenReturn(1L);
         CreateCheckInRequest request = CreateCheckInRequest.builder()
                 .practiceId(99L).content("test").isPublic(false).mood(Mood.OKAY)
                 .build();
-        when(createCheckInUseCase.createWithDetails(99L, "test", false, Mood.OKAY))
+        when(createCheckInUseCase.createWithDetails(99L, "test", false, Mood.OKAY, 1L))
                 .thenThrow(new PracticeNotFoundByIdException(99L));
 
         mockMvc.perform(post("/checkins/checkin")

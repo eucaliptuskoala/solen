@@ -10,3 +10,7 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Deployment
+
+The Dockerfile serves the built app with nginx. `nginx/default.conf.template` adds security headers (CSP, HSTS, etc.) and SPA route fallback. The nginx image substitutes `${API_ORIGIN}` at container start — set it to the API origin (e.g. `https://api.solen.app`) so CSP `connect-src` allows API calls. If unset, only same-origin requests are allowed.

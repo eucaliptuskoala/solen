@@ -13,6 +13,14 @@
 | Frontend | 0 | 4 | 7 | 12 | 23 |
 | **Total** | **8** | **8** | **17** | **30** | **63** |
 
+> **Fixed (2026-08-01):** BS-1..BS-12 plus all LOW backend-security items — auth, mass assignment,
+> JWT 256-bit + 2h expiry, deleted-user 401, check-in IDOR → 403, exception-handler catch-all,
+> email enumeration + rate limit, UserInfoProvider NPE → 401, show-sql=false, `@Size` DTO validation,
+> password 8–72 policy, `isAdmin` removed from `UserDto`, security headers (backend `SecurityConfig`
+> + frontend `nginx/default.conf.template` with CSP/HSTS/Referrer-Policy/nosniff/frame-options).
+> **Deferred (documented in `to_discuss.md`):** rate limiting on `/auth/sign_in` + `POST /users`.
+> Remaining: backend architecture (10 warning/suggestion items) + frontend (23).
+
 ---
 
 ## Backend — Security
@@ -46,11 +54,11 @@
 
 ### LOW
 
-- No rate limiting on `/auth/sign_in` and `/users`
-- No `@Size` constraints on `content`, `name`, `description`
-- No password strength validation
-- `isAdmin` field leaked in `UserDto` response
-- No security response headers (`X-Content-Type-Options`, `X-Frame-Options`, etc.)
+- No rate limiting on `/auth/sign_in` and `/users` — **deferred** (see `to_discuss.md`; revisit after email flow)
+- No `@Size` constraints on `content`, `name`, `description` — ✅ (names ≤100, description/content ≤1000, password 8–72)
+- No password strength validation — ✅ (min 8 / max 72, deliberately no complexity rules)
+- `isAdmin` field leaked in `UserDto` response — ✅ (removed from DTOs)
+- No security response headers — ✅ backend `SecurityConfig` (X-Frame-Options DENY, HSTS, Referrer-Policy STRICT_ORIGIN_WHEN_CROSS_ORIGIN, CSP `default-src 'none'`) + frontend `nginx/default.conf.template` (CSP `default-src 'self'`, HSTS, Referrer-Policy, nosniff, frame-options; SPA fallback)
 
 ---
 
@@ -129,14 +137,16 @@
 
 | Priority | Scope | Effort |
 |----------|-------|--------|
-| **P0** | UserController auth gaps + DTO mass assignment | Small |
+| **P0** | ~~UserController auth gaps + DTO mass assignment~~ ✅ | Small |
 | **P0** | EmailVerificationStrategy uninitialized Resend | Small |
-| **P1** | Add `@Transactional` to write use cases | Medium |
-| **P1** | Fix `CreateUserUseCaseImpl` isAdmin bypass | Small |
+| **P1** | ~~Add `@Transactional` to write use cases~~ ✅ | Medium |
+| **P1** | ~~Fix `CreateUserUseCaseImpl` isAdmin bypass~~ ✅ | Small |
+| **P1** | ~~Backend security medium/high: check-in IDOR, exception leak, email bombing, NPE, show-sql~~ ✅ | Medium |
+| **P2** | ~~Security headers: backend `SecurityConfig` + frontend `nginx/default.conf.template`~~ ✅ | Small |
 | **P2** | Move controller DTOs out of business layer | Medium |
 | **P2** | Frontend: wrap auth state in React context | Medium |
 | **P2** | Frontend: add proper error handling with toasts | Medium |
 
 ---
 
-*Last updated: 2026-07-25*
+*Last updated: 2026-08-01*

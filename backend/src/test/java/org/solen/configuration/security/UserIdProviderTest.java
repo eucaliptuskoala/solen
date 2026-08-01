@@ -1,5 +1,6 @@
 package org.solen.configuration.security;
 
+import org.solen.business.exceptions.UnauthorizedAccessException;
 import org.solen.business.exceptions.UserNotFoundByEmailException;
 import org.solen.business.repos.IUserRepository;
 import org.solen.domain.users.User;
@@ -44,5 +45,19 @@ class UserIdProviderTest {
 
         assertThrows(UserNotFoundByEmailException.class, () -> userIdProvider.getUserId());
         SecurityContextHolder.clearContext();
+    }
+
+    @Test
+    void getUserId_noAuthentication_throws() {
+        SecurityContextHolder.clearContext();
+
+        assertThrows(UnauthorizedAccessException.class, () -> userIdProvider.getUserId());
+    }
+
+    @Test
+    void getUserEmail_noAuthentication_throws() {
+        SecurityContextHolder.clearContext();
+
+        assertThrows(UnauthorizedAccessException.class, () -> userIdProvider.getUserEmail());
     }
 }

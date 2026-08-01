@@ -1,6 +1,7 @@
 package org.solen.business.checkin;
 
 import lombok.AllArgsConstructor;
+import org.solen.business.exceptions.ForbiddenAccessException;
 import org.solen.business.exceptions.PracticeNotFoundByIdException;
 import org.solen.business.practicecases.StreakValidator;
 import org.solen.business.repos.ICheckInRepository;
@@ -24,15 +25,19 @@ public class CreateCheckInUseCaseImpl implements ICreateCheckInUseCase {
     private StreakValidator streakValidator;
 
     @Override
-    public CheckIn create(Long practiceId) {
-        return this.createWithDetails(practiceId, null, false, null);
+    public CheckIn create(Long practiceId, Long userId) {
+        return this.createWithDetails(practiceId, null, false, null, userId);
     }
 
     @Override
-    public CheckIn createWithDetails(Long practiceId, String content, boolean isPublic, Mood mood) {
+    public CheckIn createWithDetails(Long practiceId, String content, boolean isPublic, Mood mood, Long userId) {
         Practice practice = practiceRepository.findById(practiceId);
         if (practice == null) {
             throw new PracticeNotFoundByIdException(practiceId);
+        }
+
+        if (!practice.getCreator().getId().equals(userId)) {
+            throw new ForbiddenAccessException();
         }
 
         streakValidator.validateStreak(practice);

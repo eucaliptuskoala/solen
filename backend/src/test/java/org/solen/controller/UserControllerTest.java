@@ -21,8 +21,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -44,9 +42,6 @@ class UserControllerTest {
 
     @MockitoBean
     private DeleteUserUseCase deleteUserUseCase;
-
-    @MockitoBean
-    private GetUsersUseCase getUsersUseCase;
 
     @MockitoBean
     private GetUserByIdUseCase getUserByIdUseCase;
@@ -77,7 +72,7 @@ class UserControllerTest {
         CreateUserRequest request = CreateUserRequest.builder()
                 .name("Alice")
                 .email("alice@test.com")
-                .password("secret")
+                .password("secretpass")
                 .build();
         User user = User.builder().id(1L).name("Alice").email("alice@test.com").build();
         when(createUserUseCase.createUser(any(CreateUserRequest.class))).thenReturn(user);
@@ -109,18 +104,6 @@ class UserControllerTest {
     }
 
     @Test
-    void getAllUsers_returnsList() throws Exception {
-        User user = User.builder().id(1L).name("Alice").email("alice@test.com").build();
-        when(getUsersUseCase.getUsers()).thenReturn(List.of(user));
-        when(mapper.convertToDto(user))
-                .thenReturn(UserDto.builder().id(1L).name("Alice").email("alice@test.com").build());
-
-        mockMvc.perform(get("/users"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("Alice"));
-    }
-
-    @Test
     void getUserById_returnsUser() throws Exception {
         User user = User.builder().id(1L).name("Bob").email("bob@test.com").build();
         when(getUserByIdUseCase.getUserById(1L)).thenReturn(user);
@@ -146,7 +129,7 @@ class UserControllerTest {
         UpdateUserRequest request = UpdateUserRequest.builder()
                 .name("Alice Updated")
                 .email("alice@test.com")
-                .password("newpass")
+                .password("newpass12")
                 .build();
         User user = User.builder().id(1L).name("Alice Updated").email("alice@test.com").build();
         when(updateUserUseCase.updateUser(any(UpdateUserRequest.class), eq(1L))).thenReturn(user);
@@ -165,7 +148,7 @@ class UserControllerTest {
         UpdateUserRequest request = UpdateUserRequest.builder()
                 .name("Ghost")
                 .email("ghost@test.com")
-                .password("p")
+                .password("password123")
                 .build();
         when(updateUserUseCase.updateUser(any(UpdateUserRequest.class), eq(99L)))
                 .thenThrow(new UserNotFoundByIdException(99L));

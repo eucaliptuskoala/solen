@@ -3,7 +3,6 @@ package org.solen.business.emailusecases;
 import java.time.LocalDateTime;
 
 import org.solen.business.emailusecases.emailstrategy.EmailStrategyService;
-import org.solen.business.exceptions.UserNotFoundByEmailException;
 import org.solen.business.repos.IEmailTokenRepository;
 import org.solen.business.repos.IUserRepository;
 import org.solen.domain.email.EmailToken;
@@ -24,14 +23,15 @@ public class SendEmailUseCaseImpl implements ISendEmailUseCaseImpl{
     private final IEmailTokenRepository tokenRepository;
     private final IUserRepository userRepository;
     private final EmailFlagHelper emailFlagHelper;
+    private final EmailRateLimiter emailRateLimiter;
     
     @Override
     public void execute(EmailType type, String email) {
         String token = tokenService.generateToken();
 
         User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UserNotFoundByEmailException(email);
+        if (user == null || !emailRateLimiter.isAllowed(email)) {
+            return;
         }
 
         EmailToken emailToken = tokenRepository.save(createToken(user, token));

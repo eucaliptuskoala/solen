@@ -48,6 +48,11 @@ class JwtUtilTest {
     }
 
     @Test
+    void shortSecret_throwsIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> new JwtUtil("too-short"));
+    }
+
+    @Test
     void tokensWithDifferentSecrets_doNotValidate() {
         JwtUtil other = new JwtUtil("a-different-secret-key-that-is-also-long-enough-for-hs256");
         String token = jwtUtil.generateToken("user@test.com", 1L, "Alice");

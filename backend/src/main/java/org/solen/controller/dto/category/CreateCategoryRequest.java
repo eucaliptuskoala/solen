@@ -1,6 +1,7 @@
 package org.solen.controller.dto.category;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateCategoryRequest {
     @NotBlank
+    @Size(max = 100)
     private String name;
     private Long parentId;
 }

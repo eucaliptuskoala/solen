@@ -86,4 +86,25 @@ class GlobalExceptionHandlerTest {
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         assertEquals("Operation violates a database constraint.", response.getBody());
     }
+
+    @Test
+    void handleForbidden_returns403() {
+        ResponseEntity<String> response = handler.handleForbidden(new ForbiddenAccessException());
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("Access to this resource is forbidden", response.getBody());
+    }
+
+    @Test
+    void handleUnauthorized_returns401() {
+        ResponseEntity<String> response = handler.handleUnauthorized(new UnauthorizedAccessException());
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        assertEquals("Authentication is required", response.getBody());
+    }
+
+    @Test
+    void handleUnexpected_returnsGeneric500() {
+        ResponseEntity<String> response = handler.handleUnexpected(new RuntimeException("db connection failed: secret"));
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("An unexpected error occurred.", response.getBody());
+    }
 }

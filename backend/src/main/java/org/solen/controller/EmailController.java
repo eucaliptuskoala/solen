@@ -22,12 +22,7 @@ public class EmailController {
 
     @PostMapping
     public void send(@Valid @RequestBody SendEmailRequest request){
-        if(request.getEmail() == null){
-            String authEmail = userInfoProvider.getUserEmail();
-            sendEmailUseCase.execute(request.getEmailType(), authEmail);
-        }
-        else{
-            sendEmailUseCase.execute(request.getEmailType(), request.getEmail());
-        }
+        String targetEmail = request.getEmail() != null ? request.getEmail() : userInfoProvider.getUserEmail();
+        sendEmailUseCase.execute(request.getEmailType(), targetEmail);
     }
 }
