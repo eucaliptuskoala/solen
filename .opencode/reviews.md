@@ -18,8 +18,17 @@
 > email enumeration + rate limit, UserInfoProvider NPE → 401, show-sql=false, `@Size` DTO validation,
 > password 8–72 policy, `isAdmin` removed from `UserDto`, security headers (backend `SecurityConfig`
 > + frontend `nginx/default.conf.template` with CSP/HSTS/Referrer-Policy/nosniff/frame-options).
+> **Fixed (2026-08-05):** architecture items 5 (CheckInEntity imports `domain.Mood` → `String` + converter),
+> 8 (controller DTO out of business layer → scalar params), 12 (naming: `I`-prefix on all use-case
+> interfaces, `ISendEmailUseCaseImpl` → `ISendEmailUseCase`), 13 (`PracticeConverter` id-only nested refs,
+> `save()` back-fill); `CheckInLikeEnricher` moved to `controller.mappers`. Items 6, 7, 11 verified stale
+> (no `domain.Streak`/`TokenFlag` imports; `EmailController` null-check correct).
+> **Fixed (2026-08-06):** architecture suggestions #3 (`readOnly` on reads), #4 (`@Data` → id-based
+> equals/hashCode), #5 (repos → `Optional`) and the FYP in-memory filtering → SQL JPQL (see WARNING #15).
+> Warning #14 (streak GET-write) and warnings #9/#10 + `EmailToken` (email) are **user-owned** — deferred
+> until the user finalizes email features and the streak fix themselves.
 > **Deferred (documented in `to_discuss.md`):** rate limiting on `/auth/sign_in` + `POST /users`.
-> Remaining: backend architecture (10 warning/suggestion items) + frontend (23).
+> Remaining: frontend (23 items) + user-owned backend items.
 
 ---
 
@@ -77,24 +86,25 @@
 
 | # | File | Line | Finding |
 |---|------|------|---------|
-| 5 | `CheckInEntity.java` | 8 | Layer violation — JPA entity imports `domain.checkin.Mood` enum directly |
-| 6 | `PracticeEntity.java` | — | Layer violation — imports `domain.Streak` |
-| 7 | `EmailToken.java` | — | Layer violation — imports `domain.email.TokenFlag` |
-| 8 | `ICreatePracticeUseCase.java` | 3 | Business layer imports `controller.dto.practice.CreatePracticeRequest` |
+| 5 | `CheckInEntity.java` | 8 | Layer violation — JPA entity imports `domain.checkin.Mood` enum directly — ✅ (`mood` → `String`, mapped in `CheckInConverter`) |
+| 6 | `PracticeEntity.java` | — | ~~Layer violation — imports `domain.Streak`~~ — stale, no such import |
+| 7 | `EmailToken.java` | — | ~~Layer violation — imports `domain.email.TokenFlag`~~ — stale, no such import |
+| 8 | `ICreatePracticeUseCase.java` | 3 | Business layer imports `controller.dto.practice.CreatePracticeRequest` — ✅ (scalar params `categoryId/name/description/userId` through the whole chain) |
 | 9 | `EmailVerificationStrategy.java` | 13 | Uninitialized `private Resend resend;` — no constructor injection, NPE at runtime |
 | 10 | `VerifyTokenUseCaseImpl.java` | 14 | Stub that always returns `true` — dead code |
-| 11 | `EmailController.java` | 25 | Null check logic inverted — passes null email to execute |
-| 12 | Naming | — | Inconsistent: `ISendEmailUseCaseImpl` (has Impl in interface name), `CreateUserUseCase` (no I prefix), `usercases` vs `practicecases` |
-| 13 | `PracticeConverter.java` | 23 | Creates new entity objects for nested relations — JPA merge will create duplicates |
-| 14 | `GetPracticesByUserUseCaseImpl.java` | 20 | Read use case has write side effects (streak validation saves) |
+| 11 | `EmailController.java` | 25 | ~~Null check logic inverted~~ — stale, `request.getEmail() != null ? … : userInfoProvider.getUserEmail()` |
+| 12 | Naming | — | Inconsistent: `ISendEmailUseCaseImpl` (has Impl in interface name), `CreateUserUseCase` (no I prefix), `usercases` vs `practicecases` — ✅ interface names fixed (`I`-prefix everywhere); package renames deferred |
+| 13 | `PracticeConverter.java` | 23 | Creates new entity objects for nested relations — JPA merge will create duplicates — ✅ (id-only refs + `save()` back-fill) |
+| 14 | `GetPracticesByUserUseCaseImpl.java` | 20 | Read use case has write side effects (streak validation saves) — ⏳ **user-owned** (streak fix); add `@Transactional(readOnly=true)` once fixed |
+| 15 | `PracticeBasedRecommendation.java` | — | Loads all public check-ins into memory — ✅ (`findPublicCheckInsForCategories` JPQL filters by category + excludes own in SQL) |
 
 ### SUGGESTION
 
-- No `@Transactional(readOnly = true)` on read use cases
-- Domain objects use `@Data` (mutable equals/hashCode)
-- `CheckInLikeEnricher` in business layer mutates controller DTOs
-- `PracticeBasedRecommendation` loads all public check-ins into memory
-- Repositories return nullable instead of `Optional`
+- No `@Transactional(readOnly = true)` on read use cases — ✅ (6 pure-read use cases; NOT `GetPracticesByUserUseCaseImpl` — writes via `StreakValidator.save()`)
+- Domain objects use `@Data` (mutable equals/hashCode) — ✅ (`User`, `Practice`, `CheckIn`, `Category`, `CheckInLike` → id-based `@EqualsAndHashCode`; `EmailToken` ⏳ user-owned)
+- `CheckInLikeEnricher` in business layer mutates controller DTOs — ✅ (moved to `controller.mappers`)
+- `PracticeBasedRecommendation` loads all public check-ins into memory — ✅ (SQL, see WARNING #15)
+- Repositories return nullable instead of `Optional` — ✅ (`findById` → `Optional` on all 4 repos; `findByEmail` left nullable — email territory)
 
 ---
 
@@ -143,10 +153,16 @@
 | **P1** | ~~Fix `CreateUserUseCaseImpl` isAdmin bypass~~ ✅ | Small |
 | **P1** | ~~Backend security medium/high: check-in IDOR, exception leak, email bombing, NPE, show-sql~~ ✅ | Medium |
 | **P2** | ~~Security headers: backend `SecurityConfig` + frontend `nginx/default.conf.template`~~ ✅ | Small |
-| **P2** | Move controller DTOs out of business layer | Medium |
+| **P2** | ~~Move controller DTOs out of business layer (create-practice chain → scalar params; `CheckInLikeEnricher` → `controller.mappers`)~~ ✅ | Medium |
+| **P2** | ~~Naming: `I`-prefix all use-case interfaces, fix `ISendEmailUseCaseImpl`~~ ✅ | Small |
+| **P2** | ~~`PracticeConverter` id-only nested refs + `save()` back-fill~~ ✅ | Small |
+| **P2** | ~~FYP filtering in SQL (no full public-check-in scan)~~ ✅ | Medium |
+| **P2** | ~~`@Data` → id-based equals/hashCode (User, Practice, CheckIn, Category, CheckInLike)~~ ✅ | Small |
+| **P2** | ~~`findById` → `Optional` on all repos + caller migration~~ ✅ | Medium |
+| **P2** | ~~`@Transactional(readOnly = true)` on 6 pure-read use cases~~ ✅ | Small |
 | **P2** | Frontend: wrap auth state in React context | Medium |
 | **P2** | Frontend: add proper error handling with toasts | Medium |
 
 ---
 
-*Last updated: 2026-08-01*
+*Last updated: 2026-08-06*

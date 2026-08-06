@@ -5,6 +5,7 @@ import org.solen.business.exceptions.UserNotFoundByIdException;
 import org.solen.business.repos.IUserRepository;
 import org.solen.domain.checkin.CheckIn;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,8 +19,9 @@ public class GetForYouCheckInsUseCaseImpl implements IGetForYouCheckInsUseCase {
     private RecommendationService recommendationService;
 
     @Override
+    @Transactional(readOnly = true)
     public List<CheckIn> getForYouCheckIns(Long userId) {
-        if (userRepository.findById(userId) == null) {
+        if (userRepository.findById(userId).isEmpty()) {
             throw new UserNotFoundByIdException(userId);
         }
         return recommendationService.findPublicCheckIns(userId);

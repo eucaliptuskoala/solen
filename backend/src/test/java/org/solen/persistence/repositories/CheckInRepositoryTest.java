@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,6 +74,36 @@ class CheckInRepositoryTest {
     }
 
     @Test
+    void findPublicCheckInsForCategories_delegatesToJpaRepository() {
+        CheckInEntity entity = new CheckInEntity();
+        Practice practice = Practice.builder()
+                .id(1L)
+                .category(Category.builder().id(1L).name("Fitness").build())
+                .creator(User.builder().id(2L).email("other@test.com").build())
+                .build();
+        CheckIn publicCheckIn = CheckIn.builder()
+                .id(1L).practice(practice).date(LocalDate.now()).streakValue(5)
+                .content("Great workout!").isPublic(true).mood(Mood.AWESOME).build();
+
+        when(jpaRepository.findPublicCheckInsForCategories(List.of(1L, 2L), 3L)).thenReturn(List.of(entity));
+        when(converter.convertToDomain(entity)).thenReturn(publicCheckIn);
+
+        List<CheckIn> result = checkInRepository.findPublicCheckInsForCategories(List.of(1L, 2L), 3L);
+
+        assertEquals(1, result.size());
+        assertEquals("Great workout!", result.get(0).getContent());
+        verify(jpaRepository, times(1)).findPublicCheckInsForCategories(List.of(1L, 2L), 3L);
+    }
+
+    @Test
+    void findPublicCheckInsForCategories_emptyCategoryIds_returnsEmptyWithoutDbCall() {
+        List<CheckIn> result = checkInRepository.findPublicCheckInsForCategories(List.of(), 1L);
+
+        assertTrue(result.isEmpty());
+        verifyNoInteractions(jpaRepository);
+    }
+
+    @Test
     void findByPracticeCreatorId() {
         CheckInEntity entity = new CheckInEntity();
         Practice practice = Practice.builder().id(1L).creator(User.builder().id(1L).build()).build();
@@ -115,20 +146,20 @@ class CheckInRepositoryTest {
         when(jpaRepository.findByIdWithPracticeAndCreator(1L)).thenReturn(entity);
         when(converter.convertToDomain(entity)).thenReturn(checkIn);
 
-        CheckIn result = checkInRepository.findById(1L);
+        Optional<CheckIn> result = checkInRepository.findById(1L);
 
-        assertNotNull(result);
-        assertEquals(1L, result.getId());
+        assertTrue(result.isPresent());
+        assertEquals(1L, result.get().getId());
         verify(jpaRepository).findByIdWithPracticeAndCreator(1L);
     }
 
     @Test
-    void findById_whenNotExists_returnsNull() {
+    void findById_whenNotExists_returnsEmpty() {
         when(jpaRepository.findByIdWithPracticeAndCreator(99L)).thenReturn(null);
 
-        CheckIn result = checkInRepository.findById(99L);
+        Optional<CheckIn> result = checkInRepository.findById(99L);
 
-        assertNull(result);
+        assertTrue(result.isEmpty());
         verify(jpaRepository).findByIdWithPracticeAndCreator(99L);
     }
 

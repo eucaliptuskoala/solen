@@ -1,4 +1,4 @@
-package org.solen.business.checkin;
+package org.solen.controller.mappers;
 
 import org.solen.business.repos.ICheckInLikeRepository;
 import org.solen.controller.dto.checkin.CheckInDto;

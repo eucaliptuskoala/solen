@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
+public class UpdateUserUseCaseImpl implements IUpdateUserUseCase {
 
     private IUserRepository repository;
     private PasswordEncoder passwordEncoder;
@@ -20,11 +20,8 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
     @Override
     public User updateUser(UpdateUserRequest request, Long id) {
 
-        User user = repository.findById(id);
-
-        if (user == null) {
-            throw new UserNotFoundByIdException(id);
-        }
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserNotFoundByIdException(id));
 
         user.setName(request.getName());
         user.setEmail(request.getEmail());

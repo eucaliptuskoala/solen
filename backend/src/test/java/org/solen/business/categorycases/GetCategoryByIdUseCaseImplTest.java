@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class GetCategoryByIdUseCaseImplTest {
@@ -24,7 +25,7 @@ class GetCategoryByIdUseCaseImplTest {
     @Test
     void getCategoryById_success() {
         Category category = Category.builder().id(1L).name("Fitness").build();
-        when(categoryRepository.findById(1L)).thenReturn(category);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
 
         Category result = getCategoryByIdUseCase.getCategoryById(1L);
 
@@ -34,7 +35,7 @@ class GetCategoryByIdUseCaseImplTest {
 
     @Test
     void getCategoryById_notFound() {
-        when(categoryRepository.findById(99L)).thenReturn(null);
+        when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(CategoryNotFoundByIdException.class, () -> getCategoryByIdUseCase.getCategoryById(99L));
     }

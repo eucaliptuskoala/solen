@@ -4,7 +4,6 @@ import org.solen.business.exceptions.PracticeAlreadyExistsException;
 import org.solen.business.exceptions.UserNotFoundByIdException;
 import org.solen.business.repos.IPracticeRepository;
 import org.solen.business.repos.IUserRepository;
-import org.solen.controller.dto.practice.CreatePracticeRequest;
 import org.solen.domain.practices.Practice;
 import org.solen.domain.users.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +20,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class CustomPracticeCreationStrategyTest {
@@ -34,7 +34,9 @@ class CustomPracticeCreationStrategyTest {
     @InjectMocks
     CustomPracticeCreationStrategy customPracticeCreationStrategy;
 
-    CreatePracticeRequest createPracticeRequest;
+    Long categoryId;
+    String name;
+    String description;
     Long userId;
     User user;
     Practice practice;
@@ -42,6 +44,9 @@ class CustomPracticeCreationStrategyTest {
 
     @BeforeEach
     void setUp() {
+        categoryId = null;
+        name = "Test1";
+        description = "Test1";
         userId = 1L;
         user =  User.builder()
                 .id(1L)
@@ -51,14 +56,9 @@ class CustomPracticeCreationStrategyTest {
                 .isAdmin(false)
                 .build();
 
-        createPracticeRequest = CreatePracticeRequest.builder()
-                .name("Test1")
-                .description("Test1")
-                .build();
-
         practice = Practice.builder()
-                .name(createPracticeRequest.getName())
-                .description(createPracticeRequest.getDescription())
+                .name(name)
+                .description(description)
                 .streak(0)
                 .lastUpdatedStreak(null)
                 .thresholdDays(1)
@@ -114,10 +114,10 @@ class CustomPracticeCreationStrategyTest {
 
     @Test
     void createPractice_success(){
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(practiceRepository.findByCreatorId(user.getId())).thenReturn(existingPractices.stream().limit(3).toList());
 
-        customPracticeCreationStrategy.createPractice(createPracticeRequest, userId);
+        customPracticeCreationStrategy.createPractice(categoryId, name, description, userId);
 
         verify(userRepository, times(1)).findById(userId);
         verify(practiceRepository, times(1)).save(practice);
@@ -128,9 +128,9 @@ class CustomPracticeCreationStrategyTest {
     @Test
     void createPractice_userNotFound()
     {
-        when(userRepository.findById(userId)).thenReturn(null);
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        UserNotFoundByIdException exception = assertThrows(UserNotFoundByIdException.class, ()-> customPracticeCreationStrategy.createPractice(createPracticeRequest, userId));
+        UserNotFoundByIdException exception = assertThrows(UserNotFoundByIdException.class, ()-> customPracticeCreationStrategy.createPractice(categoryId, name, description, userId));
 
         assertEquals("User with id 1 does not exist", exception.getMessage());
 
@@ -140,10 +140,10 @@ class CustomPracticeCreationStrategyTest {
 
     @Test
     void createPractice_nameAlreadyExists(){
-        when(userRepository.findById(userId)).thenReturn(user);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(practiceRepository.findByCreatorId(user.getId())).thenReturn(existingPractices);
 
-        PracticeAlreadyExistsException exception = assertThrows(PracticeAlreadyExistsException.class, ()-> customPracticeCreationStrategy.createPractice(createPracticeRequest, userId));
+        PracticeAlreadyExistsException exception = assertThrows(PracticeAlreadyExistsException.class, ()-> customPracticeCreationStrategy.createPractice(categoryId, name, description, userId));
 
         assertEquals("Practice Already Exists!", exception.getMessage());
 

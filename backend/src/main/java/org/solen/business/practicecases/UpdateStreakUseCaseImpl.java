@@ -21,10 +21,8 @@ public class UpdateStreakUseCaseImpl implements IUpdateStreakUseCase {
     @Override
     @Transactional
     public Practice updateStreak(Long id) {
-        Practice practice = repository.findById(id);
-        if (practice == null) {
-            throw new PracticeNotFoundByIdException(id);
-        }
+        Practice practice = repository.findById(id)
+                .orElseThrow(() -> new PracticeNotFoundByIdException(id));
         LocalDateTime now = LocalDateTime.now();
 
         // Reset to 0 if too many days have passed since last update

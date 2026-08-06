@@ -45,7 +45,7 @@ class CheckInConverterTest {
         assertEquals(LocalDate.of(2026, 5, 21), entity.getDate());
         assertEquals(3, entity.getStreakValue());
         assertTrue(entity.isPublic());
-        assertEquals(Mood.GOOD, entity.getMood());
+        assertEquals("GOOD", entity.getMood());
         assertNotNull(entity.getPractice());
         verify(practiceConverter).convertToEntity(practice);
     }
@@ -60,7 +60,7 @@ class CheckInConverterTest {
                 .id(1L).practice(practiceEntity)
                 .date(LocalDate.of(2026, 5, 21))
                 .streakValue(3).content("Good").isPublic(true)
-                .mood(Mood.GOOD).createdAt(LocalDateTime.of(2026, 5, 21, 10, 0))
+                .mood("GOOD").createdAt(LocalDateTime.of(2026, 5, 21, 10, 0))
                 .build();
 
         CheckIn checkIn = converter.convertToDomain(entity);

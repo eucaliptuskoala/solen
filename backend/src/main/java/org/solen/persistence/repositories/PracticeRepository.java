@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -21,15 +22,16 @@ public class PracticeRepository implements IPracticeRepository {
     @Override
     public Practice save(Practice practice) {
         PracticeEntity entity = jpaRepository.save(converter.convertToEntity(practice));
-        return converter.convertToDomain(entity);
+        Practice result = converter.convertToDomain(entity);
+        result.setCategory(practice.getCategory());
+        result.setCreator(practice.getCreator());
+        return result;
     }
 
     @Override
-    public Practice findById(Long id) {
+    public Optional<Practice> findById(Long id) {
         Objects.requireNonNull(id, "id must not be null");
-        return jpaRepository.findById(id)
-                .map(converter::convertToDomain)
-                .orElse(null);
+        return jpaRepository.findById(id).map(converter::convertToDomain);
     }
 
     @Override

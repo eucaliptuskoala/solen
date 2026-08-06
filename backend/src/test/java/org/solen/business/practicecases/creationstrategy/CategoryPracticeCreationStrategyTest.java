@@ -6,7 +6,6 @@ import org.solen.business.exceptions.UserNotFoundByIdException;
 import org.solen.business.repos.ICategoryRepository;
 import org.solen.business.repos.IPracticeRepository;
 import org.solen.business.repos.IUserRepository;
-import org.solen.controller.dto.practice.CreatePracticeRequest;
 import org.solen.domain.practices.Category;
 import org.solen.domain.practices.Practice;
 import org.solen.domain.users.User;
@@ -24,6 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryPracticeCreationStrategyTest {
@@ -40,7 +40,9 @@ class CategoryPracticeCreationStrategyTest {
 
     private User user;
     private Category category;
-    private CreatePracticeRequest request;
+    private Long categoryId;
+    private String name;
+    private String description;
 
     @BeforeEach
     void setUp() {
@@ -57,21 +59,19 @@ class CategoryPracticeCreationStrategyTest {
                 .name("Fitness")
                 .build();
 
-        request = CreatePracticeRequest.builder()
-                .categoryId(1L)
-                .name("  morning workout  ")
-                .description("Daily morning exercise")
-                .build();
+        categoryId = 1L;
+        name = "  morning workout  ";
+        description = "Daily morning exercise";
     }
 
     @Test
     void createPractice_success() {
-        when(categoryRepository.findById(1L)).thenReturn(category);
-        when(userRepository.findById(1L)).thenReturn(user);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(practiceRepository.findByCreatorId(1L)).thenReturn(List.of());
         when(practiceRepository.save(any(Practice.class))).thenAnswer(i -> i.getArgument(0));
 
-        Practice result = strategy.createPractice(request, 1L);
+        Practice result = strategy.createPractice(categoryId, name, description, 1L);
 
         assertNotNull(result);
         assertEquals("Morning workout", result.getName());
@@ -87,18 +87,18 @@ class CategoryPracticeCreationStrategyTest {
 
     @Test
     void createPractice_categoryNotFound() {
-        when(categoryRepository.findById(1L)).thenReturn(null);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(CategoryNotFoundByIdException.class, () -> strategy.createPractice(request, 1L));
+        assertThrows(CategoryNotFoundByIdException.class, () -> strategy.createPractice(categoryId, name, description, 1L));
         verify(practiceRepository, never()).save(any());
     }
 
     @Test
     void createPractice_userNotFound() {
-        when(categoryRepository.findById(1L)).thenReturn(category);
-        when(userRepository.findById(1L)).thenReturn(null);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFoundByIdException.class, () -> strategy.createPractice(request, 1L));
+        assertThrows(UserNotFoundByIdException.class, () -> strategy.createPractice(categoryId, name, description, 1L));
         verify(practiceRepository, never()).save(any());
     }
 
@@ -106,11 +106,11 @@ class CategoryPracticeCreationStrategyTest {
     void createPractice_duplicateName() {
         Practice existing = Practice.builder().name("Morning workout").build();
 
-        when(categoryRepository.findById(1L)).thenReturn(category);
-        when(userRepository.findById(1L)).thenReturn(user);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(practiceRepository.findByCreatorId(1L)).thenReturn(List.of(existing));
 
-        assertThrows(PracticeAlreadyExistsException.class, () -> strategy.createPractice(request, 1L));
+        assertThrows(PracticeAlreadyExistsException.class, () -> strategy.createPractice(categoryId, name, description, 1L));
         verify(practiceRepository, never()).save(any());
     }
 

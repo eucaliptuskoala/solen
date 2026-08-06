@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteCategoryUseCaseImplTest {
@@ -23,7 +24,7 @@ class DeleteCategoryUseCaseImplTest {
 
     @Test
     void deleteCategory_success() {
-        when(categoryRepository.findById(1L)).thenReturn(Category.builder().id(1L).build());
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(Category.builder().id(1L).build()));
 
         deleteCategoryUseCase.deleteCategory(1L);
 
@@ -32,7 +33,7 @@ class DeleteCategoryUseCaseImplTest {
 
     @Test
     void deleteCategory_notFound() {
-        when(categoryRepository.findById(99L)).thenReturn(null);
+        when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(CategoryNotFoundByIdException.class, () -> deleteCategoryUseCase.deleteCategory(99L));
         verify(categoryRepository, never()).deleteById(any());

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class CreateUserUseCaseImpl implements CreateUserUseCase {
+public class CreateUserUseCaseImpl implements ICreateUserUseCase {
 
     private IUserRepository repository;
     private PasswordEncoder passwordEncoder;

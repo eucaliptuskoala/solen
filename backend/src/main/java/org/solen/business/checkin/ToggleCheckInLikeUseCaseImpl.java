@@ -23,10 +23,8 @@ public class ToggleCheckInLikeUseCaseImpl implements IToggleCheckInLikeUseCase {
     @Override
     @Transactional
     public ToggleLikeResult toggle(Long checkInId, Long userId) {
-        CheckIn checkIn = checkInRepository.findById(checkInId);
-        if (checkIn == null) {
-            throw new CheckInNotFoundException(checkInId);
-        }
+        CheckIn checkIn = checkInRepository.findById(checkInId)
+                .orElseThrow(() -> new CheckInNotFoundException(checkInId));
 
         if (checkIn.getPractice().getCreator().getId().equals(userId)) {
             throw new SelfLikeNotAllowedException();

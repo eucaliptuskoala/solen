@@ -9,6 +9,7 @@ import org.solen.controller.dto.auth.SignInResponse;
 import org.solen.domain.users.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +20,7 @@ public class SignInUseCaseImpl implements ISignInUseCase {
     private JwtUtil jwtUtil;
 
     @Override
+    @Transactional(readOnly = true)
     public SignInResponse signIn(SignInRequest signInRequest) {
         User user = userRepository.findByEmail(signInRequest.getEmail());
 

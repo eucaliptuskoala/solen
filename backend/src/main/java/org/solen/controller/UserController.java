@@ -2,11 +2,11 @@ package org.solen.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.solen.business.usercases.CreateUserUseCase;
-import org.solen.business.usercases.DeleteUserUseCase;
-import org.solen.business.usercases.GetUserByIdUseCase;
+import org.solen.business.usercases.ICreateUserUseCase;
+import org.solen.business.usercases.IDeleteUserUseCase;
+import org.solen.business.usercases.IGetUserByIdUseCase;
 import org.solen.business.usercases.IPromoteToAdminUseCase;
-import org.solen.business.usercases.UpdateUserUseCase;
+import org.solen.business.usercases.IUpdateUserUseCase;
 import org.solen.controller.dto.user.CreateUserRequest;
 import org.solen.controller.dto.user.UpdateUserRequest;
 import org.solen.controller.dto.user.UserDto;
@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
 
-    private CreateUserUseCase createUserUseCase;
-    private DeleteUserUseCase deleteUserUseCase;
-    private GetUserByIdUseCase getUserByIdUseCase;
-    private UpdateUserUseCase updateUserUseCase;
+    private ICreateUserUseCase createUserUseCase;
+    private IDeleteUserUseCase deleteUserUseCase;
+    private IGetUserByIdUseCase getUserByIdUseCase;
+    private IUpdateUserUseCase updateUserUseCase;
     private IPromoteToAdminUseCase promoteToAdminUseCase;
     private UserMapper mapper;
 

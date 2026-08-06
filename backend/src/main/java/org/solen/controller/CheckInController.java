@@ -2,7 +2,6 @@ package org.solen.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.solen.business.checkin.CheckInLikeEnricher;
 import org.solen.business.checkin.ICreateCheckInUseCase;
 import org.solen.business.checkin.IDeleteCheckInUseCase;
 import org.solen.business.checkin.IGetCheckInsForUserUseCase;
@@ -16,6 +15,7 @@ import org.solen.controller.dto.checkin.CreateCheckInRequest;
 import org.solen.controller.dto.checkin.GetCheckInsDTO;
 import org.solen.controller.dto.checkin.ToggleLikeResponse;
 import org.solen.controller.dto.checkin.UpdateCheckInRequest;
+import org.solen.controller.mappers.CheckInLikeEnricher;
 import org.solen.controller.mappers.CheckInMapper;
 import org.solen.domain.checkin.CheckIn;
 import org.springframework.http.ResponseEntity;

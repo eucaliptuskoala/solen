@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.solen.business.repos.ICheckInRepository;
 import org.solen.domain.checkin.CheckIn;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,7 @@ public class GetCheckInsForUserUseCaseImpl implements IGetCheckInsForUserUseCase
     private CheckInTimelineBuilder timelineBuilder;
 
     @Override
+    @Transactional(readOnly = true)
     public List<CheckIn> getCheckInsForUser(Long userId, LocalDate from, LocalDate to) {
         List<CheckIn> raw;
         if (from != null && to != null) {

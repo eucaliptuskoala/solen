@@ -1,5 +1,5 @@
 package org.solen.business.usercases;
 
-public interface DeleteUserUseCase {
+public interface IDeleteUserUseCase {
     void deleteUser(Long id);
 }

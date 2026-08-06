@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class UpdateCheckInUseCaseImplTest {
@@ -25,7 +26,7 @@ class UpdateCheckInUseCaseImplTest {
     @Test
     void update_existingCheckIn_updatesAndSaves() {
         CheckIn existing = CheckIn.builder().id(1L).content("old").isPublic(false).mood(Mood.OKAY).build();
-        when(checkInRepository.findById(1L)).thenReturn(existing);
+        when(checkInRepository.findById(1L)).thenReturn(Optional.of(existing));
         when(checkInRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         CheckIn result = updateUseCase.update(1L, "new content", true, Mood.GOOD);
@@ -39,7 +40,7 @@ class UpdateCheckInUseCaseImplTest {
 
     @Test
     void update_nonExistingCheckIn_throws() {
-        when(checkInRepository.findById(99L)).thenReturn(null);
+        when(checkInRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(CheckInNotFoundException.class,
                 () -> updateUseCase.update(99L, "x", false, Mood.OKAY));

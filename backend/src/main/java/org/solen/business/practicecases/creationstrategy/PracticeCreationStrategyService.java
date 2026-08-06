@@ -1,6 +1,5 @@
 package org.solen.business.practicecases.creationstrategy;
 
-import org.solen.controller.dto.practice.CreatePracticeRequest;
 import org.solen.domain.practices.Practice;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -26,12 +25,12 @@ public class PracticeCreationStrategyService {
         this.custom = custom;
     }
 
-    public Practice getStrategy (CreatePracticeRequest request, Long userId){
-        if(request.getCategoryId() == null){
-            return custom.createPractice(request, userId);
+    public Practice getStrategy (Long categoryId, String name, String description, Long userId){
+        if(categoryId == null){
+            return custom.createPractice(categoryId, name, description, userId);
         }
         else{
-            return categoryStrategy.createPractice(request, userId);
+            return categoryStrategy.createPractice(categoryId, name, description, userId);
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.solen.business.checkin;
+package org.solen.controller.mappers;
 
 import lombok.AllArgsConstructor;
 import org.solen.business.repos.ICheckInLikeRepository;

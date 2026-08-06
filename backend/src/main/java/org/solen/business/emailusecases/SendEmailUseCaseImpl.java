@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 @Service
 @Transactional
 @AllArgsConstructor
-public class SendEmailUseCaseImpl implements ISendEmailUseCaseImpl{
+public class SendEmailUseCaseImpl implements ISendEmailUseCase{
 
     private final EmailStrategyService emailService;
     private final TokenService tokenService;

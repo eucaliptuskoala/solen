@@ -38,16 +38,16 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private CreateUserUseCase createUserUseCase;
+    private ICreateUserUseCase createUserUseCase;
 
     @MockitoBean
-    private DeleteUserUseCase deleteUserUseCase;
+    private IDeleteUserUseCase deleteUserUseCase;
 
     @MockitoBean
-    private GetUserByIdUseCase getUserByIdUseCase;
+    private IGetUserByIdUseCase getUserByIdUseCase;
 
     @MockitoBean
-    private UpdateUserUseCase updateUserUseCase;
+    private IUpdateUserUseCase updateUserUseCase;
 
     @MockitoBean
     private IPromoteToAdminUseCase promoteToAdminUseCase;

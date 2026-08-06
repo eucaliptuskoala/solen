@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteCheckInUseCaseImplTest {
@@ -23,7 +24,7 @@ class DeleteCheckInUseCaseImplTest {
 
     @Test
     void delete_existingCheckIn_deletes() {
-        when(checkInRepository.findById(1L)).thenReturn(CheckIn.builder().id(1L).build());
+        when(checkInRepository.findById(1L)).thenReturn(Optional.of(CheckIn.builder().id(1L).build()));
 
         deleteUseCase.delete(1L);
 
@@ -33,7 +34,7 @@ class DeleteCheckInUseCaseImplTest {
 
     @Test
     void delete_nonExistingCheckIn_throws() {
-        when(checkInRepository.findById(99L)).thenReturn(null);
+        when(checkInRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(CheckInNotFoundException.class, () -> deleteUseCase.delete(99L));
         verify(checkInRepository).findById(99L);

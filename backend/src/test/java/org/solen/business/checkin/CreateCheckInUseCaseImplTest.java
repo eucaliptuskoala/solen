@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class CreateCheckInUseCaseImplTest {
@@ -46,7 +47,7 @@ class CreateCheckInUseCaseImplTest {
                 .creator(User.builder().id(1L).build())
                 .build();
 
-        when(practiceRepository.findById(1L)).thenReturn(practice);
+        when(practiceRepository.findById(1L)).thenReturn(Optional.of(practice));
         when(checkInRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         CheckIn created = createUseCase.create(1L, 1L);
@@ -72,7 +73,7 @@ class CreateCheckInUseCaseImplTest {
                 .creator(User.builder().id(1L).build())
                 .build();
 
-        when(practiceRepository.findById(1L)).thenReturn(practice);
+        when(practiceRepository.findById(1L)).thenReturn(Optional.of(practice));
         when(checkInRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         CheckIn created = createUseCase.createWithDetails(1L, "Peaceful session", true, Mood.GOOD, 1L);
@@ -89,7 +90,7 @@ class CreateCheckInUseCaseImplTest {
 
     @Test
     void createCheckIn_practiceNotFound() {
-        when(practiceRepository.findById(99L)).thenReturn(null);
+        when(practiceRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(PracticeNotFoundByIdException.class, () -> createUseCase.create(99L, 1L));
         verify(practiceRepository, times(1)).findById(99L);
@@ -106,7 +107,7 @@ class CreateCheckInUseCaseImplTest {
                 .creator(User.builder().id(99L).build())
                 .build();
 
-        when(practiceRepository.findById(1L)).thenReturn(practice);
+        when(practiceRepository.findById(1L)).thenReturn(Optional.of(practice));
 
         assertThrows(ForbiddenAccessException.class, () -> createUseCase.create(1L, 1L));
         verify(checkInRepository, never()).save(any());
@@ -123,7 +124,7 @@ class CreateCheckInUseCaseImplTest {
                 .creator(User.builder().id(1L).build())
                 .build();
 
-        when(practiceRepository.findById(1L)).thenReturn(practice);
+        when(practiceRepository.findById(1L)).thenReturn(Optional.of(practice));
         when(checkInRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         CheckIn created = createUseCase.createWithDetails(1L, "Already practiced", false, Mood.OKAY, 1L);

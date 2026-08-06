@@ -44,7 +44,6 @@ class PracticeBasedRecommendationTest {
     @Test
     void findPublicCheckIns_filtersByUserCategories() {
         Category fitness = Category.builder().id(1L).name("Fitness").build();
-        Category reading = Category.builder().id(2L).name("Reading").build();
         User user = makeUser(1L);
         User other = makeUser(2L);
 
@@ -52,19 +51,18 @@ class PracticeBasedRecommendationTest {
         when(practiceRepository.findByCreatorId(1L)).thenReturn(List.of(userPractice));
 
         Practice fitnessPractice = makePractice(10L, fitness, other);
-        Practice readingPractice = makePractice(11L, reading, other);
         CheckIn matched = makePublicCheckIn(1L, fitnessPractice);
-        CheckIn unmatched = makePublicCheckIn(2L, readingPractice);
-        when(checkInRepository.findPublicCheckIns()).thenReturn(List.of(matched, unmatched));
+        when(checkInRepository.findPublicCheckInsForCategories(List.of(1L), 1L)).thenReturn(List.of(matched));
 
         List<CheckIn> result = recommendation.findPublicCheckIns(1L);
 
         assertEquals(1, result.size());
         assertEquals(1L, result.get(0).getId());
+        verify(checkInRepository).findPublicCheckInsForCategories(List.of(1L), 1L);
     }
 
     @Test
-    void findPublicCheckIns_excludesOwnCheckIns() {
+    void findPublicCheckIns_usesUserIdForOwnExclusion() {
         Category fitness = Category.builder().id(1L).name("Fitness").build();
         User user = makeUser(1L);
 
@@ -73,27 +71,45 @@ class PracticeBasedRecommendationTest {
 
         Practice ownPractice = makePractice(10L, fitness, user);
         CheckIn ownCheckIn = makePublicCheckIn(1L, ownPractice);
-        when(checkInRepository.findPublicCheckIns()).thenReturn(List.of(ownCheckIn));
+        when(checkInRepository.findPublicCheckInsForCategories(List.of(1L), 1L)).thenReturn(List.of(ownCheckIn));
 
         List<CheckIn> result = recommendation.findPublicCheckIns(1L);
 
-        assertTrue(result.isEmpty());
+        assertEquals(1, result.size());
+        verify(checkInRepository).findPublicCheckInsForCategories(List.of(1L), 1L);
     }
 
     @Test
-    void findPublicCheckIns_handlesNullCategory() {
+    void findPublicCheckIns_deduplicatesCategoryIds() {
+        Category fitness = Category.builder().id(1L).name("Fitness").build();
         User user = makeUser(1L);
-        User other = makeUser(2L);
+
+        Practice p1 = makePractice(1L, fitness, user);
+        Practice p2 = makePractice(2L, fitness, user);
+        when(practiceRepository.findByCreatorId(1L)).thenReturn(List.of(p1, p2));
+
+        CheckIn any = makePublicCheckIn(1L, makePractice(10L, fitness, makeUser(2L)));
+        when(checkInRepository.findPublicCheckInsForCategories(List.of(1L), 1L)).thenReturn(List.of(any));
+
+        List<CheckIn> result = recommendation.findPublicCheckIns(1L);
+
+        assertEquals(1, result.size());
+        verify(checkInRepository).findPublicCheckInsForCategories(List.of(1L), 1L);
+    }
+
+    @Test
+    void findPublicCheckIns_noCategories_returnsEmpty() {
+        User user = makeUser(1L);
 
         Practice userPractice = makePractice(1L, null, user);
         when(practiceRepository.findByCreatorId(1L)).thenReturn(List.of(userPractice));
 
-        CheckIn any = makePublicCheckIn(1L, makePractice(10L, Category.builder().id(1L).build(), other));
-        when(checkInRepository.findPublicCheckIns()).thenReturn(List.of(any));
+        when(checkInRepository.findPublicCheckInsForCategories(List.of(), 1L)).thenReturn(List.of());
 
         List<CheckIn> result = recommendation.findPublicCheckIns(1L);
 
         assertTrue(result.isEmpty());
+        verify(checkInRepository).findPublicCheckInsForCategories(List.of(), 1L);
     }
 
     @Test
@@ -104,12 +120,11 @@ class PracticeBasedRecommendationTest {
         Practice userPractice = makePractice(1L, Category.builder().id(1L).name("Fitness").build(), user);
         when(practiceRepository.findByCreatorId(1L)).thenReturn(List.of(userPractice));
 
-        CheckIn wrongCategory = makePublicCheckIn(1L,
-                makePractice(10L, Category.builder().id(2L).name("Reading").build(), other));
-        when(checkInRepository.findPublicCheckIns()).thenReturn(List.of(wrongCategory));
+        when(checkInRepository.findPublicCheckInsForCategories(List.of(1L), 1L)).thenReturn(List.of());
 
         List<CheckIn> result = recommendation.findPublicCheckIns(1L);
 
         assertTrue(result.isEmpty());
+        verify(checkInRepository).findPublicCheckInsForCategories(List.of(1L), 1L);
     }
 }

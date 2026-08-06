@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class GetUserByIdUseCaseImplTest {
@@ -31,7 +32,7 @@ class GetUserByIdUseCaseImplTest {
                 .password("test")
                 .build();
 
-        when(repository.findById(1L)).thenReturn(mockUser);
+        when(repository.findById(1L)).thenReturn(Optional.of(mockUser));
 
         User user = getUserByIdUseCase.getUserById(1L);
 

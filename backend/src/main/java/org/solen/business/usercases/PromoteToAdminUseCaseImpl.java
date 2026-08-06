@@ -16,10 +16,8 @@ public class PromoteToAdminUseCaseImpl implements IPromoteToAdminUseCase {
 
     @Override
     public User promote(Long userId) {
-        User user = repository.findById(userId);
-        if (user == null) {
-            throw new UserNotFoundByIdException(userId);
-        }
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundByIdException(userId));
         user.setAdmin(true);
         return repository.save(user);
     }

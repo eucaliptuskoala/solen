@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,10 +57,10 @@ class UserRepositoryIntegrationTest {
     @Test
     void findById_success() {
         User persisted = persistUser(user);
-        User found = userRepository.findById(persisted.getId());
-        assertThat(found).isNotNull();
-        assertThat(found.getId()).isEqualTo(persisted.getId());
-        assertThat(found.getEmail()).isEqualTo("test@mail.com");
+        Optional<User> found = userRepository.findById(persisted.getId());
+        assertThat(found).isPresent();
+        assertThat(found.get().getId()).isEqualTo(persisted.getId());
+        assertThat(found.get().getEmail()).isEqualTo("test@mail.com");
     }
 
     @Test
@@ -114,6 +115,6 @@ class UserRepositoryIntegrationTest {
         User persisted = persistUser(user);
         userRepository.deleteById(persisted.getId());
         entityManager.flush();
-        assertThat(userRepository.findById(persisted.getId())).isNull();
+        assertThat(userRepository.findById(persisted.getId())).isEmpty();
     }
 }

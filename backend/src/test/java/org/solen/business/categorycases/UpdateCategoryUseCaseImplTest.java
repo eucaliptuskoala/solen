@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class UpdateCategoryUseCaseImplTest {
@@ -27,7 +28,7 @@ class UpdateCategoryUseCaseImplTest {
         Category existing = Category.builder().id(1L).name("Old Name").build();
         UpdateCategoryRequest request = UpdateCategoryRequest.builder().name("New Name").build();
 
-        when(categoryRepository.findById(1L)).thenReturn(existing);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(existing));
         when(categoryRepository.save(any(Category.class))).thenAnswer(i -> i.getArgument(0));
 
         Category result = updateCategoryUseCase.updateCategory(1L, request);
@@ -37,7 +38,7 @@ class UpdateCategoryUseCaseImplTest {
 
     @Test
     void updateCategory_notFound() {
-        when(categoryRepository.findById(99L)).thenReturn(null);
+        when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
         UpdateCategoryRequest request = UpdateCategoryRequest.builder().build();
 
         assertThrows(CategoryNotFoundByIdException.class,
@@ -48,7 +49,7 @@ class UpdateCategoryUseCaseImplTest {
     void updateCategory_setParentNull() {
         Category existing = Category.builder().id(1L).name("Test").parent(Category.builder().id(2L).build()).build();
 
-        when(categoryRepository.findById(1L)).thenReturn(existing);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(existing));
         when(categoryRepository.save(any(Category.class))).thenAnswer(i -> i.getArgument(0));
 
         Category result = updateCategoryUseCase.updateCategory(1L, UpdateCategoryRequest.withParentNull());
@@ -62,8 +63,8 @@ class UpdateCategoryUseCaseImplTest {
         Category parent = Category.builder().id(2L).name("Parent").build();
         UpdateCategoryRequest request = UpdateCategoryRequest.builder().parentId(2L).build();
 
-        when(categoryRepository.findById(1L)).thenReturn(existing);
-        when(categoryRepository.findById(2L)).thenReturn(parent);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(existing));
+        when(categoryRepository.findById(2L)).thenReturn(Optional.of(parent));
         when(categoryRepository.save(any(Category.class))).thenAnswer(i -> i.getArgument(0));
 
         Category result = updateCategoryUseCase.updateCategory(1L, request);

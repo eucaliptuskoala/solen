@@ -14,9 +14,7 @@ import java.util.Objects;
 //
 // Flow:
 //   1. Collect all category IDs from the user's practices
-//   2. Fetch all public check-ins globally
-//   3. Keep only those whose practice's category matches the user's categories
-//   4. Exclude check-ins the user created themselves
+//   2. Fetch public check-ins matching those categories, excluding the user's own entries (done in SQL)
 @Service("practiceNameBased")
 @AllArgsConstructor
 public class PracticeBasedRecommendation implements IRecommendationStrategy {
@@ -32,10 +30,6 @@ public class PracticeBasedRecommendation implements IRecommendationStrategy {
                 .distinct()
                 .toList();
 
-        return checkInRepository.findPublicCheckIns().stream()
-                .filter(ci -> !ci.getPractice().getCreator().getId().equals(userId))
-                .filter(ci -> ci.getPractice().getCategory() != null
-                        && userCategoryIds.contains(ci.getPractice().getCategory().getId()))
-                .toList();
+        return checkInRepository.findPublicCheckInsForCategories(userCategoryIds, userId);
     }
 }

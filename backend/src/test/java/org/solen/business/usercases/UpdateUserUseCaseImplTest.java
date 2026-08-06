@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class UpdateUserUseCaseImplTest {
@@ -49,7 +50,7 @@ class UpdateUserUseCaseImplTest {
                 .build();
 
 
-        when(repository.findById(user.getId())).thenReturn(user);
+        when(repository.findById(user.getId())).thenReturn(Optional.of(user));
 
         when(repository.save(user)).thenReturn(user);
 
@@ -68,7 +69,7 @@ class UpdateUserUseCaseImplTest {
 
     @Test
     void updateUser_no_user_found() {
-        when(repository.findById(1L)).thenReturn(null);
+        when(repository.findById(1L)).thenReturn(Optional.empty());
         UserNotFoundByIdException exception = assertThrows(UserNotFoundByIdException.class, () -> updateUserUseCase.updateUser(request, 1L));
         assertEquals("User with id 1 does not exist", exception.getMessage());
     }

@@ -19,17 +19,15 @@ public class UpdateCategoryUseCaseImpl implements IUpdateCategoryUseCase {
 
     @Override
     public Category updateCategory(Long id, UpdateCategoryRequest request) {
-        Category category = categoryRepository.findById(id);
-        if (category == null) {
-            throw new CategoryNotFoundByIdException(id);
-        }
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundByIdException(id));
 
         if (request.getName() != null) {
             category.setName(request.getName());
         }
 
         if (request.getParentId() != null) {
-            Category parent = categoryRepository.findById(request.getParentId());
+            Category parent = categoryRepository.findById(request.getParentId()).orElse(null);
             category.setParent(parent);
         } else if (request.isParentExplicitlyNull()) {
             category.setParent(null);

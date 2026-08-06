@@ -19,7 +19,7 @@ public class CreateCategoryUseCaseImpl implements ICreateCategoryUseCase {
     @Override
     public Category createCategory(CreateCategoryRequest request) {
         Category parent = request.getParentId() != null
-                ? categoryRepository.findById(request.getParentId())
+                ? categoryRepository.findById(request.getParentId()).orElse(null)
                 : null;
 
         return categoryRepository.save(Category.builder()

@@ -31,10 +31,8 @@ public class CreateCheckInUseCaseImpl implements ICreateCheckInUseCase {
 
     @Override
     public CheckIn createWithDetails(Long practiceId, String content, boolean isPublic, Mood mood, Long userId) {
-        Practice practice = practiceRepository.findById(practiceId);
-        if (practice == null) {
-            throw new PracticeNotFoundByIdException(practiceId);
-        }
+        Practice practice = practiceRepository.findById(practiceId)
+                .orElseThrow(() -> new PracticeNotFoundByIdException(practiceId));
 
         if (!practice.getCreator().getId().equals(userId)) {
             throw new ForbiddenAccessException();

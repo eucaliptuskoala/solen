@@ -3,6 +3,7 @@ package org.solen.business.categorycases;
 import org.solen.business.repos.ICategoryRepository;
 import org.solen.domain.practices.Category;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class GetCategoryTreeUseCaseImpl implements IGetCategoryTreeUseCase {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Category> getCategoryTree() {
         return categoryRepository.findRootCategories();
     }

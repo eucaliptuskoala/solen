@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,9 +23,8 @@ public class CheckInRepository implements ICheckInRepository {
     private CheckInJpaRepository jpaRepository;
 
     @Override
-    public CheckIn findById(Long id) {
-        CheckInEntity entity = jpaRepository.findByIdWithPracticeAndCreator(id);
-        return entity != null ? converter.convertToDomain(entity) : null;
+    public Optional<CheckIn> findById(Long id) {
+        return Optional.ofNullable(jpaRepository.findByIdWithPracticeAndCreator(id)).map(converter::convertToDomain);
     }
 
     @Override
@@ -41,7 +41,9 @@ public class CheckInRepository implements ICheckInRepository {
     @Override
     public CheckIn save(CheckIn checkIn) {
         CheckInEntity entity = jpaRepository.save(converter.convertToEntity(checkIn));
-        return converter.convertToDomain(entity);
+        CheckIn result = converter.convertToDomain(entity);
+        result.setPractice(checkIn.getPractice());
+        return result;
     }
 
     @Override
@@ -57,6 +59,14 @@ public class CheckInRepository implements ICheckInRepository {
     @Override
     public List<CheckIn> findPublicCheckIns() {
         return jpaRepository.findPublicCheckIns().stream().map(converter::convertToDomain).toList();
+    }
+
+    @Override
+    public List<CheckIn> findPublicCheckInsForCategories(List<Long> categoryIds, Long userId) {
+        if (categoryIds.isEmpty()) return List.of();
+        return jpaRepository.findPublicCheckInsForCategories(categoryIds, userId).stream()
+                .map(converter::convertToDomain)
+                .toList();
     }
 
     @Override

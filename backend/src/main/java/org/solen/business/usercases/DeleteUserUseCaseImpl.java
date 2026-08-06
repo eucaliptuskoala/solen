@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class DeleteUserUseCaseImpl implements DeleteUserUseCase {
+public class DeleteUserUseCaseImpl implements IDeleteUserUseCase {
 
     private final IUserRepository repository;
 

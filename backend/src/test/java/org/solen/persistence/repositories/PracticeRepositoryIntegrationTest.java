@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Import;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -100,10 +101,10 @@ class PracticeRepositoryIntegrationTest {
 
         Practice saved = practiceRepository.save(newPractice(creator, cat));
 
-        Practice found = practiceRepository.findById(saved.getId());
+        Optional<Practice> found = practiceRepository.findById(saved.getId());
 
-        assertThat(found).isNotNull();
-        assertThat(found.getName()).isEqualTo("Drink Water");
+        assertThat(found).isPresent();
+        assertThat(found.get().getName()).isEqualTo("Drink Water");
     }
 
     @Test
@@ -175,7 +176,7 @@ class PracticeRepositoryIntegrationTest {
 
         practiceRepository.deleteById(saved.getId());
 
-        assertThat(practiceRepository.findById(saved.getId())).isNull();
+        assertThat(practiceRepository.findById(saved.getId())).isEmpty();
         assertThat(jpaRepository.findById(saved.getId())).isEmpty();
     }
 

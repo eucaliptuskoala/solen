@@ -17,7 +17,7 @@ public class DeleteCategoryUseCaseImpl implements IDeleteCategoryUseCase {
 
     @Override
     public void deleteCategory(Long id) {
-        if (categoryRepository.findById(id) == null) {
+        if (categoryRepository.findById(id).isEmpty()) {
             throw new CategoryNotFoundByIdException(id);
         }
         categoryRepository.deleteById(id);

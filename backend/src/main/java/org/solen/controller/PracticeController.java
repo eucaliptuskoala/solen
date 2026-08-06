@@ -35,7 +35,8 @@ public class PracticeController {
     @PostMapping
     public ResponseEntity<PracticeDto> createPractice(@Valid @RequestBody CreatePracticeRequest request){
         Long userId = userIdProvider.getUserId();
-        Practice practice = createPracticeUseCase.createPractice(request, userId);
+        Practice practice = createPracticeUseCase.createPractice(
+                request.getCategoryId(), request.getName(), request.getDescription(), userId);
         return ResponseEntity.ok(practiceMapper.convertToDto(practice));
     }
 

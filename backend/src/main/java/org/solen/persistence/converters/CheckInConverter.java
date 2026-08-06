@@ -2,6 +2,7 @@ package org.solen.persistence.converters;
 
 import lombok.AllArgsConstructor;
 import org.solen.domain.checkin.CheckIn;
+import org.solen.domain.checkin.Mood;
 import org.solen.persistence.entities.CheckInEntity;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ public class CheckInConverter {
                 .streakValue(checkIn.getStreakValue())
                 .content(checkIn.getContent())
                 .isPublic(checkIn.isPublic())
-                .mood(checkIn.getMood())
+                .mood(checkIn.getMood() != null ? checkIn.getMood().name() : null)
                 .createdAt(checkIn.getCreatedAt())
                 .build();
     }
@@ -32,7 +33,7 @@ public class CheckInConverter {
                 .streakValue(entity.getStreakValue())
                 .content(entity.getContent())
                 .isPublic(entity.isPublic())
-                .mood(entity.getMood())
+                .mood(entity.getMood() != null ? Mood.valueOf(entity.getMood()) : null)
                 .createdAt(entity.getCreatedAt())
                 .build();
     }

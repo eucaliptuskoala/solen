@@ -2,7 +2,9 @@ package org.solen.persistence.converters;
 
 import lombok.AllArgsConstructor;
 import org.solen.domain.practices.Practice;
+import org.solen.persistence.entities.CategoryEntity;
 import org.solen.persistence.entities.PracticeEntity;
+import org.solen.persistence.entities.UserEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,8 +22,12 @@ public class PracticeConverter {
                 .streak(practice.getStreak())
                 .lastUpdatedStreak(practice.getLastUpdatedStreak())
                 .thresholdDays(practice.getThresholdDays())
-                .category(categoryConverter.convertToEntity(practice.getCategory()))
-                .creator(userConverter.convertToEntity(practice.getCreator()))
+                .category(practice.getCategory() != null
+                        ? CategoryEntity.builder().id(practice.getCategory().getId()).build()
+                        : null)
+                .creator(practice.getCreator() != null
+                        ? UserEntity.builder().id(practice.getCreator().getId()).build()
+                        : null)
                 .build();
     }
 

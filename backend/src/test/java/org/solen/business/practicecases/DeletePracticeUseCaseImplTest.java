@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class DeletePracticeUseCaseImplTest {
@@ -23,14 +24,14 @@ class DeletePracticeUseCaseImplTest {
 
     @Test
     void deletePractice_success() {
-        when(repository.findById(1L)).thenReturn(Practice.builder().build());
+        when(repository.findById(1L)).thenReturn(Optional.of(Practice.builder().build()));
         deletePracticeUseCaseImpl.deletePractice(1L);
         verify(repository, times(1)).deleteById(1L);
     }
 
     @Test
     void deletePractice_notFound_throws() {
-        when(repository.findById(1L)).thenReturn(null);
+        when(repository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(PracticeNotFoundByIdException.class, () -> deletePracticeUseCaseImpl.deletePractice(1L));
         verify(repository, never()).deleteById(any());
     }

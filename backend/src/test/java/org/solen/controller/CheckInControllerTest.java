@@ -1,7 +1,7 @@
 package org.solen.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.solen.business.checkin.CheckInLikeEnricher;
+import org.solen.controller.mappers.CheckInLikeEnricher;
 import org.solen.business.checkin.*;
 import org.solen.business.checkin.fypstrategy.IGetForYouCheckInsUseCase;
 import org.solen.business.exceptions.CheckInNotFoundException;

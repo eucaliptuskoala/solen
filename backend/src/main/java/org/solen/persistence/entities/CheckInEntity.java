@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.solen.domain.checkin.Mood;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,9 +40,8 @@ public class CheckInEntity {
     @Column(name = "is_public", nullable = false)
     private boolean isPublic;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "mood")
-    private Mood mood;
+    private String mood;
 
     @Column(name="created_at", nullable = false)
     private LocalDateTime createdAt;

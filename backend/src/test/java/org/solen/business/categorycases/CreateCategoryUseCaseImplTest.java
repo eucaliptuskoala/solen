@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class CreateCategoryUseCaseImplTest {
@@ -50,7 +51,7 @@ class CreateCategoryUseCaseImplTest {
                 .parentId(1L)
                 .build();
 
-        when(categoryRepository.findById(1L)).thenReturn(parent);
+        when(categoryRepository.findById(1L)).thenReturn(Optional.of(parent));
         when(categoryRepository.save(any(Category.class))).thenAnswer(i -> i.getArgument(0));
 
         Category result = createCategoryUseCase.createCategory(request);

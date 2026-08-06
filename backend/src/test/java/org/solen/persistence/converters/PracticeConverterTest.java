@@ -32,11 +32,7 @@ class PracticeConverterTest {
     @Test
     void convertToEntity_mapsAllFields() {
         User user = User.builder().id(1L).build();
-        UserEntity userEntity = UserEntity.builder().id(1L).build();
         Category category = Category.builder().id(1L).name("Fitness").build();
-        CategoryEntity categoryEntity = CategoryEntity.builder().id(1L).name("Fitness").build();
-        when(userConverter.convertToEntity(user)).thenReturn(userEntity);
-        when(categoryConverter.convertToEntity(category)).thenReturn(categoryEntity);
 
         Practice practice = Practice.builder()
                 .id(1L).name("Run").description("Run daily")
@@ -51,9 +47,9 @@ class PracticeConverterTest {
         assertEquals(5, entity.getStreak());
         assertEquals(2, entity.getThresholdDays());
         assertNotNull(entity.getCreator());
+        assertEquals(1L, entity.getCreator().getId());
         assertNotNull(entity.getCategory());
-        verify(userConverter).convertToEntity(user);
-        verify(categoryConverter).convertToEntity(category);
+        assertEquals(1L, entity.getCategory().getId());
     }
 
     @Test
@@ -86,9 +82,6 @@ class PracticeConverterTest {
     @Test
     void convertToEntity_nullCategory() {
         User user = User.builder().id(1L).build();
-        UserEntity userEntity = UserEntity.builder().id(1L).build();
-        when(userConverter.convertToEntity(user)).thenReturn(userEntity);
-        when(categoryConverter.convertToEntity(null)).thenReturn(null);
 
         Practice practice = Practice.builder()
                 .id(1L).name("Read").streak(0).thresholdDays(1)
@@ -98,5 +91,7 @@ class PracticeConverterTest {
         PracticeEntity entity = converter.convertToEntity(practice);
 
         assertNull(entity.getCategory());
+        assertNotNull(entity.getCreator());
+        assertEquals(1L, entity.getCreator().getId());
     }
 }

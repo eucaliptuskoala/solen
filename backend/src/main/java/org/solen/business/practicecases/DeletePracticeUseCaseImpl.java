@@ -15,7 +15,7 @@ public class DeletePracticeUseCaseImpl implements IDeletePracticeUseCase {
 
     @Override
     public void deletePractice(Long id) {
-        if (repository.findById(id) == null) {
+        if (repository.findById(id).isEmpty()) {
             throw new PracticeNotFoundByIdException(id);
         }
         repository.deleteById(id);

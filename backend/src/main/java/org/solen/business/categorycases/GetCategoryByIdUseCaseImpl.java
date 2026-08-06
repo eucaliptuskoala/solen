@@ -4,6 +4,7 @@ import org.solen.business.exceptions.CategoryNotFoundByIdException;
 import org.solen.business.repos.ICategoryRepository;
 import org.solen.domain.practices.Category;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GetCategoryByIdUseCaseImpl implements IGetCategoryByIdUseCase {
@@ -15,11 +16,9 @@ public class GetCategoryByIdUseCaseImpl implements IGetCategoryByIdUseCase {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Category getCategoryById(Long id) {
-        Category category = categoryRepository.findById(id);
-        if (category == null) {
-            throw new CategoryNotFoundByIdException(id);
-        }
-        return category;
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundByIdException(id));
     }
 }

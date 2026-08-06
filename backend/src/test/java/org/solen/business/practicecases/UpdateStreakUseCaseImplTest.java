@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class UpdateStreakUseCaseImplTest {
@@ -38,7 +39,7 @@ class UpdateStreakUseCaseImplTest {
                 .creator(null)
                 .build();
 
-        when(repository.findById(1L)).thenReturn(practice);
+        when(repository.findById(1L)).thenReturn(Optional.of(practice));
         when(repository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
         Practice updated = updateStreakUseCaseImpl.updateStreak(1L);
@@ -62,7 +63,7 @@ class UpdateStreakUseCaseImplTest {
                 .creator(null)
                 .build();
 
-        when(repository.findById(1L)).thenReturn(practice);
+        when(repository.findById(1L)).thenReturn(Optional.of(practice));
 
         StreakAlreadyUpdatedException exception =
                 assertThrows(StreakAlreadyUpdatedException.class, () -> updateStreakUseCaseImpl.updateStreak(1L));

@@ -52,7 +52,7 @@ class ToggleCheckInLikeUseCaseImplTest {
         User other = makeUser(2L);
         CheckIn checkIn = makeCheckIn(10L, 100L, other);
 
-        when(checkInRepository.findById(10L)).thenReturn(checkIn);
+        when(checkInRepository.findById(10L)).thenReturn(Optional.of(checkIn));
         when(likeRepository.findByCheckInIdAndUserId(10L, 1L)).thenReturn(Optional.empty());
         when(likeRepository.countByCheckInId(10L)).thenReturn(1);
 
@@ -71,7 +71,7 @@ class ToggleCheckInLikeUseCaseImplTest {
         CheckIn checkIn = makeCheckIn(10L, 100L, other);
         CheckInLike existingLike = CheckInLike.builder().id(99L).checkInId(10L).userId(1L).build();
 
-        when(checkInRepository.findById(10L)).thenReturn(checkIn);
+        when(checkInRepository.findById(10L)).thenReturn(Optional.of(checkIn));
         when(likeRepository.findByCheckInIdAndUserId(10L, 1L)).thenReturn(Optional.of(existingLike));
         when(likeRepository.countByCheckInId(10L)).thenReturn(0);
 
@@ -85,7 +85,7 @@ class ToggleCheckInLikeUseCaseImplTest {
 
     @Test
     void toggle_checkInNotFound_throws() {
-        when(checkInRepository.findById(99L)).thenReturn(null);
+        when(checkInRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(CheckInNotFoundException.class, () -> toggleUseCase.toggle(99L, 1L));
         verify(checkInRepository).findById(99L);
@@ -97,7 +97,7 @@ class ToggleCheckInLikeUseCaseImplTest {
         User user = makeUser(1L);
         CheckIn checkIn = makeCheckIn(10L, 100L, user);
 
-        when(checkInRepository.findById(10L)).thenReturn(checkIn);
+        when(checkInRepository.findById(10L)).thenReturn(Optional.of(checkIn));
 
         assertThrows(SelfLikeNotAllowedException.class, () -> toggleUseCase.toggle(10L, 1L));
         verifyNoInteractions(likeRepository);

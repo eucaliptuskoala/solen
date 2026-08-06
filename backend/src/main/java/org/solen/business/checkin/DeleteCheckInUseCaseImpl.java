@@ -16,10 +16,8 @@ public class DeleteCheckInUseCaseImpl implements IDeleteCheckInUseCase {
 
     @Override
     public void delete(Long id) {
-        CheckIn existing = checkInRepository.findById(id);
-        if (existing == null) {
-            throw new CheckInNotFoundException(id);
-        }
+        CheckIn existing = checkInRepository.findById(id)
+                .orElseThrow(() -> new CheckInNotFoundException(id));
         checkInRepository.deleteById(id);
     }
 }

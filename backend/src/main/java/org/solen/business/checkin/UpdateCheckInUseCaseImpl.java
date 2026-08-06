@@ -17,10 +17,8 @@ public class UpdateCheckInUseCaseImpl implements IUpdateCheckInUseCase {
 
     @Override
     public CheckIn update(Long id, String content, boolean isPublic, Mood mood) {
-        CheckIn existing = checkInRepository.findById(id);
-        if (existing == null) {
-            throw new CheckInNotFoundException(id);
-        }
+        CheckIn existing = checkInRepository.findById(id)
+                .orElseThrow(() -> new CheckInNotFoundException(id));
 
         existing.setContent(content);
         existing.setPublic(isPublic);

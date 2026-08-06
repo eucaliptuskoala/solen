@@ -1,6 +1,6 @@
 package org.solen.controller;
 
-import org.solen.business.emailusecases.ISendEmailUseCaseImpl;
+import org.solen.business.emailusecases.ISendEmailUseCase;
 import org.solen.configuration.security.UserInfoProvider;
 import org.solen.controller.dto.email.SendEmailRequest;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class EmailController {
 
-    private final ISendEmailUseCaseImpl sendEmailUseCase;
+    private final ISendEmailUseCase sendEmailUseCase;
     private final UserInfoProvider userInfoProvider;
 
     @PostMapping

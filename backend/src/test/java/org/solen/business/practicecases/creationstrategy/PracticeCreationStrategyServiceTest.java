@@ -1,6 +1,5 @@
 package org.solen.business.practicecases.creationstrategy;
 
-import org.solen.controller.dto.practice.CreatePracticeRequest;
 import org.solen.domain.practices.Practice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,8 +22,10 @@ class PracticeCreationStrategyServiceTest {
     private PracticeCreationStrategyService strategyService;
 
     Long userId;
-    CreatePracticeRequest requestWithCategory;
-    CreatePracticeRequest requestCustom;
+    Long categoryId;
+    Long noCategoryId;
+    String name;
+    String description;
     Practice practiceCategory;
     Practice practiceCustom;
 
@@ -37,37 +38,31 @@ class PracticeCreationStrategyServiceTest {
         practiceCustom = Practice.builder().name("customPractice").build();
 
         userId = 1L;
-
-        requestWithCategory = CreatePracticeRequest.builder()
-                .categoryId(1L)
-                .description("desc")
-                .build();
-
-        requestCustom = CreatePracticeRequest.builder()
-                .categoryId(null)
-                .description("desc")
-                .build();
+        categoryId = 1L;
+        noCategoryId = null;
+        name = "practice";
+        description = "desc";
     }
 
     @Test
     void getStrategy_usesCategoryStrategy() {
-        when(categoryStrategy.createPractice(requestWithCategory, userId)).thenReturn(practiceCategory);
+        when(categoryStrategy.createPractice(categoryId, name, description, userId)).thenReturn(practiceCategory);
 
-        Practice result = strategyService.getStrategy(requestWithCategory, userId);
+        Practice result = strategyService.getStrategy(categoryId, name, description, userId);
 
-        verify(categoryStrategy, times(1)).createPractice(requestWithCategory, userId);
-        verify(customStrategy, never()).createPractice(any(), any());
+        verify(categoryStrategy, times(1)).createPractice(categoryId, name, description, userId);
+        verify(customStrategy, never()).createPractice(any(), any(), any(), any());
         assertEquals(practiceCategory, result);
     }
 
     @Test
     void getStrategy_usesCustomStrategy() {
-        when(customStrategy.createPractice(requestCustom, userId)).thenReturn(practiceCustom);
+        when(customStrategy.createPractice(noCategoryId, name, description, userId)).thenReturn(practiceCustom);
 
-        Practice result = strategyService.getStrategy(requestCustom, userId);
+        Practice result = strategyService.getStrategy(noCategoryId, name, description, userId);
 
-        verify(customStrategy, times(1)).createPractice(requestCustom, userId);
-        verify(categoryStrategy, never()).createPractice(any(), any());
+        verify(customStrategy, times(1)).createPractice(noCategoryId, name, description, userId);
+        verify(categoryStrategy, never()).createPractice(any(), any(), any(), any());
         assertEquals(practiceCustom, result);
     }
 

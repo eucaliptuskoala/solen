@@ -37,6 +37,19 @@ public interface CheckInJpaRepository extends JpaRepository<CheckInEntity, Long>
         select ci
         from CheckInEntity ci
         join ci.practice h
+        where ci.isPublic = true
+          and h.category.id in :categoryIds
+          and h.creator.id <> :userId
+    """)
+    List<CheckInEntity> findPublicCheckInsForCategories(
+            @Param("categoryIds") List<Long> categoryIds,
+            @Param("userId") Long userId
+    );
+
+    @Query("""
+        select ci
+        from CheckInEntity ci
+        join ci.practice h
         join h.creator u
         where ci.id = :id
     """)

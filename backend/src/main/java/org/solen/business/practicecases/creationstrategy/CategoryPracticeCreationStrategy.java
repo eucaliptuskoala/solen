@@ -7,7 +7,6 @@ import org.solen.business.exceptions.UserNotFoundByIdException;
 import org.solen.business.repos.ICategoryRepository;
 import org.solen.business.repos.IPracticeRepository;
 import org.solen.business.repos.IUserRepository;
-import org.solen.controller.dto.practice.CreatePracticeRequest;
 import org.solen.domain.practices.Category;
 import org.solen.domain.practices.Practice;
 import org.solen.domain.users.User;
@@ -28,22 +27,17 @@ public class CategoryPracticeCreationStrategy implements IPracticeCreationStrate
     private IUserRepository userRepository;
 
     @Override
-    public Practice createPractice(CreatePracticeRequest request, Long userId) {
+    public Practice createPractice(Long categoryId, String name, String description, Long userId) {
         // Look up the category the user wants to tag this practice with
-        Category category = categoryRepository.findById(request.getCategoryId());
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundByIdException(categoryId));
 
-        if(category == null) {
-            throw new CategoryNotFoundByIdException(request.getCategoryId());
-        }
-
-        User user = userRepository.findById(userId);
-        if(user == null) {
-            throw new UserNotFoundByIdException(userId);
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundByIdException(userId));
 
         // Prevent duplicate practice names for the same user
         List<Practice> existingPractices = practiceRepository.findByCreatorId(user.getId());
-        String newPracticeName = normalizeName(request.getName());
+        String newPracticeName = normalizeName(name);
 
         if(existingPractices.stream().anyMatch(practice -> practice.getName().equals(newPracticeName))) {
             throw new PracticeAlreadyExistsException();
@@ -51,7 +45,7 @@ public class CategoryPracticeCreationStrategy implements IPracticeCreationStrate
 
         return practiceRepository.save(Practice.builder()
                 .name(newPracticeName)
-                .description(request.getDescription())
+                .description(description)
                 .streak(0)
                 .thresholdDays(1)
                 .creator(user)

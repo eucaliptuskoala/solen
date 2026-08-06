@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -37,11 +38,9 @@ public class UserRepository  implements IUserRepository {
     }
 
     @Override
-    public User findById(Long id) {
+    public Optional<User> findById(Long id) {
         Objects.requireNonNull(id, "id must not be null");
-        UserEntity entity = jpaRepository.findById(id).orElse(null);
-        if (entity == null) return null;
-        return converter.convertToDomain(entity);
+        return jpaRepository.findById(id).map(converter::convertToDomain);
     }
 
     @Override

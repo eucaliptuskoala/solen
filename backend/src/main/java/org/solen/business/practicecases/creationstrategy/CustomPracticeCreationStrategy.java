@@ -5,7 +5,6 @@ import org.solen.business.exceptions.PracticeAlreadyExistsException;
 import org.solen.business.exceptions.UserNotFoundByIdException;
 import org.solen.business.repos.IPracticeRepository;
 import org.solen.business.repos.IUserRepository;
-import org.solen.controller.dto.practice.CreatePracticeRequest;
 import org.solen.domain.practices.Practice;
 import org.solen.domain.users.User;
 
@@ -25,17 +24,14 @@ public class CustomPracticeCreationStrategy implements IPracticeCreationStrategy
     private IUserRepository userRepository;
 
     @Override
-    public Practice createPractice(CreatePracticeRequest request, Long userId) {
+    public Practice createPractice(Long categoryId, String name, String description, Long userId) {
 
-        User user = userRepository.findById(userId);
-
-        if(user == null) {
-            throw new UserNotFoundByIdException(userId);
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundByIdException(userId));
 
         List<Practice> existingPractices = practiceRepository.findByCreatorId(user.getId());
 
-        String newPracticeName = normalizeName(request.getName());
+        String newPracticeName = normalizeName(name);
 
         if(existingPractices.stream().anyMatch(practice -> practice.getName().equals(newPracticeName))) {
             throw new PracticeAlreadyExistsException();
@@ -43,7 +39,7 @@ public class CustomPracticeCreationStrategy implements IPracticeCreationStrategy
 
         return practiceRepository.save(Practice.builder()
                 .name(newPracticeName)
-                .description(request.getDescription())
+                .description(description)
                 .streak(0)
                 .thresholdDays(1)
                 .creator(user)

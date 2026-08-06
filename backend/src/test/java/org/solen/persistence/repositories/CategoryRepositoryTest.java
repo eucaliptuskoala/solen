@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -27,9 +29,9 @@ class CategoryRepositoryTest {
         assertThat(saved.getId()).isNotNull();
         assertThat(saved.getName()).isEqualTo("Fitness");
 
-        Category found = categoryRepository.findById(saved.getId());
-        assertThat(found).isNotNull();
-        assertThat(found.getName()).isEqualTo("Fitness");
+        Optional<Category> found = categoryRepository.findById(saved.getId());
+        assertThat(found).isPresent();
+        assertThat(found.get().getName()).isEqualTo("Fitness");
     }
 
     @Test
@@ -62,7 +64,7 @@ class CategoryRepositoryTest {
 
         categoryRepository.deleteById(saved.getId());
 
-        assertThat(categoryRepository.findById(saved.getId())).isNull();
+        assertThat(categoryRepository.findById(saved.getId())).isEmpty();
     }
 
     @Test

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -25,11 +26,9 @@ public class CategoryRepository implements ICategoryRepository {
     }
 
     @Override
-    public Category findById(Long id) {
+    public Optional<Category> findById(Long id) {
         Objects.requireNonNull(id, "id must not be null");
-        return jpaRepository.findById(id)
-                .map(converter::convertToDomainWithChildren)
-                .orElse(null);
+        return jpaRepository.findById(id).map(converter::convertToDomainWithChildren);
     }
 
     @Override

@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class GetForYouCheckInsUseCaseImplTest {
@@ -29,7 +30,7 @@ class GetForYouCheckInsUseCaseImplTest {
 
     @Test
     void getForYouCheckIns_userExists_returnsCheckIns() {
-        when(userRepository.findById(1L)).thenReturn(User.builder().id(1L).build());
+        when(userRepository.findById(1L)).thenReturn(Optional.of(User.builder().id(1L).build()));
         CheckIn ci = CheckIn.builder().id(1L).build();
         when(recommendationService.findPublicCheckIns(1L)).thenReturn(List.of(ci));
 
@@ -42,7 +43,7 @@ class GetForYouCheckInsUseCaseImplTest {
 
     @Test
     void getForYouCheckIns_userNotFound_throws() {
-        when(userRepository.findById(99L)).thenReturn(null);
+        when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundByIdException.class, () -> useCase.getForYouCheckIns(99L));
         verify(userRepository).findById(99L);

@@ -73,7 +73,7 @@ class PracticeControllerTest {
         CreatePracticeRequest request = CreatePracticeRequest.builder().name("Morning run").description("A morning run").build();
         Practice practice = Practice.builder().id(1L).name("Morning run").build();
         when(userIdProvider.getUserId()).thenReturn(1L);
-        when(createPracticeUseCase.createPractice(request, 1L)).thenReturn(practice);
+        when(createPracticeUseCase.createPractice(null, "Morning run", "A morning run", 1L)).thenReturn(practice);
         when(practiceMapper.convertToDto(practice))
                 .thenReturn(PracticeDto.builder().id(1L).name("Morning run").build());
 
