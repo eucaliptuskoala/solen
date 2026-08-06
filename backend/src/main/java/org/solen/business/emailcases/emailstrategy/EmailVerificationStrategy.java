@@ -1,4 +1,4 @@
-package org.solen.business.emailusecases.emailstrategy;
+package org.solen.business.emailcases.emailstrategy;
 
 import org.solen.domain.email.EmailType;
 import org.springframework.stereotype.Component;

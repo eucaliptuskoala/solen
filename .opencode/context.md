@@ -3,12 +3,15 @@
 > What's happening now, what changed, what's next.
 
 ## Current State
-- All 228 backend tests passing, 0 failures
+- All 229 backend tests passing, 0 failures
 - Frontend build: 695KB (down from 853KB after dead code cleanup)
-- Backend architecture: items 2–5 of the 2026-08-06 batch done (FYP SQL query, id-based equals/hashCode, `Optional` findById, `readOnly` reads); remaining: streak GET-write + email items (user-owned) + deferred package renames + 23 frontend items in `.opencode/reviews.md`
+- Backend architecture: items 2–5 of the 2026-08-06 batch done + double-fetch fix + `<domain>cases` package rename (2026-08-07); remaining: streak GET-write + email items (user-owned) + 23 frontend items in `.opencode/reviews.md`
 - Security concepts to walk through later documented in `to_discuss.md`
 
 ## Recent Changes
+- Architecture cleanup (2026-08-07): FYP double-fetch + package rename:
+  - **Double-fetch fixed**: `RecommendationService.findPublicCheckIns` fetched `findByCreatorId` once for routing and `PracticeBasedRecommendation` fetched it *again* for category IDs. Now `IRecommendationStrategy.findPublicCheckIns(Long userId, List<Long> categoryIds)`; the service fetches practices once, derives distinct non-null category IDs, and passes them in. `PracticeBasedRecommendation` dropped its `IPracticeRepository`. `DefaultRecommendationStrategy` ignores `categoryIds`. Routing unchanged — still on `userPractices.isEmpty()` (only-uncategorized practices → personalized path with empty IDs → empty FYP, same as before). Dedup/null-filter tests moved to `RecommendationServiceTest`.
+  - **Package rename**: all business domain packages now `<domain>cases` — `checkin` → `checkincases` (+ `checkincases/fypstrategy`), `emailusecases` → `emailcases` (+ `emailcases/emailstrategy`). Final scheme: `usercases`, `practicecases`, `categorycases`, `emailcases`, `signincases`, `checkincases`. Pure move + token rewrite (~40 files), no logic change; removed empty stale test dirs `habitcases`/`habitprogress`.
 - Architecture cleanup (2026-08-06): suggestions #3/#4/#5 + warning #14 area:
   - **FYP filtering in SQL**: `ICheckInRepository.findPublicCheckInsForCategories(categoryIds, userId)` + JPQL (`isPublic`, `category.id in :categoryIds`, `creator.id <> :userId`) in `CheckInJpaRepository`; `CheckInRepository` short-circuits `List.of()` on empty categoryIds. `PracticeBasedRecommendation` no longer loads all public check-ins into memory.
   - **id-based equals/hashCode**: `User`, `Practice`, `CheckIn`, `Category`, `CheckInLike` switched from `@Data` to `@Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode(onlyExplicitlyIncluded = true)` + `@EqualsAndHashCode.Include` on `id`. `EmailToken` deferred (email domain).
@@ -44,8 +47,7 @@
 ## Next Steps
 - `GetPracticesByUserUseCaseImpl` read-with-writes (streak validation `save()` inside GET) — **user-owned**; after the fix, add `@Transactional(readOnly = true)` there
 - Email items — **user-owned** until email features are finalized: `EmailVerificationStrategy` uninitialized `Resend` field (NPE), `VerifyTokenUseCaseImpl` stub (`return true`), `SendEmailUseCaseImpl` stub, `EmailToken` `@Data` + `findByEmail` nullable
-- FYP pagination; `RecommendationService.findPublicCheckIns` double-fetch of `findByCreatorId`
-- Deferred package rename: `usercases`/`practicecases`/`categorycases`/`emailusecases` → one consistent scheme
+- FYP pagination (FYP queries return unbounded lists)
 - Frontend: wrap auth state in React context for reactivity
 - Frontend: replace `console.error` with user-facing toasts
 - When email flow is finished: upgrade rate limiting to per-IP + DB-backed, add CAPTCHA at signup, trigger verification email server-side at signup

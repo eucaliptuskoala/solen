@@ -2,7 +2,7 @@ package org.solen.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.solen.business.checkin.IGetCheckInsForUserUseCase;
+import org.solen.business.checkincases.IGetCheckInsForUserUseCase;
 import org.solen.business.practicecases.ICreatePracticeUseCase;
 import org.solen.business.practicecases.IDeletePracticeUseCase;
 import org.solen.business.practicecases.IGetPracticesByUserUseCase;

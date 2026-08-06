@@ -1,11 +1,11 @@
-package org.solen.business.emailusecases;
+package org.solen.business.emailcases;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.solen.business.emailusecases.emailstrategy.EmailStrategyService;
+import org.solen.business.emailcases.emailstrategy.EmailStrategyService;
 import org.solen.business.repos.IEmailTokenRepository;
 import org.solen.business.repos.IUserRepository;
 import org.solen.domain.email.EmailToken;

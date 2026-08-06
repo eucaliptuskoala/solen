@@ -1,6 +1,6 @@
 package org.solen.controller;
 
-import org.solen.business.emailusecases.ISendEmailUseCase;
+import org.solen.business.emailcases.ISendEmailUseCase;
 import org.solen.configuration.security.UserInfoProvider;
 import org.solen.controller.dto.email.SendEmailRequest;
 import org.springframework.web.bind.annotation.PostMapping;

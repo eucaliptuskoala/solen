@@ -1,4 +1,4 @@
-package org.solen.business.checkin.fypstrategy;
+package org.solen.business.checkincases.fypstrategy;
 
 import org.solen.business.repos.ICheckInRepository;
 import org.solen.domain.checkin.CheckIn;
@@ -28,7 +28,7 @@ class DefaultRecommendationStrategyTest {
         CheckIn ci2 = CheckIn.builder().id(2L).build();
         when(checkInRepository.findPublicCheckIns()).thenReturn(List.of(ci1, ci2));
 
-        List<CheckIn> result = strategy.findPublicCheckIns(1L);
+        List<CheckIn> result = strategy.findPublicCheckIns(1L, List.of(1L));
 
         assertEquals(2, result.size());
         verify(checkInRepository).findPublicCheckIns();
@@ -38,7 +38,7 @@ class DefaultRecommendationStrategyTest {
     void findPublicCheckIns_returnsEmpty_whenNone() {
         when(checkInRepository.findPublicCheckIns()).thenReturn(List.of());
 
-        List<CheckIn> result = strategy.findPublicCheckIns(1L);
+        List<CheckIn> result = strategy.findPublicCheckIns(1L, List.of(1L));
 
         assertTrue(result.isEmpty());
         verify(checkInRepository).findPublicCheckIns();

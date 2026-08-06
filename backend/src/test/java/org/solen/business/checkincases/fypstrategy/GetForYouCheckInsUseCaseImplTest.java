@@ -1,4 +1,4 @@
-package org.solen.business.checkin.fypstrategy;
+package org.solen.business.checkincases.fypstrategy;
 
 import org.solen.business.exceptions.UserNotFoundByIdException;
 import org.solen.business.repos.IUserRepository;

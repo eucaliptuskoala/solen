@@ -1,4 +1,4 @@
-package org.solen.business.checkin;
+package org.solen.business.checkincases;
 
 import org.solen.business.repos.ICheckInRepository;
 import org.solen.domain.checkin.CheckIn;

@@ -1,7 +1,8 @@
-package org.solen.business.checkin.fypstrategy;
+package org.solen.business.checkincases.fypstrategy;
 
 import org.solen.business.repos.IPracticeRepository;
 import org.solen.domain.checkin.CheckIn;
+import org.solen.domain.practices.Category;
 import org.solen.domain.practices.Practice;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,15 +32,53 @@ class RecommendationServiceTest {
     void findPublicCheckIns_userHasPractices_usesPracticeBased() {
         service = new RecommendationService(practiceNameBased, defaultStrategy, practiceRepository);
 
-        when(practiceRepository.findByCreatorId(1L)).thenReturn(List.of(Practice.builder().id(1L).build()));
+        Practice practice = Practice.builder()
+                .id(1L)
+                .category(Category.builder().id(1L).build())
+                .build();
+        when(practiceRepository.findByCreatorId(1L)).thenReturn(List.of(practice));
         CheckIn ci = CheckIn.builder().id(1L).build();
-        when(practiceNameBased.findPublicCheckIns(1L)).thenReturn(List.of(ci));
+        when(practiceNameBased.findPublicCheckIns(1L, List.of(1L))).thenReturn(List.of(ci));
 
         List<CheckIn> result = service.findPublicCheckIns(1L);
 
         assertEquals(1, result.size());
-        verify(practiceNameBased).findPublicCheckIns(1L);
-        verify(defaultStrategy, never()).findPublicCheckIns(anyLong());
+        verify(practiceRepository, times(1)).findByCreatorId(1L);
+        verify(practiceNameBased).findPublicCheckIns(1L, List.of(1L));
+        verify(defaultStrategy, never()).findPublicCheckIns(anyLong(), anyList());
+    }
+
+    @Test
+    void findPublicCheckIns_passesDistinctNonNullCategoryIds() {
+        service = new RecommendationService(practiceNameBased, defaultStrategy, practiceRepository);
+
+        List<Practice> practices = List.of(
+                Practice.builder().id(1L).category(Category.builder().id(1L).build()).build(),
+                Practice.builder().id(2L).category(Category.builder().id(1L).build()).build(),
+                Practice.builder().id(3L).category(null).build()
+        );
+        when(practiceRepository.findByCreatorId(1L)).thenReturn(practices);
+        when(practiceNameBased.findPublicCheckIns(1L, List.of(1L))).thenReturn(List.of());
+
+        List<CheckIn> result = service.findPublicCheckIns(1L);
+
+        assertTrue(result.isEmpty());
+        verify(practiceRepository, times(1)).findByCreatorId(1L);
+        verify(practiceNameBased).findPublicCheckIns(1L, List.of(1L));
+    }
+
+    @Test
+    void findPublicCheckIns_onlyUncategorizedPractices_usesPracticeBasedWithEmptyCategoryIds() {
+        service = new RecommendationService(practiceNameBased, defaultStrategy, practiceRepository);
+
+        when(practiceRepository.findByCreatorId(1L)).thenReturn(List.of(Practice.builder().id(1L).build()));
+        when(practiceNameBased.findPublicCheckIns(1L, List.of())).thenReturn(List.of());
+
+        List<CheckIn> result = service.findPublicCheckIns(1L);
+
+        assertTrue(result.isEmpty());
+        verify(practiceNameBased).findPublicCheckIns(1L, List.of());
+        verify(defaultStrategy, never()).findPublicCheckIns(anyLong(), anyList());
     }
 
     @Test
@@ -48,12 +87,13 @@ class RecommendationServiceTest {
 
         when(practiceRepository.findByCreatorId(1L)).thenReturn(List.of());
         CheckIn ci = CheckIn.builder().id(1L).build();
-        when(defaultStrategy.findPublicCheckIns(1L)).thenReturn(List.of(ci));
+        when(defaultStrategy.findPublicCheckIns(1L, List.of())).thenReturn(List.of(ci));
 
         List<CheckIn> result = service.findPublicCheckIns(1L);
 
         assertEquals(1, result.size());
-        verify(defaultStrategy).findPublicCheckIns(1L);
-        verify(practiceNameBased, never()).findPublicCheckIns(anyLong());
+        verify(practiceRepository, times(1)).findByCreatorId(1L);
+        verify(defaultStrategy).findPublicCheckIns(1L, List.of());
+        verify(practiceNameBased, never()).findPublicCheckIns(anyLong(), anyList());
     }
 }

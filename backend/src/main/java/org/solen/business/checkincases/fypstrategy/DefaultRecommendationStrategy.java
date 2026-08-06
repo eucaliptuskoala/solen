@@ -1,4 +1,4 @@
-package org.solen.business.checkin.fypstrategy;
+package org.solen.business.checkincases.fypstrategy;
 
 import lombok.AllArgsConstructor;
 import org.solen.business.repos.ICheckInRepository;
@@ -16,7 +16,7 @@ public class DefaultRecommendationStrategy implements IRecommendationStrategy {
     private ICheckInRepository checkInRepository;
 
     @Override
-    public List<CheckIn> findPublicCheckIns(Long userId) {
+    public List<CheckIn> findPublicCheckIns(Long userId, List<Long> categoryIds) {
         return checkInRepository.findPublicCheckIns();
     }
 }

@@ -1,4 +1,4 @@
-package org.solen.business.checkin;
+package org.solen.business.checkincases;
 
 import org.solen.business.exceptions.ForbiddenAccessException;
 import org.solen.business.exceptions.PracticeNotFoundByIdException;

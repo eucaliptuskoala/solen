@@ -27,6 +27,9 @@
 > equals/hashCode), #5 (repos → `Optional`) and the FYP in-memory filtering → SQL JPQL (see WARNING #15).
 > Warning #14 (streak GET-write) and warnings #9/#10 + `EmailToken` (email) are **user-owned** — deferred
 > until the user finalizes email features and the streak fix themselves.
+> **Fixed (2026-08-07):** FYP double-fetch (see SUGGESTION, `findByCreatorId` no longer called twice)
+> and the package rename — `checkin` → `checkincases`, `emailusecases` → `emailcases`, so all business
+> domain packages are `<domain>cases` (closes the deferred rename from warning #12).
 > **Deferred (documented in `to_discuss.md`):** rate limiting on `/auth/sign_in` + `POST /users`.
 > Remaining: frontend (23 items) + user-owned backend items.
 
@@ -93,7 +96,7 @@
 | 9 | `EmailVerificationStrategy.java` | 13 | Uninitialized `private Resend resend;` — no constructor injection, NPE at runtime |
 | 10 | `VerifyTokenUseCaseImpl.java` | 14 | Stub that always returns `true` — dead code |
 | 11 | `EmailController.java` | 25 | ~~Null check logic inverted~~ — stale, `request.getEmail() != null ? … : userInfoProvider.getUserEmail()` |
-| 12 | Naming | — | Inconsistent: `ISendEmailUseCaseImpl` (has Impl in interface name), `CreateUserUseCase` (no I prefix), `usercases` vs `practicecases` — ✅ interface names fixed (`I`-prefix everywhere); package renames deferred |
+| 12 | Naming | — | Inconsistent: `ISendEmailUseCaseImpl` (has Impl in interface name), `CreateUserUseCase` (no I prefix), `usercases` vs `practicecases` — ✅ interface names fixed (`I`-prefix everywhere); packages renamed to `<domain>cases` (2026-08-07) |
 | 13 | `PracticeConverter.java` | 23 | Creates new entity objects for nested relations — JPA merge will create duplicates — ✅ (id-only refs + `save()` back-fill) |
 | 14 | `GetPracticesByUserUseCaseImpl.java` | 20 | Read use case has write side effects (streak validation saves) — ⏳ **user-owned** (streak fix); add `@Transactional(readOnly=true)` once fixed |
 | 15 | `PracticeBasedRecommendation.java` | — | Loads all public check-ins into memory — ✅ (`findPublicCheckInsForCategories` JPQL filters by category + excludes own in SQL) |
@@ -165,4 +168,4 @@
 
 ---
 
-*Last updated: 2026-08-06*
+*Last updated: 2026-08-07*

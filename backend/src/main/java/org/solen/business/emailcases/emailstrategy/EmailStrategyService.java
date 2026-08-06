@@ -1,4 +1,4 @@
-package org.solen.business.emailusecases.emailstrategy;
+package org.solen.business.emailcases.emailstrategy;
 
 import java.util.List;
 import java.util.Map;

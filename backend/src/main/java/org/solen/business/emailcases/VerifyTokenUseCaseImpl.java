@@ -1,4 +1,4 @@
-package org.solen.business.emailusecases;
+package org.solen.business.emailcases;
 
 import org.springframework.stereotype.Service;
 

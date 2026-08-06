@@ -1,4 +1,4 @@
-package org.solen.business.checkin;
+package org.solen.business.checkincases;
 
 import org.solen.domain.checkin.CheckIn;
 import org.springframework.stereotype.Component;

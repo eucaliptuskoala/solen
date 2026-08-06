@@ -1,4 +1,4 @@
-package org.solen.business.checkin.fypstrategy;
+package org.solen.business.checkincases.fypstrategy;
 
 import org.solen.business.repos.IPracticeRepository;
 import org.solen.domain.checkin.CheckIn;
@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 // Router for FYP recommendation strategies.
 //   user has practices → PracticeBasedRecommendation (category-matched, personalised)
@@ -36,9 +37,15 @@ public class RecommendationService {
         List<Practice> userPractices = practiceRepository.findByCreatorId(userId);
 
         if (userPractices.isEmpty()) {
-            return defaultStrategy.findPublicCheckIns(userId);
-        } else {
-            return practiceNameBased.findPublicCheckIns(userId);
+            return defaultStrategy.findPublicCheckIns(userId, List.of());
         }
+
+        List<Long> categoryIds = userPractices.stream()
+                .map(practice -> practice.getCategory() != null ? practice.getCategory().getId() : null)
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+
+        return practiceNameBased.findPublicCheckIns(userId, categoryIds);
     }
 }

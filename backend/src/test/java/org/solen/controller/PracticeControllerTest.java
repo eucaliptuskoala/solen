@@ -1,7 +1,7 @@
 package org.solen.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.solen.business.checkin.IGetCheckInsForUserUseCase;
+import org.solen.business.checkincases.IGetCheckInsForUserUseCase;
 import org.solen.business.exceptions.PracticeNotFoundByIdException;
 import org.solen.business.practicecases.*;
 import org.solen.business.usercases.UserDetailsService;
